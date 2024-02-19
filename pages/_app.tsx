@@ -14,13 +14,15 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 import theme from "../chakra-theme";
 
+import STATIC from "../static.json";
+
 import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Globus : Static Data Portal</title>
+        <title>{STATIC.content.title}</title>
         <meta
           name="description"
           content="A Globus-powered research data portal."
@@ -34,7 +36,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Container>
               <Flex minWidth="max-content" alignItems="center" h="100%" p={2}>
                 <Heading as="h1" textColor="white" fontSize="2xl">
-                  Globus : Static Data Portal
+                  {STATIC.content.title}
                 </Heading>
               </Flex>
             </Container>
