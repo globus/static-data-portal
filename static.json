@@ -4,5 +4,8 @@
   },
   "content": {
     "title": "Globus : Static Data Portal"
+  },
+  "globus": {
+    "client_id": "0ef438ef-3e40-45e4-b5e4-ca4b07bc4b15"
   }
 }
