@@ -9,15 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@axa-fr/react-oidc": "^7.18.5",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/next-js": "^2.2.0",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@globus/sdk": "^2.3.4",
     "framer-motion": "^11.0.5",
     "next": "14.1.0",
+    "oidc-client-ts": "^3.0.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-oidc-context": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

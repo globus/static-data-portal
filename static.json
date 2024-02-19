@@ -6,6 +6,12 @@
     "title": "Globus : Static Data Portal"
   },
   "globus": {
-    "client_id": "0ef438ef-3e40-45e4-b5e4-ca4b07bc4b15"
+    "application": {
+      "client_id": "71ed3dd6-a200-43e4-9f58-d50d8df289f6",
+      "redirect_uri": "http://localhost:3000/authenticate"
+    },
+    "transfer": {
+      "collection_id": "6c54cade-bde5-45c1-bdea-f4bd71dba2cc"
+    }
   }
 }
