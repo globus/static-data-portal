@@ -1,10 +1,16 @@
 import React from "react";
-import { Text } from "@chakra-ui/react";
+import { Container, Text } from "@chakra-ui/react";
+
+import STATIC from "@/static.json";
 
 export default function TermsAndConditions() {
+  const terms = STATIC.content.terms_of_service;
   return (
-    <>
-      <Text fontSize="xl">Terms and Conditions</Text>
-    </>
+    terms && (
+      <Container p={2}>
+        <Text fontSize="xl">Terms and Conditions</Text>
+        <Text>{terms}</Text>
+      </Container>
+    )
   );
 }

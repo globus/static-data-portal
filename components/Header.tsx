@@ -1,30 +1,42 @@
 import React from "react";
-import { Box, Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
-import { useAuth } from "react-oidc-context";
+import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
+import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
 
 import STATIC from "../static.json";
 
 export default function Header() {
-  const auth = useAuth();
+  const auth = useGlobusAuth();
+
   return (
-    <Box as="header" bgColor="brand.700">
-      <Container>
+    <Box
+      as="header"
+      bgImage="background-images/nasa-Q1p7bh3SHj8-unsplash.jpg"
+      bgSize="cover"
+      bgPosition="center"
+    >
+      <Container maxW="container.xl">
         <Flex
           minWidth="max-content"
           alignItems="center"
           justify="space-between"
-          h="100%"
-          p={2}
+          h="20vh"
         >
-          <Heading as="h1" textColor="white" fontSize="2xl">
+          <Heading
+            as="h1"
+            textColor="white"
+            fontSize="2xl"
+            py={2}
+            px={4}
+            backgroundColor="rgba(0,0,0,0.75)"
+          >
             {STATIC.content.title}
           </Heading>
           {auth.isAuthenticated ? (
-            <Button size="sm" onClick={() => auth.removeUser()}>
+            <Button size="sm" onClick={() => auth.authorization?.revoke()}>
               Log Out
             </Button>
           ) : (
-            <Button size="sm" onClick={() => auth.signinRedirect()}>
+            <Button size="sm" onClick={() => auth.authorization?.redirect()}>
               Sign In
             </Button>
           )}

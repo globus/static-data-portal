@@ -1,10 +1,16 @@
 import React from "react";
-import { Text } from "@chakra-ui/react";
+import { Container, Text } from "@chakra-ui/react";
+
+import STATIC from "@/static.json";
 
 export default function PrivacyPolicy() {
+  const terms = STATIC.content.privacy_policy;
   return (
-    <>
-      <Text fontSize="xl">Privacy Policy</Text>
-    </>
+    terms && (
+      <Container p={2}>
+        <Text fontSize="xl">Privacy Policy</Text>
+        <Text>{terms}</Text>
+      </Container>
+    )
   );
 }
