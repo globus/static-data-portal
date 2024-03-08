@@ -10,10 +10,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import theme from "@/chakra-theme";
+import { STATIC, getRedirectUri } from "@/utils/static";
 import Header from "@/components/Header";
 import { Provider } from "@/components/globus-auth-context/Provider";
-import theme from "@/chakra-theme";
-import STATIC from "@/static.json";
 import TokenListener from "@/components/TokenListener";
 
 import type { AppProps } from "next/app";
@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
         }}
       >
         <Provider
-          redirectUri={STATIC.globus.application.redirect_uri}
+          redirectUri={getRedirectUri()}
           clientId={STATIC.globus.application.client_id}
           requestedScopes="openid email profile urn:globus:auth:scope:transfer.api.globus.org:all"
         >
