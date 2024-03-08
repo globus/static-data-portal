@@ -22,6 +22,7 @@ import {
   DrawerOverlay,
   Card,
   CardBody,
+  Tooltip,
 } from "@chakra-ui/react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 
@@ -223,13 +224,16 @@ export default function Home() {
         </SimpleGrid>
         {source && destination && (
           <Flex justify="end" m="2">
-            <Button
-              colorScheme="brand"
-              onClick={() => handleStartTransfer}
-              isDisabled={!source || !destination}
-            >
-              Start Transfer
-            </Button>
+            <Tooltip hasArrow label="Coming soon!" bg="green.600">
+              <Button
+                disabled
+                colorScheme="brand"
+                onClick={() => handleStartTransfer}
+                isDisabled={!source || !destination}
+              >
+                Start Transfer
+              </Button>
+            </Tooltip>
           </Flex>
         )}
       </TransferContext.Provider>
