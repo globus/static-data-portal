@@ -10,7 +10,7 @@
   "globus": {
     "application": {
       "client_id": "71ed3dd6-a200-43e4-9f58-d50d8df289f6",
-      "redirect_uri": "http://localhost:3000/authenticate"
+      "redirect_uri": "https://globus.github.io/static-data-portal/authenticate"
     },
     "transfer": {
       "collection_id": "6c54cade-bde5-45c1-bdea-f4bd71dba2cc"
