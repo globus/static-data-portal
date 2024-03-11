@@ -1,13 +1,26 @@
 type Action = { type: string; payload: any };
 type State = {
-  source: string;
-  source_path: string;
-  destination: string;
-  destination_path: string;
+  source: Record<string, any> | null;
+  source_path: string | null;
+  destination: Record<string, any> | null;
+  destination_path: string | null;
   items: string[];
 };
 
-export default function transferReducer(state: State, action: Action) {
+export const initialState: State = {
+  source: null,
+  source_path: null,
+  destination: null,
+  destination_path: null,
+  items: [],
+};
+
+export type Dispatcher = (action: Action) => void;
+
+export default function transferSettingsReducer(
+  state: State,
+  action: Action,
+): State {
   switch (action.type) {
     case "SET_SOURCE": {
       return { ...state, source: action.payload };

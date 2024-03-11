@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Table,
   TableContainer,
@@ -38,6 +38,7 @@ import type {
 } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
 
 import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
+import { TransferSettingsDispatchContext } from "./transfer-settings-context/Context";
 
 export default function FileBrowser({
   variant,
@@ -49,6 +50,8 @@ export default function FileBrowser({
   path?: string;
 }) {
   const auth = useGlobusAuth();
+  const dispatch = useContext(TransferSettingsDispatchContext);
+
   const [isLoading, setIsLoading] = useState(false);
   const [endpoint, setEndpoint] = useState<Record<string, any> | null>(null);
   const [lsResponse, setLsResponse] = useState<Record<string, any> | null>(
@@ -101,9 +104,16 @@ export default function FileBrowser({
         return;
       }
       setItems("DATA" in data ? data.DATA : []);
+      const transferPath = "absolute_path" in data ? data.absolute_path : null;
+      const type =
+        variant === "source" ? "SET_SOURCE_PATH" : "SET_DESTINATION_PATH";
+      dispatch({
+        type,
+        payload: transferPath,
+      });
     }
     fetchItems();
-  }, [auth, collection, path]);
+  }, [auth, collection, path, dispatch, variant]);
 
   return (
     <>
@@ -134,7 +144,25 @@ export default function FileBrowser({
               <Tbody>
                 {items.map((item, i) => (
                   <Tr key={i}>
-                    <Td>{variant === "source" && <Checkbox />}</Td>
+                    <Td>
+                      {variant === "source" && (
+                        <Checkbox
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              dispatch({
+                                type: "ADD_ITEM",
+                                payload: item.name,
+                              });
+                            } else {
+                              dispatch({
+                                type: "REMOVE_ITEM",
+                                payload: item.name,
+                              });
+                            }
+                          }}
+                        />
+                      )}
+                    </Td>
                     <Td>
                       <HStack>
                         <FileEntryIcon entry={item} />
