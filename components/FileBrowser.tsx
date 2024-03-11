@@ -52,6 +52,8 @@ export default function FileBrowser({
   const auth = useGlobusAuth();
   const dispatch = useContext(TransferSettingsDispatchContext);
 
+  const isSource = variant === "source";
+
   const [isLoading, setIsLoading] = useState(false);
   const [endpoint, setEndpoint] = useState<Record<string, any> | null>(null);
   const [lsResponse, setLsResponse] = useState<Record<string, any> | null>(
@@ -134,18 +136,18 @@ export default function FileBrowser({
             <Table variant="simple">
               <Thead>
                 <Tr>
-                  <Td />
+                  {isSource && <Td />}
                   <Th>Name</Th>
                   <Th>Last Modified</Th>
                   <Th>Size</Th>
-                  <Td />
+                  {isSource && <Td />}
                 </Tr>
               </Thead>
               <Tbody>
                 {items.map((item, i) => (
                   <Tr key={i}>
-                    <Td>
-                      {variant === "source" && (
+                    {isSource && (
+                      <Td>
                         <Checkbox
                           onChange={(e) => {
                             if (e.target.checked) {
@@ -161,8 +163,8 @@ export default function FileBrowser({
                             }
                           }}
                         />
-                      )}
-                    </Td>
+                      </Td>
+                    )}
                     <Td>
                       <HStack>
                         <FileEntryIcon entry={item} />
@@ -175,21 +177,23 @@ export default function FileBrowser({
                     <Td>
                       <Code variant="outline">{item.size}</Code>
                     </Td>
-                    <Td>
-                      {endpoint &&
-                        endpoint.https_server &&
-                        item.type === "file" && (
-                          <IconButton
-                            as="a"
-                            aria-label="Open"
-                            href={`${endpoint.https_server}${lsResponse.absolute_path}${item.name}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            size="xs"
-                            icon={<Icon as={ArrowUpOnSquareIcon} />}
-                          />
-                        )}
-                    </Td>
+                    {isSource && (
+                      <Td>
+                        {endpoint &&
+                          endpoint.https_server &&
+                          item.type === "file" && (
+                            <IconButton
+                              as="a"
+                              aria-label="Open"
+                              href={`${endpoint.https_server}${lsResponse.absolute_path}${item.name}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              size="xs"
+                              icon={<Icon as={ArrowUpOnSquareIcon} />}
+                            />
+                          )}
+                      </Td>
+                    )}
                   </Tr>
                 ))}
               </Tbody>
