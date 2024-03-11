@@ -55,7 +55,9 @@ export default function FileBrowser({
     null,
   );
   const [items, setItems] = useState<FileDocument[] | []>([]);
-  const [error, setError] = useState<DirectoryListingError | null>(null);
+  const [error, setError] = useState<DirectoryListingError | unknown | null>(
+    null,
+  );
 
   useEffect(() => {
     async function fetchEndpoint() {
@@ -146,17 +148,19 @@ export default function FileBrowser({
                       <Code variant="outline">{item.size}</Code>
                     </Td>
                     <Td>
-                      {endpoint.https_server && item.type === "file" && (
-                        <IconButton
-                          as="a"
-                          aria-label="Open"
-                          href={`${endpoint.https_server}${lsResponse.absolute_path}${item.name}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          size="xs"
-                          icon={<Icon as={ArrowUpOnSquareIcon} />}
-                        />
-                      )}
+                      {endpoint &&
+                        endpoint.https_server &&
+                        item.type === "file" && (
+                          <IconButton
+                            as="a"
+                            aria-label="Open"
+                            href={`${endpoint.https_server}${lsResponse.absolute_path}${item.name}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            size="xs"
+                            icon={<Icon as={ArrowUpOnSquareIcon} />}
+                          />
+                        )}
                     </Td>
                   </Tr>
                 ))}
@@ -169,10 +173,27 @@ export default function FileBrowser({
   );
 }
 
-const FileBrowserError = ({ error }: { error: DirectoryListingError }) => {
+const FileBrowserError = ({
+  error,
+}: {
+  error: DirectoryListingError | unknown;
+}) => {
   const auth = useGlobusAuth();
 
-  if (error.code === "ConsentRequired") {
+  const isWellFormedError = (
+    error: unknown,
+  ): error is DirectoryListingError => {
+    return (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      "message" in error
+    );
+  };
+
+  const isDirectoryListingError = isWellFormedError(error);
+
+  if (isDirectoryListingError && error.code === "ConsentRequired") {
     return (
       <Alert status="warning">
         <Box>
@@ -201,6 +222,7 @@ const FileBrowserError = ({ error }: { error: DirectoryListingError }) => {
   }
 
   if (
+    isDirectoryListingError &&
     error.code === "PermissionDenied" &&
     "authorization_parameters" in error
   ) {
@@ -262,7 +284,7 @@ const FileBrowserError = ({ error }: { error: DirectoryListingError }) => {
     /* eslint-enable camelcase */
   }
 
-  if (error.code === "AuthenticationFailed") {
+  if (isDirectoryListingError && error.code === "AuthenticationFailed") {
     return (
       <Alert status="error">
         <Box>
@@ -287,13 +309,33 @@ const FileBrowserError = ({ error }: { error: DirectoryListingError }) => {
     );
   }
 
+  if (isDirectoryListingError) {
+    return (
+      <Alert status="error" flexDirection="column">
+        <Box>
+          <HStack>
+            <AlertIcon />
+            <Text>{error.message}</Text>
+          </HStack>
+          <Code
+            bgColor="red.50"
+            display="block"
+            whiteSpace="pre-wrap"
+            my={2}
+            p={1}
+          >
+            {JSON.stringify(error, null, 2)}
+          </Code>
+        </Box>
+      </Alert>
+    );
+  }
+
   return (
-    <Alert status="error" flexDirection="column">
-      <Box>
-        <HStack>
-          <AlertIcon />
-          <Text>{error.message}</Text>
-        </HStack>
+    <Alert status="error">
+      <AlertIcon />
+      <AlertTitle>Unknown Error</AlertTitle>
+      <AlertDescription>
         <Code
           bgColor="red.50"
           display="block"
@@ -303,7 +345,7 @@ const FileBrowserError = ({ error }: { error: DirectoryListingError }) => {
         >
           {JSON.stringify(error, null, 2)}
         </Code>
-      </Box>
+      </AlertDescription>
     </Alert>
   );
 };
