@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   Table,
   TableContainer,
@@ -23,12 +23,15 @@ import {
   IconButton,
   List,
   ListItem,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import {
   FolderIcon,
   DocumentIcon,
   ArrowUpOnSquareIcon,
+  ArrowPathIcon,
+  ArrowUturnUpIcon,
 } from "@heroicons/react/24/outline";
 import { transfer } from "@globus/sdk/cjs";
 
@@ -54,6 +57,7 @@ export default function FileBrowser({
 
   const isSource = variant === "source";
 
+  const [browserPath, setBrowserPath] = useState(path);
   const [isLoading, setIsLoading] = useState(false);
   const [endpoint, setEndpoint] = useState<Record<string, any> | null>(null);
   const [lsResponse, setLsResponse] = useState<Record<string, any> | null>(
@@ -84,38 +88,39 @@ export default function FileBrowser({
     fetchEndpoint();
   }, [auth, collection]);
 
-  useEffect(() => {
-    async function fetchItems() {
-      if (!auth.isAuthenticated) {
-        return;
-      }
-      setIsLoading(true);
-      const response = await transfer.fileOperations.ls(collection, {
-        headers: {
-          Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
-        },
-        query: {
-          path: path ?? undefined,
-        },
-      });
-      const data = await response.json();
-      setIsLoading(false);
-      setLsResponse(data);
-      if (!response.ok) {
-        setError("code" in data ? data : null);
-        return;
-      }
-      setItems("DATA" in data ? data.DATA : []);
-      const transferPath = "absolute_path" in data ? data.absolute_path : null;
-      const type =
-        variant === "source" ? "SET_SOURCE_PATH" : "SET_DESTINATION_PATH";
-      dispatch({
-        type,
-        payload: transferPath,
-      });
+  const fetchItems = useCallback(async () => {
+    if (!auth.isAuthenticated) {
+      return;
     }
+    setIsLoading(true);
+    const response = await transfer.fileOperations.ls(collection, {
+      headers: {
+        Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
+      },
+      query: {
+        path: browserPath ?? undefined,
+      },
+    });
+    const data = await response.json();
+    setIsLoading(false);
+    setLsResponse(data);
+    if (!response.ok) {
+      setError("code" in data ? data : null);
+      return;
+    }
+    setItems("DATA" in data ? data.DATA : []);
+    const transferPath = "absolute_path" in data ? data.absolute_path : null;
+    const type =
+      variant === "source" ? "SET_SOURCE_PATH" : "SET_DESTINATION_PATH";
+    dispatch({
+      type,
+      payload: transferPath,
+    });
+  }, [auth, browserPath, collection, dispatch, variant]);
+
+  useEffect(() => {
     fetchItems();
-  }, [auth, collection, path, dispatch, variant]);
+  }, [fetchItems]);
 
   return (
     <>
@@ -131,6 +136,31 @@ export default function FileBrowser({
           <Box p={2}>
             <ChevronRightIcon color="gray.500" />
             <Code colorScheme="purple">{lsResponse.absolute_path}</Code>
+          </Box>
+          <Box>
+            <ButtonGroup>
+              <Button
+                size="xs"
+                leftIcon={<Icon as={ArrowUturnUpIcon} />}
+                onClick={() => {
+                  if (!browserPath) return;
+                  const pathParts = browserPath.split("/");
+                  pathParts.pop();
+                  pathParts.pop();
+                  console.log(pathParts.join("/"));
+                  setBrowserPath(pathParts.join("/") + "/");
+                }}
+              >
+                Up One Folder
+              </Button>
+              <Button
+                size="xs"
+                leftIcon={<Icon as={ArrowPathIcon} />}
+                onClick={() => fetchItems()}
+              >
+                Refresh
+              </Button>
+            </ButtonGroup>
           </Box>
           <TableContainer>
             <Table variant="simple">
@@ -168,7 +198,20 @@ export default function FileBrowser({
                     <Td>
                       <HStack>
                         <FileEntryIcon entry={item} />
-                        <Text>{item.name}</Text>
+                        {item.type === "dir" ? (
+                          <Button
+                            variant="link"
+                            onClick={() => {
+                              setBrowserPath(
+                                `${lsResponse.absolute_path}${item.name}/`,
+                              );
+                            }}
+                          >
+                            {item.name}
+                          </Button>
+                        ) : (
+                          <Text>{item.name}</Text>
+                        )}
                       </HStack>
                     </Td>
                     <Td>
