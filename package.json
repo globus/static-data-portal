@@ -14,7 +14,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@globus/sdk": "^3.0.0-alpha.3",
+    "@globus/sdk": "^3.0.0-alpha.4",
     "framer-motion": "^11.0.5",
     "next": "14.1.0",
     "react": "^18",

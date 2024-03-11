@@ -41,9 +41,7 @@ export function CollectionSearch({
         limit: 20,
       },
       headers: {
-        Authorization: `Bearer ${auth.authorization?.getTokenForService(
-          "TRANSFER",
-        )}`,
+        Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
       },
     });
     const data = await response.json();

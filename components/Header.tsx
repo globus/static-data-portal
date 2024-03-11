@@ -36,7 +36,7 @@ export default function Header() {
               Log Out
             </Button>
           ) : (
-            <Button size="sm" onClick={() => auth.authorization?.redirect()}>
+            <Button size="sm" onClick={() => auth.authorization?.login()}>
               Sign In
             </Button>
           )}

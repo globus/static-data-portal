@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -46,13 +46,11 @@ export default function Home() {
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  function getTransferHeaders() {
+  const getTransferHeaders = useCallback(() => {
     return {
-      Authorization: `Bearer ${auth.authorization?.getTokenForService(
-        "TRANSFER",
-      )}`,
+      Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
     };
-  }
+  }, [auth.authorization?.tokens.transfer?.access_token]);
 
   async function handleStartTransfer() {
     if (!source || !destination) {
@@ -122,7 +120,7 @@ export default function Home() {
       setSource(data);
     }
     fetchCollection();
-  }, [auth.isAuthenticated]);
+  }, [auth.isAuthenticated, getTransferHeaders]);
 
   if (!auth.isAuthenticated) {
     return (
