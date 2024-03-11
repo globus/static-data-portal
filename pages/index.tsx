@@ -41,7 +41,7 @@ import transferSettingsReducer, {
   initialState,
 } from "@/components/transfer-settings-context/reducer";
 
-import STATIC from "@/static.json";
+import { STATIC } from "@/utils/static";
 
 export default function Home() {
   const auth = useGlobusAuth();
@@ -167,6 +167,7 @@ export default function Home() {
               <FileBrowser
                 variant="source"
                 collection={STATIC.globus.transfer.collection_id}
+                path={STATIC.globus.transfer?.path}
               />
             </Box>
             {destination ? (

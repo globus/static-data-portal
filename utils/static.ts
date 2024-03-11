@@ -30,6 +30,7 @@ type Static = {
     };
     transfer: {
       collection_id: string;
+      path?: string;
     };
   };
 };
