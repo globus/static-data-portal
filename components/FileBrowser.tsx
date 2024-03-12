@@ -24,6 +24,8 @@ import {
   List,
   ListItem,
   ButtonGroup,
+  Flex,
+  Tooltip,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import {
@@ -42,6 +44,7 @@ import type {
 
 import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
 import { TransferSettingsDispatchContext } from "./transfer-settings-context/Context";
+import { readable } from "@/utils/globus";
 
 export default function FileBrowser({
   variant,
@@ -93,6 +96,12 @@ export default function FileBrowser({
       return;
     }
     setIsLoading(true);
+    const isSource = variant === "source";
+    if (isSource) {
+      dispatch({
+        type: "RESET_ITEMS",
+      });
+    }
     const response = await transfer.fileOperations.ls(collection, {
       headers: {
         Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
@@ -110,10 +119,8 @@ export default function FileBrowser({
     }
     setItems("DATA" in data ? data.DATA : []);
     const transferPath = "absolute_path" in data ? data.absolute_path : null;
-    const type =
-      variant === "source" ? "SET_SOURCE_PATH" : "SET_DESTINATION_PATH";
     dispatch({
-      type,
+      type: isSource ? "SET_SOURCE_PATH" : "SET_DESTINATION_PATH",
       payload: transferPath,
     });
   }, [auth, browserPath, collection, dispatch, variant]);
@@ -125,10 +132,13 @@ export default function FileBrowser({
   return (
     <>
       {isLoading && (
-        <Center h="100%">
-          <Spinner />
-        </Center>
+        <Box mt={4}>
+          <Center>
+            <Spinner />
+          </Center>
+        </Box>
       )}
+
       {error && <FileBrowserError error={error} />}
 
       {!isLoading && !error && lsResponse && (
@@ -137,7 +147,7 @@ export default function FileBrowser({
             <ChevronRightIcon color="gray.500" />
             <Code colorScheme="purple">{lsResponse.absolute_path}</Code>
           </Box>
-          <Box>
+          <Flex justify="end">
             <ButtonGroup>
               <Button
                 size="xs"
@@ -147,7 +157,6 @@ export default function FileBrowser({
                   const pathParts = browserPath.split("/");
                   pathParts.pop();
                   pathParts.pop();
-                  console.log(pathParts.join("/"));
                   setBrowserPath(pathParts.join("/") + "/");
                 }}
               >
@@ -161,7 +170,7 @@ export default function FileBrowser({
                 Refresh
               </Button>
             </ButtonGroup>
-          </Box>
+          </Flex>
           <TableContainer>
             <Table variant="simple">
               <Thead>
@@ -215,10 +224,37 @@ export default function FileBrowser({
                       </HStack>
                     </Td>
                     <Td>
-                      <Code variant="outline">{item.last_modified}</Code>
+                      {item.last_modified ? (
+                        <Tooltip
+                          label={item.last_modified}
+                          variant="outline"
+                          hasArrow
+                        >
+                          <Text _hover={{ cursor: "help" }}>
+                            {new Intl.DateTimeFormat("en-US", {
+                              dateStyle: "medium",
+                              timeStyle: "short",
+                            }).format(new Date(item.last_modified))}
+                          </Text>
+                        </Tooltip>
+                      ) : (
+                        <Text>&mdash;</Text>
+                      )}
                     </Td>
                     <Td>
-                      <Code variant="outline">{item.size}</Code>
+                      {item.size ? (
+                        <Tooltip
+                          label={`${item.size} B`}
+                          variant="outline"
+                          hasArrow
+                        >
+                          <Text _hover={{ cursor: "help" }}>
+                            {item.size && readable(item.size)}
+                          </Text>
+                        </Tooltip>
+                      ) : (
+                        <Text>&mdash;</Text>
+                      )}
                     </Td>
                     {isSource && (
                       <Td>

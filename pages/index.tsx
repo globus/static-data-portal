@@ -22,8 +22,9 @@ import {
   DrawerOverlay,
   Card,
   CardBody,
+  Spacer,
 } from "@chakra-ui/react";
-import { XCircleIcon } from "@heroicons/react/24/outline";
+import { PlayCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 import { transfer } from "@globus/sdk/cjs";
 
@@ -202,7 +203,7 @@ export default function Home() {
                 />
               </Box>
             ) : (
-              <Center>
+              <Box p={4}>
                 <Container>
                   <Card variant="filled" size="sm">
                     <CardBody>
@@ -250,19 +251,28 @@ export default function Home() {
                     </DrawerBody>
                   </DrawerContent>
                 </Drawer>
-              </Center>
+              </Box>
             )}
           </SimpleGrid>
+
           {source && destination && (
-            <Flex justify="end" m="2">
-              <Button
-                colorScheme="brand"
-                onClick={() => handleStartTransfer()}
-                isDisabled={!source || !destination}
-              >
-                Start Transfer
-              </Button>
-            </Flex>
+            <Box position="sticky" bottom={0} bgColor="brand.100">
+              <Flex py={2} px={20} align="center">
+                <Text fontSize="sm">
+                  <Text as="strong">{transferSettings.items.length}</Text> items
+                  selected
+                </Text>
+                <Spacer />
+                <Button
+                  colorScheme="brand"
+                  onClick={() => handleStartTransfer()}
+                  isDisabled={!source || !destination}
+                  leftIcon={<Icon as={PlayCircleIcon} boxSize={6} />}
+                >
+                  Start Transfer
+                </Button>
+              </Flex>
+            </Box>
           )}
         </TransferSettingsDispatchContext.Provider>
       </TransferSettingsContext.Provider>

@@ -1,4 +1,4 @@
-type Action = { type: string; payload: any };
+type Action = { type: string; payload?: any };
 type State = {
   source: Record<string, any> | null;
   source_path: string | null;
@@ -33,6 +33,9 @@ export default function transferSettingsReducer(
     }
     case "SET_DESTINATION_PATH": {
       return { ...state, destination_path: action.payload };
+    }
+    case "RESET_ITEMS": {
+      return { ...state, items: [] };
     }
     case "ADD_ITEM": {
       return { ...state, items: [...state.items, action.payload] };
