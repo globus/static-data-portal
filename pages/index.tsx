@@ -28,7 +28,7 @@ import { PlayCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 import { transfer } from "@globus/sdk/cjs";
 
-import FileBrowser from "@/components/FileBrowser";
+import FileBrowser from "@/components/file-browser/FileBrowser";
 import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
 
 import { CollectionSearch } from "@/components/CollectionSearch";
@@ -85,11 +85,14 @@ export default function Home() {
         label: `Transfer from ${STATIC.content.title}`,
         source_endpoint: transferSettings.source.id,
         destination_endpoint: transferSettings.destination.id,
-        DATA: transferSettings.items.map((item) => ({
-          DATA_TYPE: "transfer_item",
-          source_path: `${transferSettings.source_path}${item}`,
-          destination_path: `${transferSettings.destination_path}`,
-        })),
+        DATA: transferSettings.items.map((item) => {
+          return {
+            DATA_TYPE: "transfer_item",
+            source_path: `${transferSettings.source_path}${item.name}`,
+            destination_path: `${transferSettings.destination_path}${item.name}`,
+            recursive: item.type === "dir",
+          };
+        }),
       },
       headers: {
         ...getTransferHeaders(),
