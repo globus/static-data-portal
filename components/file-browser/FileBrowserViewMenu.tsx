@@ -25,7 +25,6 @@ export default function FileBrowserViewMenu() {
           type="checkbox"
           defaultValue={[state.view.show_hidden ? "show_hidden" : ""]}
           onChange={(value) => {
-            console.log(value);
             dispatch({
               type: "SET_VIEW_SHOW_HIDDEN",
               payload: value.includes("show_hidden"),

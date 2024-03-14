@@ -115,7 +115,6 @@ export default function FileBrowser({
         type: "RESET_ITEMS",
       });
     }
-    console.log(fileBrowser.view.show_hidden);
     const response = await transfer.fileOperations.ls(collection, {
       headers: {
         Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,

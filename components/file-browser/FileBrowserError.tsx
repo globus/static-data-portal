@@ -14,7 +14,11 @@ import {
 } from "@chakra-ui/react";
 
 import { useGlobusAuth } from "../globus-auth-context/useGlobusAuth";
-
+import {
+  isErrorWellFormed,
+  isConsentRequiredError,
+  isAuthorizationRequirementsError,
+} from "@globus/sdk/cjs/lib/core/authorization/AuthorizationManager";
 import type { DirectoryListingError } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
 
 export default function FileBrowserError({
@@ -24,20 +28,9 @@ export default function FileBrowserError({
 }) {
   const auth = useGlobusAuth();
 
-  const isWellFormedError = (
-    error: unknown,
-  ): error is DirectoryListingError => {
-    return (
-      typeof error === "object" &&
-      error !== null &&
-      "code" in error &&
-      "message" in error
-    );
-  };
+  const isWellFormed = isErrorWellFormed(error);
 
-  const isDirectoryListingError = isWellFormedError(error);
-
-  if (isDirectoryListingError && error.code === "ConsentRequired") {
+  if (isWellFormed && isConsentRequiredError(error)) {
     return (
       <Alert status="warning">
         <Box>
@@ -65,11 +58,7 @@ export default function FileBrowserError({
     );
   }
 
-  if (
-    isDirectoryListingError &&
-    error.code === "PermissionDenied" &&
-    "authorization_parameters" in error
-  ) {
+  if (isWellFormed && isAuthorizationRequirementsError(error)) {
     /* eslint-disable camelcase */
     const {
       session_message,
@@ -83,15 +72,14 @@ export default function FileBrowserError({
         <Box>
           <HStack>
             <AlertIcon />
-            <AlertTitle>{error.message}</AlertTitle>
+            <AlertTitle>{session_message || error.message}</AlertTitle>
           </HStack>
           <AlertDescription>
-            {session_message && <Text my={2}>{session_message}</Text>}
-            <List>
+            <List p={2}>
               {session_required_mfa && (
                 <ListItem>Requires Multi-Factor Authentication</ListItem>
               )}
-              {session_required_identities && (
+              {session_required_identities?.length && (
                 <ListItem>
                   <Text as="strong">Required Identities:</Text>{" "}
                   {session_required_identities.join(", ")}
@@ -100,18 +88,20 @@ export default function FileBrowserError({
               {session_required_single_domain &&
                 session_required_single_domain?.length && (
                   <ListItem>
-                    <Text as="strong">Required Single Domain:</Text>{" "}
+                    <Text as="strong">Required Domain(s):</Text>{" "}
                     {session_required_single_domain}
                   </ListItem>
                 )}
             </List>
-            {/* <Button
-              onClick={() => auth.authorization?.login()}
+            <Button
+              onClick={() =>
+                auth.authorization?.handleAuthorizationRequirementsError(error)
+              }
               colorScheme="brand"
               size="sm"
             >
-              Continue
-            </Button> */}
+              Address
+            </Button>
             <Code
               bgColor="red.50"
               display="block"
@@ -128,7 +118,7 @@ export default function FileBrowserError({
     /* eslint-enable camelcase */
   }
 
-  if (isDirectoryListingError && error.code === "AuthenticationFailed") {
+  if (isWellFormed && error.code === "AuthenticationFailed") {
     return (
       <Alert status="error">
         <Box>
@@ -153,7 +143,7 @@ export default function FileBrowserError({
     );
   }
 
-  if (isDirectoryListingError) {
+  if (isWellFormed) {
     return (
       <Alert status="error" flexDirection="column">
         <Box>
