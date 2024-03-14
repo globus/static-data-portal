@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Provider
           redirectUri={getRedirectUri()}
           clientId={STATIC.globus.application.client_id}
-          requestedScopes="openid email profile urn:globus:auth:scope:transfer.api.globus.org:all"
+          requestedScopes="urn:globus:auth:scope:transfer.api.globus.org:all"
         >
           <TokenListener />
           <Flex direction="column" flex="1" h="100vh">

@@ -18,7 +18,7 @@ import {
   isErrorWellFormed,
   isConsentRequiredError,
   isAuthorizationRequirementsError,
-} from "@globus/sdk/cjs/lib/core/authorization/AuthorizationManager";
+} from "@globus/sdk/cjs/lib/core/errors";
 import type { DirectoryListingError } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
 
 export default function FileBrowserError({
