@@ -3,7 +3,7 @@ authors:
 - family-names: "Bottigliero"
   given-names: "Joe"
   orcid: "https://orcid.org/0009-0009-9663-0050"
-title: "Example Data Portal"
+title: "Static Data Portal"
 version: 0.1.0
 date-released: 2024-03-14
 url: "https://github.com/globus/static-data-portal"
