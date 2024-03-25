@@ -29,6 +29,7 @@ type Data = {
       title: string;
       privacy_policy: string;
       terms_of_service: string;
+      tagline?: string;
     };
     globus: {
       application: {
