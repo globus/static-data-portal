@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.5 (2024-03-25)
+
+## What's Changed
+* deps: bump @heroicons/react from 2.1.1 to 2.1.3 by @dependabot in https://github.com/globus/static-data-portal/pull/10
+* deps: bump eslint-config-next from 14.1.0 to 14.1.4 by @dependabot in https://github.com/globus/static-data-portal/pull/6
+
+
+**Full Changelog**: https://github.com/globus/static-data-portal/compare/1.0.4...1.0.5
+
 ## 1.0.4 (2024-03-25)
 
 ## What's Changed
