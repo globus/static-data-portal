@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@globus/types": "^0.0.6",
-    "@heroicons/react": "^2.1.1",
+    "@heroicons/react": "^2.1.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
