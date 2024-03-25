@@ -1,8 +1,10 @@
 import _STATIC from "../static.json";
 
-type Static = {
+type Base = {
   _static: {
-    generator: string;
+    generator: {
+      name: string;
+    };
     /**
      * GitHub Action-injected environment variables.
      * @see https://github.com/from-static/actions
@@ -14,31 +16,49 @@ type Static = {
       base_path: string;
     };
   };
-  content: {
-    title: string;
-    privacy_policy: string;
-    terms_of_service: string;
+  data: {
+    version: string;
+    attributes: Record<string, unknown>;
   };
-  globus: {
-    application: {
-      client_id: string;
-      /**
-       * The redirect URI for the Globus Auth login page.
-       * If not provided, defaults to `{host}/authenticate`.
-       */
-      redirect_uri?: string;
+};
+
+type Data = {
+  version: string;
+  attributes: {
+    content: {
+      title: string;
+      privacy_policy: string;
+      terms_of_service: string;
     };
-    transfer: {
-      collection_id: string;
-      path?: string;
+    globus: {
+      application: {
+        client_id: string;
+        /**
+         * The redirect URI for the Globus Auth login page.
+         * If not provided, defaults to `{host}/authenticate`.
+         */
+        redirect_uri?: string;
+      };
+      transfer: {
+        collection_id: string;
+        path?: string;
+      };
     };
   };
+};
+
+type Static = Base & {
+  data: Data;
 };
 
 /**
  * Reference to the `static.json` file.
  */
 export const STATIC: Static = _STATIC;
+
+const {
+  data: { attributes },
+} = STATIC;
 
 /**
  * @returns The redirect URI for the Globus Auth login page.
@@ -47,8 +67,8 @@ export function getRedirectUri() {
   /**
    * If the `redirect_uri` is specified in the `static.json`, use it.
    */
-  if (STATIC.globus.application?.redirect_uri) {
-    return STATIC.globus.application.redirect_uri;
+  if (attributes.globus.application?.redirect_uri) {
+    return attributes.globus.application.redirect_uri;
   }
   /**
    * If this is a static-managed deployment, use the `base_url` from the `static.json`.

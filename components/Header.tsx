@@ -2,11 +2,8 @@ import React from "react";
 import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
 import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
 
-import STATIC from "../static.json";
-
-export default function Header() {
+export default function Header({ title }: { title: string }) {
   const auth = useGlobusAuth();
-
   return (
     <Box
       as="header"
@@ -29,7 +26,7 @@ export default function Header() {
             px={4}
             backgroundColor="rgba(0,0,0,0.75)"
           >
-            {STATIC.content.title}
+            {title}
           </Heading>
           {auth.isAuthenticated ? (
             <Button size="sm" onClick={() => auth.authorization?.revoke()}>

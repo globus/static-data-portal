@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>{STATIC.content.title}</title>
+        <title>{STATIC.data.attributes.content.title}</title>
         <meta
           name="description"
           content="A Globus-powered research data portal."
@@ -38,12 +38,12 @@ export default function App({ Component, pageProps }: AppProps) {
       >
         <Provider
           redirectUri={getRedirectUri()}
-          clientId={STATIC.globus.application.client_id}
+          clientId={STATIC.data.attributes.globus.application.client_id}
           requestedScopes="urn:globus:auth:scope:transfer.api.globus.org:all"
         >
           <TokenListener />
           <Flex direction="column" flex="1" h="100vh">
-            <Header />
+            <Header title={STATIC.data.attributes.content.title} />
             <Flex as="main" role="main" direction="column" flex="1">
               <Component {...pageProps} />
             </Flex>

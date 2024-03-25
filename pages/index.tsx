@@ -82,7 +82,7 @@ export default function Home() {
     const response = await transfer.taskSubmission.submitTransfer({
       payload: {
         submission_id: id.value,
-        label: `Transfer from ${STATIC.content.title}`,
+        label: `Transfer from ${STATIC.data.attributes.content.title}`,
         source_endpoint: transferSettings.source.id,
         destination_endpoint: transferSettings.destination.id,
         DATA: transferSettings.items.map((item) => {
@@ -124,7 +124,7 @@ export default function Home() {
         return;
       }
       const response = await transfer.endpoint.get(
-        STATIC.globus.transfer.collection_id,
+        STATIC.data.attributes.globus.transfer.collection_id,
         {
           headers: {
             ...getTransferHeaders(),
@@ -170,8 +170,10 @@ export default function Home() {
 
               <FileBrowser
                 variant="source"
-                collection={STATIC.globus.transfer.collection_id}
-                path={STATIC.globus.transfer?.path}
+                collection={
+                  STATIC.data.attributes.globus.transfer.collection_id
+                }
+                path={STATIC.data.attributes.globus.transfer?.path}
               />
             </Box>
             {destination ? (

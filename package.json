@@ -1,7 +1,8 @@
 {
-  "name": "static-data-portal",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@globus/static-data-portal",
+  "version": "1.0.3",
+  "repository": "github:globus/static-data-portal",
+  "files": [],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

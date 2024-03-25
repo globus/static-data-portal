@@ -1,18 +1,25 @@
 {
   "_static": {
-    "generator": "globus/static-data-portal"
+    "generator": {
+      "name": "@globus/static-data-portal"
+    }
   },
-  "content": {
-    "title": "Globus : Static Data Portal",
-    "privacy_policy": "This is an example privacy policy – you should replace this with your own policy.",
-    "terms_of_service": "This is an example terms of service – you should replace this with your own terms."
-  },
-  "globus": {
-    "application": {
-      "client_id": "71ed3dd6-a200-43e4-9f58-d50d8df289f6"
-    },
-    "transfer": {
-      "collection_id": "6c54cade-bde5-45c1-bdea-f4bd71dba2cc"
+  "data": {
+    "version": "1.0.0",
+    "attributes": {
+      "content": {
+        "title": "Globus : Static Data Portal",
+        "privacy_policy": "This is an example privacy policy – you should replace this with your own policy.",
+        "terms_of_service": "This is an example terms of service – you should replace this with your own terms."
+      },
+      "globus": {
+        "application": {
+          "client_id": "71ed3dd6-a200-43e4-9f58-d50d8df289f6"
+        },
+        "transfer": {
+          "collection_id": "6c54cade-bde5-45c1-bdea-f4bd71dba2cc"
+        }
+      }
     }
   }
 }
