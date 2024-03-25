@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.1 (2024-03-25)
+
+## What's Changed
+* deps: bump @types/react from 18.2.55 to 18.2.70 by @dependabot in https://github.com/globus/static-data-portal/pull/4
+
+
+**Full Changelog**: https://github.com/globus/static-data-portal/compare/1.1.0...1.1.1
+
 ## 1.1.0 (2024-03-25)
 
 ## What's Changed
