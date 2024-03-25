@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2024-03-25)
+
+**Full Changelog**: https://github.com/globus/static-data-portal/compare/1.0.5...1.1.0
+
 ## 1.0.5 (2024-03-25)
 
 ## What's Changed
