@@ -143,7 +143,7 @@ export default function Home() {
       <>
         <Center h="100%">
           <Text color="gray.400" as="em" fontSize="2xl" fontWeight="extrabold">
-            It's how research data management is done!
+            {STATIC.data.attributes.content.tagline}
           </Text>
         </Center>
       </>
