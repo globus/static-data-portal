@@ -1,0 +1,8 @@
+{
+  "entryPoints": ["utils/static.ts"],
+  "out": "docs",
+  "plugin": ["typedoc-plugin-markdown"],
+  "excludePrivate": true,
+  "hideBreadcrumbs": true,
+  "hideInPageTOC": true
+}
