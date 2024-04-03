@@ -133,6 +133,13 @@ export default function FileBrowser({
     }
     setItems("DATA" in data ? data.DATA : []);
     const transferPath = "absolute_path" in data ? data.absolute_path : null;
+    /**
+     * If there is no browser path specified, we've loaded the "default path"
+     * for the collection, so set the browser path to the returned absolute path.
+     */
+    if (!browserPath && transferPath) {
+      setBrowserPath(transferPath);
+    }
     transferSettingsDispatch({
       type: isSource ? "SET_SOURCE_PATH" : "SET_DESTINATION_PATH",
       payload: transferPath,
