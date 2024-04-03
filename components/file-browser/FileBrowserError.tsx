@@ -44,7 +44,6 @@ export default function FileBrowserError({
             </Text>
             <Button
               onClick={() =>
-                // @ts-ignore
                 auth.authorization?.handleConsentRequiredError(error)
               }
               colorScheme="brand"

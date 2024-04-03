@@ -26,9 +26,9 @@ export const Provider = ({
   clientId: string;
 }>) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [instance, setInstance] = useState<ReturnType<
-    typeof authorization.create
-  > | null>(null);
+  const [instance, setInstance] = useState<
+    ReturnType<typeof authorization.create> | undefined
+  >(undefined);
 
   useEffect(() => {
     const instance = authorization.create({
@@ -74,14 +74,10 @@ export const Provider = ({
     }) => {
       dispatch({ type: "AUTHENTICATED", payload: isAuthenticated });
     };
-    // @ts-ignore
-
     instance.events.authenticated.addListener(handleAuthenticated);
 
     return () => {
       instance.events.revoke.removeListener(handleRevoke);
-      // @ts-ignore
-
       instance.events.authenticated.removeListener(handleAuthenticated);
     };
   }, [instance]);
@@ -90,10 +86,7 @@ export const Provider = ({
     <Context.Provider
       value={{
         ...state,
-        // @ts-ignore
         authorization: instance,
-        // @ts-ignore
-
         events: instance?.events,
       }}
     >
