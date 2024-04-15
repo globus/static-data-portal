@@ -15,7 +15,7 @@
     "@chakra-ui/next-js": "^2.2.0",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.0",
+    "@emotion/styled": "^11.11.5",
     "@globus/sdk": "^3.0.0-alpha.17",
     "framer-motion": "^11.0.24",
     "next": "14.2.1",
