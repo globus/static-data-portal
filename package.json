@@ -18,7 +18,7 @@
     "@emotion/styled": "^11.11.0",
     "@globus/sdk": "3.0.0-alpha.17",
     "framer-motion": "^11.0.24",
-    "next": "14.1.4",
+    "next": "14.2.1",
     "react": "^18",
     "react-dom": "^18"
   },
