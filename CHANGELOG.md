@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.2.0 (2024-04-15)
+
+## What's Changed
+* deps: bump @types/react from 18.2.55 to 18.2.70 by @dependabot in https://github.com/globus/static-data-portal/pull/4
+* deps: bump framer-motion from 11.0.20 to 11.0.24 by @dependabot in https://github.com/globus/static-data-portal/pull/24
+* deps: bump eslint from 8.56.0 to 8.57.0 by @dependabot in https://github.com/globus/static-data-portal/pull/17
+* deps: bump next from 14.1.0 to 14.1.4 by @dependabot in https://github.com/globus/static-data-portal/pull/18
+* feat: updates Header authenticated state to render username; name and organization included in menu. by @jbottigliero in https://github.com/globus/static-data-portal/pull/34
+* deps: bump @types/react-dom from 18.2.19 to 18.2.25 by @dependabot in https://github.com/globus/static-data-portal/pull/33
+* deps: bump eslint-plugin-react from 7.33.2 to 7.34.1 by @dependabot in https://github.com/globus/static-data-portal/pull/32
+* deps: bump @emotion/react from 11.11.3 to 11.11.4 by @dependabot in https://github.com/globus/static-data-portal/pull/27
+* deps: bump typescript from 5.3.3 to 5.4.5 by @dependabot in https://github.com/globus/static-data-portal/pull/31
+* deps: bump next from 14.1.4 to 14.2.1 by @dependabot in https://github.com/globus/static-data-portal/pull/36
+* deps: bump @types/react from 18.2.70 to 18.2.78 in the react group by @dependabot in https://github.com/globus/static-data-portal/pull/35
+* deps: bump eslint-config-next from 14.1.4 to 14.2.1 by @dependabot in https://github.com/globus/static-data-portal/pull/39
+* deps: bump typedoc from 0.25.12 to 0.25.13 by @dependabot in https://github.com/globus/static-data-portal/pull/38
+* deps: bump @types/node from 20.11.19 to 20.12.7 by @dependabot in https://github.com/globus/static-data-portal/pull/37
+
+
+**Full Changelog**: https://github.com/globus/static-data-portal/compare/1.1.0...1.2.0
+
 ## 1.1.0 (2024-03-25)
 
 ## What's Changed
