@@ -2,7 +2,6 @@ import React, {
   useState,
   useReducer,
   useEffect,
-  useRef,
   type PropsWithChildren,
 } from "react";
 
@@ -15,15 +14,15 @@ import { authorization, logger } from "@globus/sdk/cjs";
 logger.setLogger(console);
 logger.setLogLevel("debug");
 
-export const Provider = ({
-  redirectUri,
-  requestedScopes,
-  clientId,
+export const GlobusAuthorizationManagerProvider = ({
+  redirect,
+  scopes,
+  client,
   children,
 }: PropsWithChildren<{
-  redirectUri: string;
-  requestedScopes: string;
-  clientId: string;
+  redirect: string;
+  scopes: string;
+  client: string;
 }>) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [instance, setInstance] = useState<
@@ -31,29 +30,14 @@ export const Provider = ({
   >(undefined);
 
   useEffect(() => {
-    const instance = authorization.create({
-      redirect_uri: redirectUri,
-      requested_scopes: requestedScopes,
-      client_id: clientId,
+    const i = authorization.create({
+      redirect,
+      scopes,
+      client,
+      useRefreshTokens: true,
     });
-    setInstance(instance);
-  }, [redirectUri, requestedScopes, clientId]);
-
-  const didInitialize = useRef(false);
-
-  useEffect(() => {
-    if (!instance || didInitialize.current) {
-      return;
-    }
-    didInitialize.current = true;
-    instance.handleCodeRedirect();
-    /**
-     * Bootstrap the context with the current authentication state.
-     */
-    if (instance.authenticated) {
-      dispatch({ type: "AUTHENTICATED", payload: instance.authenticated });
-    }
-  }, [instance]);
+    setInstance(i);
+  }, [redirect, scopes, client]);
 
   /**
    * Register event listeners for the authorization instance.

@@ -60,6 +60,11 @@ export type Data = {
     };
     globus: {
       /**
+       * The Globus platform environment.
+       * @private
+       */
+      environment?: string;
+      /**
        * Information about your registered Globus Auth Application (Client)
        * @see https://docs.globus.org/api/auth/developer-guide/#developing-apps
        */
@@ -106,6 +111,10 @@ export const STATIC: Static = _STATIC;
 const {
   data: { attributes },
 } = STATIC;
+
+export function getEnvironment() {
+  return attributes.globus.environment || null;
+}
 
 /**
  * @returns The redirect URI for the Globus Auth login page.

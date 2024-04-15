@@ -1,9 +1,25 @@
 import React from "react";
-import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
 import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
+
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 export default function Header({ title }: { title: string }) {
   const auth = useGlobusAuth();
+  const user = auth.authorization?.user;
+
   return (
     <Box
       as="header"
@@ -28,12 +44,30 @@ export default function Header({ title }: { title: string }) {
           >
             {title}
           </Heading>
-          {auth.isAuthenticated ? (
-            <Button size="sm" onClick={() => auth.authorization?.revoke()}>
-              Log Out
-            </Button>
+          {auth.isAuthenticated && user ? (
+            <Menu placement="bottom-end">
+              <MenuButton size="sm" as={Button} rightIcon={<ChevronDownIcon />}>
+                {user?.preferred_username}
+              </MenuButton>
+              <MenuList>
+                <Box px={2} textAlign="right">
+                  <Text>{user?.name}</Text>
+                  <Text fontSize="sm">{user?.organization}</Text>
+                </Box>
+                <MenuDivider />
+                <MenuItem
+                  onClick={async () => await auth.authorization?.revoke()}
+                >
+                  Log Out
+                </MenuItem>
+              </MenuList>
+            </Menu>
           ) : (
-            <Button size="sm" onClick={() => auth.authorization?.login()}>
+            <Button
+              size="sm"
+              onClick={() => auth.authorization?.login()}
+              colorScheme="blue"
+            >
               Sign In
             </Button>
           )}

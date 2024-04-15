@@ -46,7 +46,6 @@ import { STATIC } from "@/utils/static";
 
 export default function Home() {
   const auth = useGlobusAuth();
-
   const [transferSettings, dispatch] = useReducer(
     transferSettingsReducer,
     initialState,
