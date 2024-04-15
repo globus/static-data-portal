@@ -11,12 +11,21 @@ import {
 } from "@chakra-ui/react";
 
 import theme from "@/chakra-theme";
-import { STATIC, getRedirectUri } from "@/utils/static";
+import { STATIC, getEnvironment, getRedirectUri } from "@/utils/static";
 import Header from "@/components/Header";
-import { Provider } from "@/components/globus-auth-context/Provider";
-import TokenListener from "@/components/TokenListener";
+import { GlobusAuthorizationManagerProvider } from "@/components/globus-auth-context/Provider";
 
 import type { AppProps } from "next/app";
+
+const env = getEnvironment();
+if (env) {
+  // @ts-ignore
+  globalThis.GLOBUS_SDK_ENVIRONMENT = env;
+}
+
+const redirect = getRedirectUri();
+const client = STATIC.data.attributes.globus.application.client_id;
+const scopes = "urn:globus:auth:scope:transfer.api.globus.org:all";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -36,12 +45,11 @@ export default function App({ Component, pageProps }: AppProps) {
           defaultOptions: { position: "bottom-right", duration: null },
         }}
       >
-        <Provider
-          redirectUri={getRedirectUri()}
-          clientId={STATIC.data.attributes.globus.application.client_id}
-          requestedScopes="urn:globus:auth:scope:transfer.api.globus.org:all"
+        <GlobusAuthorizationManagerProvider
+          redirect={redirect}
+          client={client}
+          scopes={scopes}
         >
-          <TokenListener />
           <Flex direction="column" flex="1" h="100vh">
             <Header title={STATIC.data.attributes.content.title} />
             <Flex as="main" role="main" direction="column" flex="1">
@@ -73,7 +81,7 @@ export default function App({ Component, pageProps }: AppProps) {
               </Container>
             </Box>
           </Flex>
-        </Provider>
+        </GlobusAuthorizationManagerProvider>
       </ChakraProvider>
     </>
   );

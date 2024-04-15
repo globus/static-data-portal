@@ -14,11 +14,12 @@
         "terms_of_service": "This is an example terms of service – you should replace this with your own terms."
       },
       "globus": {
+        "environment": "sandbox",
         "application": {
-          "client_id": "71ed3dd6-a200-43e4-9f58-d50d8df289f6"
+          "client_id": "75661b49-2bb6-489b-9a4b-2d3c568360f8"
         },
         "transfer": {
-          "collection_id": "6c54cade-bde5-45c1-bdea-f4bd71dba2cc"
+          "collection_id": "543aade1-db97-4a4b-9bdf-0b58e78dfa69"
         }
       }
     }
