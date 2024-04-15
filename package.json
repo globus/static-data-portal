@@ -1,6 +1,6 @@
 {
   "name": "@globus/static-data-portal",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "repository": "github:globus/static-data-portal",
   "files": [],
   "scripts": {
