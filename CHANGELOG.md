@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.2 (2024-04-15)
+
+## What's Changed
+* deps: bump @emotion/styled from 11.11.0 to 11.11.5 by @dependabot in https://github.com/globus/static-data-portal/pull/41
+* deps: bump framer-motion from 11.0.24 to 11.0.28 by @dependabot in https://github.com/globus/static-data-portal/pull/42
+
+
+**Full Changelog**: https://github.com/globus/static-data-portal/compare/1.2.1...1.2.2
+
 ## 1.2.1 (2024-04-15)
 
 **Full Changelog**: https://github.com/globus/static-data-portal/compare/1.2.0...1.2.1
