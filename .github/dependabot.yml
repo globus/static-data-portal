@@ -12,3 +12,13 @@ updates:
     commit-message:
       prefix: 'deps: '
     target-branch: 'main'
+    groups:
+      typescript-eslint:
+        patterns:
+         - "@typescript-eslint/*"
+      react:
+        patterns:
+         - "react"
+         - "react-dom"
+         - "@types/react"
+         - "@types/react-dom"
