@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.3 (2024-04-24)
+
+## What's Changed
+* deps: bump framer-motion from 11.0.28 to 11.1.7 by @dependabot in https://github.com/globus/static-data-portal/pull/50
+
+
+**Full Changelog**: https://github.com/globus/static-data-portal/compare/1.2.2...1.2.3
+
 ## 1.2.2 (2024-04-15)
 
 ## What's Changed
