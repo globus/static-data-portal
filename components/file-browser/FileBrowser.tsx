@@ -15,25 +15,21 @@ import {
   Thead,
   Code,
   Icon,
-  HStack,
-  Text,
-  Checkbox,
   Button,
   Box,
   Spinner,
   Center,
   Tbody,
-  IconButton,
   ButtonGroup,
   Flex,
-  Tooltip,
   Spacer,
+  useToast,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import {
-  ArrowUpOnSquareIcon,
   ArrowPathIcon,
   ArrowUturnUpIcon,
+  FolderPlusIcon,
 } from "@heroicons/react/24/outline";
 import { transfer } from "@globus/sdk/cjs";
 
@@ -41,17 +37,20 @@ import type {
   DirectoryListingError,
   FileDocument,
 } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
-
+import {
+  mkdir,
+  rename,
+} from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
 import { useGlobusAuth } from "../globus-auth-context/useGlobusAuth";
 import { TransferSettingsDispatchContext } from "../transfer-settings-context/Context";
-import { readable } from "@/utils/globus";
 
 import FileBrowserViewMenu from "./FileBrowserViewMenu";
 import FileBrowserError from "./FileBrowserError";
-import FileEntryIcon from "./FileEntryIcon";
 
 import { FileBrowserContext, FileBrowserDispatchContext } from "./Context";
 import fileBrowserReducer, { initialState } from "./reducer";
+import FileNameForm from "./FileNameForm";
+import FileEntry from "./FileEntry";
 
 export default function FileBrowser({
   variant,
@@ -75,6 +74,7 @@ export default function FileBrowser({
 
   const [browserPath, setBrowserPath] = useState(path);
   const [isLoading, setIsLoading] = useState(false);
+  const [showAddDirectory, setShowAddDirectory] = useState(false);
   const [endpoint, setEndpoint] = useState<Record<string, any> | null>(null);
   const [lsResponse, setLsResponse] = useState<Record<string, any> | null>(
     null,
@@ -83,6 +83,7 @@ export default function FileBrowser({
   const [error, setError] = useState<DirectoryListingError | unknown | null>(
     null,
   );
+  const toast = useToast();
 
   useEffect(() => {
     async function fetchEndpoint() {
@@ -157,6 +158,57 @@ export default function FileBrowser({
     fetchItems();
   }, [fetchItems]);
 
+  const addDirectory = async (name: string) => {
+    setIsLoading(true);
+    const response = await mkdir(collection, {
+      payload: { path: `${browserPath}${name}` },
+      headers: {
+        Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      showErrorToast(data);
+    } else {
+      fetchItems();
+    }
+    fetchItems();
+  };
+  const renameFile = async (
+    file: FileDocument,
+    absolutePath: string,
+    updatedName: string,
+  ) => {
+    const response = await rename(collection, {
+      payload: {
+        old_path: `${absolutePath}${file.name}/`,
+        new_path: `${absolutePath}${updatedName}/`,
+      },
+      headers: {
+        Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      showErrorToast(data);
+    } else {
+      setItems(
+        items.map((item) =>
+          item.name === file.name ? { ...item, name: updatedName } : item,
+        ),
+      );
+    }
+  };
+
+  const showErrorToast = (data: DirectoryListingError) => {
+    toast({
+      title: `Error (${data.code})`,
+      description: data.message,
+      status: "error",
+      isClosable: true,
+    });
+  };
+
   return (
     <>
       <FileBrowserContext.Provider value={fileBrowser}>
@@ -181,6 +233,17 @@ export default function FileBrowser({
                 <FileBrowserViewMenu />
                 <Spacer />
                 <ButtonGroup>
+                  {!isSource && (
+                    <Button
+                      size="xs"
+                      leftIcon={<Icon as={FolderPlusIcon} />}
+                      onClick={() => {
+                        setShowAddDirectory(true);
+                      }}
+                    >
+                      New Folder
+                    </Button>
+                  )}
                   <Button
                     colorScheme="gray"
                     size="xs"
@@ -207,7 +270,7 @@ export default function FileBrowser({
               </Flex>
               <Box h="60vh" overflowY="auto" p={2}>
                 <TableContainer>
-                  <Table colorScheme="gray" variant="simple">
+                  <Table variant="simple">
                     <Thead>
                       <Tr>
                         {isSource && <Td />}
@@ -222,104 +285,43 @@ export default function FileBrowser({
                       </Tr>
                     </Thead>
                     <Tbody>
-                      {items.map((item, i) => (
-                        <Tr key={i}>
-                          {isSource && (
-                            <Td>
-                              <Checkbox
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    transferSettingsDispatch({
-                                      type: "ADD_ITEM",
-                                      payload: item,
-                                    });
-                                  } else {
-                                    transferSettingsDispatch({
-                                      type: "REMOVE_ITEM",
-                                      payload: item,
-                                    });
-                                  }
-                                }}
-                              />
-                            </Td>
-                          )}
+                      {showAddDirectory && (
+                        <Tr>
                           <Td>
-                            <HStack>
-                              <FileEntryIcon entry={item} />
-                              {item.type === "dir" ? (
-                                <Button
-                                  color="black"
-                                  variant="link"
-                                  onClick={() => {
-                                    setBrowserPath(
-                                      `${lsResponse.absolute_path}${item.name}/`,
-                                    );
-                                  }}
-                                >
-                                  {item.name}
-                                </Button>
-                              ) : (
-                                <Text>{item.name}</Text>
-                              )}
-                            </HStack>
+                            <FileNameForm
+                              onSubmit={addDirectory}
+                              toggleShowForm={setShowAddDirectory}
+                              icon={<Icon as={FolderPlusIcon} />}
+                            />
                           </Td>
-                          {fileBrowser.view.columns.includes(
-                            "last_modified",
-                          ) && (
-                            <Td>
-                              {item.last_modified ? (
-                                <Tooltip
-                                  label={item.last_modified}
-                                  variant="outline"
-                                  hasArrow
-                                >
-                                  <Text _hover={{ cursor: "help" }}>
-                                    {new Intl.DateTimeFormat("en-US", {
-                                      dateStyle: "medium",
-                                      timeStyle: "short",
-                                    }).format(new Date(item.last_modified))}
-                                  </Text>
-                                </Tooltip>
-                              ) : (
-                                <Text>&mdash;</Text>
-                              )}
-                            </Td>
-                          )}
-                          {fileBrowser.view.columns.includes("size") && (
-                            <Td>
-                              {item.size ? (
-                                <Tooltip
-                                  label={`${item.size} B`}
-                                  variant="outline"
-                                  hasArrow
-                                >
-                                  <Text _hover={{ cursor: "help" }}>
-                                    {item.size && readable(item.size)}
-                                  </Text>
-                                </Tooltip>
-                              ) : (
-                                <Text>&mdash;</Text>
-                              )}
-                            </Td>
-                          )}
-                          {isSource && (
-                            <Td>
-                              {endpoint &&
-                                endpoint.https_server &&
-                                item.type === "file" && (
-                                  <IconButton
-                                    as="a"
-                                    aria-label="Open"
-                                    href={`${endpoint.https_server}${lsResponse.absolute_path}${item.name}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    size="xs"
-                                    icon={<Icon as={ArrowUpOnSquareIcon} />}
-                                  />
-                                )}
-                            </Td>
-                          )}
                         </Tr>
+                      )}
+                      {items.map((item, i) => (
+                        <FileEntry
+                          key={i}
+                          item={item}
+                          isSource={isSource}
+                          httpsServer={endpoint?.https_server}
+                          absolutePath={lsResponse.absolute_path}
+                          includeSize={fileBrowser.view.columns.includes(
+                            "size",
+                          )}
+                          includeLastModified={fileBrowser.view.columns.includes(
+                            "last_modified",
+                          )}
+                          openDirectory={() => {
+                            setBrowserPath(
+                              `${lsResponse.absolute_path}${item.name}/`,
+                            );
+                          }}
+                          handleRename={async (updatedName: string) => {
+                            await renameFile(
+                              item,
+                              lsResponse.absolute_path,
+                              updatedName,
+                            );
+                          }}
+                        />
                       ))}
                     </Tbody>
                   </Table>
