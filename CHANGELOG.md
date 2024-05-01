@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.3.0 (2024-05-01)
+
+## What's Changed
+* deps: bump the typescript-eslint group across 1 directory with 2 updates by @dependabot in https://github.com/globus/static-data-portal/pull/51
+* deps: bump the next group across 1 directory with 2 updates by @dependabot in https://github.com/globus/static-data-portal/pull/53
+* deps: bump @types/react from 18.2.78 to 18.2.79 in the react group by @dependabot in https://github.com/globus/static-data-portal/pull/45
+* deps: bump the react group with 4 updates by @dependabot in https://github.com/globus/static-data-portal/pull/55
+* deps: bump eslint-plugin-react-hooks from 4.6.0 to 4.6.1 by @dependabot in https://github.com/globus/static-data-portal/pull/56
+* chore: adds Apache-2.0 LICENSE by @jbottigliero in https://github.com/globus/static-data-portal/pull/57
+* deps: bump the react group with 3 updates by @dependabot in https://github.com/globus/static-data-portal/pull/59
+* deps: bump eslint-plugin-react-hooks from 4.6.1 to 4.6.2 by @dependabot in https://github.com/globus/static-data-portal/pull/60
+* deps: bump @globus/sdk from 3.0.0-alpha.17 to 3.0.0 by @dependabot in https://github.com/globus/static-data-portal/pull/61
+* deps: bump the typescript-eslint group with 2 updates by @dependabot in https://github.com/globus/static-data-portal/pull/62
+* feat: add link to Globus Web App Task Overview on successful Transfer task creation. by @jbottigliero in https://github.com/globus/static-data-portal/pull/63
+* feat: adds support for `data.attributes.theme` by @jbottigliero in https://github.com/globus/static-data-portal/pull/64
+
+
+**Full Changelog**: https://github.com/globus/static-data-portal/compare/1.2.3...1.3.0
+
 ## 1.2.3 (2024-04-24)
 
 ## What's Changed
