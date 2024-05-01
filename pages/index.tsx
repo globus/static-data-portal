@@ -56,7 +56,6 @@ export default function Home() {
     initialState,
   );
   const toast = useToast();
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getTransferHeaders = useCallback(() => {
@@ -188,7 +187,6 @@ export default function Home() {
                   />
                 </InputGroup>
               </Box>
-
               <FileBrowser
                 variant="source"
                 collection={
@@ -211,6 +209,7 @@ export default function Home() {
                         size="sm"
                         isRound
                         aria-label="Clear"
+                        colorScheme="gray"
                         icon={<Icon as={XCircleIcon} boxSize={6} />}
                         onClick={() => {
                           dispatch({ type: "SET_DESTINATION", payload: null });
@@ -237,11 +236,7 @@ export default function Home() {
                         You are viewing data made available by{" "}
                         {source?.display_name}.
                         <br /> To transfer data to another location,{" "}
-                        <Button
-                          onClick={onOpen}
-                          colorScheme="brand"
-                          variant="link"
-                        >
+                        <Button onClick={onOpen} variant="link">
                           search for a destination
                         </Button>
                         .
@@ -282,7 +277,7 @@ export default function Home() {
           </SimpleGrid>
 
           {source && destination && (
-            <Box position="sticky" bottom={0} bgColor="brand.100">
+            <Box position="sticky" bottom={0} bgColor="gray.100">
               <Flex py={2} px={20} align="center">
                 <Text fontSize="sm">
                   <Text as="strong">{transferSettings.items.length}</Text> items
@@ -290,7 +285,6 @@ export default function Home() {
                 </Text>
                 <Spacer />
                 <Button
-                  colorScheme="brand"
                   onClick={() => handleStartTransfer()}
                   isDisabled={!source || !destination}
                   leftIcon={<Icon as={PlayCircleIcon} boxSize={6} />}

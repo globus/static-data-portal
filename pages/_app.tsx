@@ -9,8 +9,7 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-
-import theme from "@/chakra-theme";
+import theme from "@/theme";
 import { STATIC, getEnvironment, getRedirectUri } from "@/utils/static";
 import Header from "@/components/Header";
 import { GlobusAuthorizationManagerProvider } from "@/components/globus-auth-context/Provider";

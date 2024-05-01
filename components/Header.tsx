@@ -32,7 +32,7 @@ export default function Header({ title }: { title: string }) {
           minWidth="max-content"
           alignItems="center"
           justify="space-between"
-          h="20vh"
+          h="10vh"
         >
           <Heading
             as="h1"
@@ -46,7 +46,12 @@ export default function Header({ title }: { title: string }) {
           </Heading>
           {auth.isAuthenticated && user ? (
             <Menu placement="bottom-end">
-              <MenuButton size="sm" as={Button} rightIcon={<ChevronDownIcon />}>
+              <MenuButton
+                colorScheme="gray"
+                size="sm"
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+              >
                 {user?.preferred_username}
               </MenuButton>
               <MenuList>
@@ -63,11 +68,7 @@ export default function Header({ title }: { title: string }) {
               </MenuList>
             </Menu>
           ) : (
-            <Button
-              size="sm"
-              onClick={() => auth.authorization?.login()}
-              colorScheme="blue"
-            >
+            <Button size="sm" onClick={() => auth.authorization?.login()}>
               Sign In
             </Button>
           )}

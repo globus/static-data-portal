@@ -174,14 +174,15 @@ export default function FileBrowser({
           {!isLoading && !error && lsResponse && (
             <>
               <Box p={2}>
-                <ChevronRightIcon color="gray.500" />
-                <Code colorScheme="purple">{lsResponse.absolute_path}</Code>
+                <ChevronRightIcon />
+                <Code>{lsResponse.absolute_path}</Code>
               </Box>
               <Flex justify="end">
                 <FileBrowserViewMenu />
                 <Spacer />
                 <ButtonGroup>
                   <Button
+                    colorScheme="gray"
                     size="xs"
                     leftIcon={<Icon as={ArrowUturnUpIcon} />}
                     onClick={() => {
@@ -195,6 +196,7 @@ export default function FileBrowser({
                     Up One Folder
                   </Button>
                   <Button
+                    colorScheme="gray"
                     size="xs"
                     leftIcon={<Icon as={ArrowPathIcon} />}
                     onClick={() => fetchItems()}
@@ -203,121 +205,126 @@ export default function FileBrowser({
                   </Button>
                 </ButtonGroup>
               </Flex>
-              <TableContainer>
-                <Table variant="simple">
-                  <Thead>
-                    <Tr>
-                      {isSource && <Td />}
-                      <Th>Name</Th>
-                      {fileBrowser.view.columns.includes("last_modified") && (
-                        <Th>Last Modified</Th>
-                      )}
-                      {fileBrowser.view.columns.includes("size") && (
-                        <Th>Size</Th>
-                      )}
-                      {isSource && <Td />}
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {items.map((item, i) => (
-                      <Tr key={i}>
-                        {isSource && (
-                          <Td>
-                            <Checkbox
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  transferSettingsDispatch({
-                                    type: "ADD_ITEM",
-                                    payload: item,
-                                  });
-                                } else {
-                                  transferSettingsDispatch({
-                                    type: "REMOVE_ITEM",
-                                    payload: item,
-                                  });
-                                }
-                              }}
-                            />
-                          </Td>
-                        )}
-                        <Td>
-                          <HStack>
-                            <FileEntryIcon entry={item} />
-                            {item.type === "dir" ? (
-                              <Button
-                                variant="link"
-                                onClick={() => {
-                                  setBrowserPath(
-                                    `${lsResponse.absolute_path}${item.name}/`,
-                                  );
-                                }}
-                              >
-                                {item.name}
-                              </Button>
-                            ) : (
-                              <Text>{item.name}</Text>
-                            )}
-                          </HStack>
-                        </Td>
+              <Box h="70vh" overflowY="auto" p={2}>
+                <TableContainer>
+                  <Table colorScheme="gray" variant="simple">
+                    <Thead>
+                      <Tr>
+                        {isSource && <Td />}
+                        <Th>Name</Th>
                         {fileBrowser.view.columns.includes("last_modified") && (
-                          <Td>
-                            {item.last_modified ? (
-                              <Tooltip
-                                label={item.last_modified}
-                                variant="outline"
-                                hasArrow
-                              >
-                                <Text _hover={{ cursor: "help" }}>
-                                  {new Intl.DateTimeFormat("en-US", {
-                                    dateStyle: "medium",
-                                    timeStyle: "short",
-                                  }).format(new Date(item.last_modified))}
-                                </Text>
-                              </Tooltip>
-                            ) : (
-                              <Text>&mdash;</Text>
-                            )}
-                          </Td>
+                          <Th>Last Modified</Th>
                         )}
                         {fileBrowser.view.columns.includes("size") && (
-                          <Td>
-                            {item.size ? (
-                              <Tooltip
-                                label={`${item.size} B`}
-                                variant="outline"
-                                hasArrow
-                              >
-                                <Text _hover={{ cursor: "help" }}>
-                                  {item.size && readable(item.size)}
-                                </Text>
-                              </Tooltip>
-                            ) : (
-                              <Text>&mdash;</Text>
-                            )}
-                          </Td>
+                          <Th>Size</Th>
                         )}
-                        {isSource && (
-                          <Td>
-                            {endpoint &&
-                              endpoint.https_server &&
-                              item.type === "file" && (
-                                <IconButton
-                                  as="a"
-                                  aria-label="Open"
-                                  href={`${endpoint.https_server}${lsResponse.absolute_path}${item.name}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  size="xs"
-                                  icon={<Icon as={ArrowUpOnSquareIcon} />}
-                                />
-                              )}
-                          </Td>
-                        )}
+                        {isSource && <Td />}
                       </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-              </TableContainer>
+                    </Thead>
+                    <Tbody>
+                      {items.map((item, i) => (
+                        <Tr key={i}>
+                          {isSource && (
+                            <Td>
+                              <Checkbox
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    transferSettingsDispatch({
+                                      type: "ADD_ITEM",
+                                      payload: item,
+                                    });
+                                  } else {
+                                    transferSettingsDispatch({
+                                      type: "REMOVE_ITEM",
+                                      payload: item,
+                                    });
+                                  }
+                                }}
+                              />
+                            </Td>
+                          )}
+                          <Td>
+                            <HStack>
+                              <FileEntryIcon entry={item} />
+                              {item.type === "dir" ? (
+                                <Button
+                                  color="black"
+                                  variant="link"
+                                  onClick={() => {
+                                    setBrowserPath(
+                                      `${lsResponse.absolute_path}${item.name}/`,
+                                    );
+                                  }}
+                                >
+                                  {item.name}
+                                </Button>
+                              ) : (
+                                <Text>{item.name}</Text>
+                              )}
+                            </HStack>
+                          </Td>
+                          {fileBrowser.view.columns.includes(
+                            "last_modified",
+                          ) && (
+                            <Td>
+                              {item.last_modified ? (
+                                <Tooltip
+                                  label={item.last_modified}
+                                  variant="outline"
+                                  hasArrow
+                                >
+                                  <Text _hover={{ cursor: "help" }}>
+                                    {new Intl.DateTimeFormat("en-US", {
+                                      dateStyle: "medium",
+                                      timeStyle: "short",
+                                    }).format(new Date(item.last_modified))}
+                                  </Text>
+                                </Tooltip>
+                              ) : (
+                                <Text>&mdash;</Text>
+                              )}
+                            </Td>
+                          )}
+                          {fileBrowser.view.columns.includes("size") && (
+                            <Td>
+                              {item.size ? (
+                                <Tooltip
+                                  label={`${item.size} B`}
+                                  variant="outline"
+                                  hasArrow
+                                >
+                                  <Text _hover={{ cursor: "help" }}>
+                                    {item.size && readable(item.size)}
+                                  </Text>
+                                </Tooltip>
+                              ) : (
+                                <Text>&mdash;</Text>
+                              )}
+                            </Td>
+                          )}
+                          {isSource && (
+                            <Td>
+                              {endpoint &&
+                                endpoint.https_server &&
+                                item.type === "file" && (
+                                  <IconButton
+                                    as="a"
+                                    aria-label="Open"
+                                    href={`${endpoint.https_server}${lsResponse.absolute_path}${item.name}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    size="xs"
+                                    icon={<Icon as={ArrowUpOnSquareIcon} />}
+                                  />
+                                )}
+                            </Td>
+                          )}
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+              </Box>
             </>
           )}
         </FileBrowserDispatchContext.Provider>

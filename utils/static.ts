@@ -1,4 +1,5 @@
 import _STATIC from "../static.json";
+import { ThemeSettings } from "@/theme";
 
 /**
  * The base type for a `static.json` file.
@@ -41,6 +42,8 @@ export type Data = {
    */
   version: string;
   attributes: {
+    theme?: ThemeSettings;
+
     content: {
       /**
        * The title of the research data portal.

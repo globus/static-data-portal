@@ -7,6 +7,9 @@
   "data": {
     "version": "1.0.0",
     "attributes": {
+      "theme": {
+        "colorScheme": "brand"
+      },
       "content": {
         "title": "Globus : Static Data Portal",
         "tagline": "It's how research data management is done!",
