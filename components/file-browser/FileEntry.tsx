@@ -20,23 +20,20 @@ import { readable } from "@/utils/globus";
 import { ArrowUpOnSquareIcon } from "@heroicons/react/24/outline";
 import FileEntryIcon from "./FileEntryIcon";
 import { TransferSettingsDispatchContext } from "../transfer-settings-context/Context";
+import { FileBrowserContext } from "./Context";
 
 export default function FileEntry({
   item,
   isSource,
-  httpsServer,
+  endpoint,
   absolutePath,
-  includeSize,
-  includeLastModified,
   openDirectory,
   handleRename,
 }: {
   item: FileDocument;
-  httpsServer: string | null;
+  endpoint: Record<string, any> | null;
   isSource: boolean;
   absolutePath: string;
-  includeSize: boolean;
-  includeLastModified: boolean;
   openDirectory: () => void;
   handleRename: (name: string) => void;
 }) {
@@ -45,6 +42,7 @@ export default function FileEntry({
   const [showEditView, setShowEditView] = useState(false);
   const menuRef = React.useRef<HTMLTableRowElement>(null);
   const transferSettingsDispatch = useContext(TransferSettingsDispatchContext);
+  const fileBrowser = useContext(FileBrowserContext);
   const displayContextMenu: MouseEventHandler<
     HTMLButtonElement | HTMLParagraphElement
   > = (event) => {
@@ -59,31 +57,9 @@ export default function FileEntry({
     }
   };
   const isDirectory = item.type === "dir";
-  const getLineItem = () => {
-    if (isLoading) {
-      return <Spinner ml={2} />;
-    } else if (showEditView) {
-      return (
-        <FileNameForm
-          onSubmit={async (name: string) => {
-            setIsLoading(true);
-            await handleRename(name);
-            setIsLoading(false);
-          }}
-          toggleShowForm={setShowEditView}
-          initialValue={item.name}
-        />
-      );
-    } else if (isDirectory) {
-      return (
-        <Button variant="link" onClick={openDirectory}>
-          {item.name}
-        </Button>
-      );
-    } else {
-      return <Text>{item.name}</Text>;
-    }
-  };
+  const includeLastModified =
+    fileBrowser.view.columns.includes("last_modified");
+  const includeSize = fileBrowser.view.columns.includes("size");
 
   return (
     <Tr onContextMenu={displayContextMenu}>
@@ -108,8 +84,28 @@ export default function FileEntry({
       )}
       <Td>
         <HStack>
-          <FileEntryIcon entry={item} />
-          {getLineItem()}
+          {!showEditView && <FileEntryIcon entry={item} />}
+          {isLoading ? (
+            <Spinner ml={2} />
+          ) : showEditView ? (
+            <FileNameForm
+              onSubmit={async (name: string) => {
+                setIsLoading(true);
+                await handleRename(name);
+                setIsLoading(false);
+              }}
+              label="File Name"
+              icon={<FileEntryIcon entry={item} />}
+              toggleShowForm={setShowEditView}
+              initialValue={item.name}
+            />
+          ) : isDirectory ? (
+            <Button variant="link" onClick={openDirectory}>
+              {item.name}
+            </Button>
+          ) : (
+            <Text>{item.name}</Text>
+          )}
         </HStack>
       </Td>
       {includeLastModified && (
@@ -143,11 +139,11 @@ export default function FileEntry({
       )}
       {isSource && (
         <Td>
-          {httpsServer && item.type === "file" && (
+          {endpoint?.httpsServer && item.type === "file" && (
             <IconButton
               as="a"
               aria-label="Open"
-              href={`${httpsServer}${absolutePath}${item.name}`}
+              href={`${endpoint?.httpsServer}${absolutePath}${item.name}`}
               target="_blank"
               rel="noopener noreferrer"
               size="xs"

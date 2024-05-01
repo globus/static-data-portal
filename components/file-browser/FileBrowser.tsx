@@ -287,10 +287,11 @@ export default function FileBrowser({
                     <Tbody>
                       {showAddDirectory && (
                         <Tr>
-                          <Td>
+                          <Td colSpan={2}>
                             <FileNameForm
                               onSubmit={addDirectory}
                               toggleShowForm={setShowAddDirectory}
+                              label="New Folder"
                               icon={<Icon as={FolderPlusIcon} />}
                             />
                           </Td>
@@ -301,18 +302,13 @@ export default function FileBrowser({
                           key={i}
                           item={item}
                           isSource={isSource}
-                          httpsServer={endpoint?.https_server}
+                          endpoint={endpoint}
                           absolutePath={lsResponse.absolute_path}
-                          includeSize={fileBrowser.view.columns.includes(
-                            "size",
-                          )}
-                          includeLastModified={fileBrowser.view.columns.includes(
-                            "last_modified",
-                          )}
                           openDirectory={() => {
                             setBrowserPath(
                               `${lsResponse.absolute_path}${item.name}/`,
                             );
+                            setShowAddDirectory(false);
                           }}
                           handleRename={async (updatedName: string) => {
                             await renameFile(
