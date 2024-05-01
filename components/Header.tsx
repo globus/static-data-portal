@@ -12,27 +12,26 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
-
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { STATIC } from "@/utils/static";
+import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
 
 export default function Header({ title }: { title: string }) {
   const auth = useGlobusAuth();
   const user = auth.authorization?.user;
 
+  const image =
+    STATIC.data.attributes.content.image ||
+    "background-images/nasa-Q1p7bh3SHj8-unsplash.jpg";
+
   return (
-    <Box
-      as="header"
-      bgImage="background-images/nasa-Q1p7bh3SHj8-unsplash.jpg"
-      bgSize="cover"
-      bgPosition="center"
-    >
+    <Box as="header" bgImage={image} bgSize="cover" bgPosition="center">
       <Container maxW="container.xl">
         <Flex
           minWidth="max-content"
           alignItems="center"
           justify="space-between"
-          h="10vh"
+          h="20vh"
         >
           <Heading
             as="h1"

@@ -43,7 +43,6 @@ export type Data = {
   version: string;
   attributes: {
     theme?: ThemeSettings;
-
     content: {
       /**
        * The title of the research data portal.
@@ -59,6 +58,10 @@ export type Data = {
        * This is especially useful for associating the published URL with your registered Globus Auth application.
        */
       terms_of_service?: string;
+      /**
+       * The URL of the portal's header image.
+       */
+      image?: string;
       tagline?: string;
     };
     globus: {

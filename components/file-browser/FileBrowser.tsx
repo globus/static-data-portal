@@ -205,7 +205,7 @@ export default function FileBrowser({
                   </Button>
                 </ButtonGroup>
               </Flex>
-              <Box h="70vh" overflowY="auto" p={2}>
+              <Box h="60vh" overflowY="auto" p={2}>
                 <TableContainer>
                   <Table colorScheme="gray" variant="simple">
                     <Thead>
