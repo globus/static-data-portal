@@ -46,7 +46,6 @@ export default function FileBrowserError({
               onClick={() =>
                 auth.authorization?.handleConsentRequiredError(error)
               }
-              colorScheme="brand"
               size="sm"
             >
               Consent
@@ -96,7 +95,6 @@ export default function FileBrowserError({
               onClick={() =>
                 auth.authorization?.handleAuthorizationRequirementsError(error)
               }
-              colorScheme="brand"
               size="sm"
             >
               Address
@@ -129,11 +127,7 @@ export default function FileBrowserError({
             <Text my={2}>
               Please try logging in again to refresh your credentials.
             </Text>
-            <Button
-              onClick={() => auth.authorization?.login()}
-              colorScheme="brand"
-              size="sm"
-            >
+            <Button onClick={() => auth.authorization?.login()} size="sm">
               Log In
             </Button>
           </AlertDescription>

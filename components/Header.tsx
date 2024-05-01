@@ -12,21 +12,20 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
-
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { STATIC } from "@/utils/static";
+import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
 
 export default function Header({ title }: { title: string }) {
   const auth = useGlobusAuth();
   const user = auth.authorization?.user;
 
+  const image =
+    STATIC.data.attributes.content.image ||
+    "background-images/nasa-Q1p7bh3SHj8-unsplash.jpg";
+
   return (
-    <Box
-      as="header"
-      bgImage="background-images/nasa-Q1p7bh3SHj8-unsplash.jpg"
-      bgSize="cover"
-      bgPosition="center"
-    >
+    <Box as="header" bgImage={image} bgSize="cover" bgPosition="center">
       <Container maxW="container.xl">
         <Flex
           minWidth="max-content"
@@ -46,7 +45,12 @@ export default function Header({ title }: { title: string }) {
           </Heading>
           {auth.isAuthenticated && user ? (
             <Menu placement="bottom-end">
-              <MenuButton size="sm" as={Button} rightIcon={<ChevronDownIcon />}>
+              <MenuButton
+                colorScheme="gray"
+                size="sm"
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+              >
                 {user?.preferred_username}
               </MenuButton>
               <MenuList>
@@ -63,11 +67,7 @@ export default function Header({ title }: { title: string }) {
               </MenuList>
             </Menu>
           ) : (
-            <Button
-              size="sm"
-              onClick={() => auth.authorization?.login()}
-              colorScheme="blue"
-            >
+            <Button size="sm" onClick={() => auth.authorization?.login()}>
               Sign In
             </Button>
           )}

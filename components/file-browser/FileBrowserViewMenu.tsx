@@ -17,7 +17,7 @@ export default function FileBrowserViewMenu() {
   const dispatch = useContext(FileBrowserDispatchContext);
   return (
     <Menu closeOnSelect={false}>
-      <MenuButton as={Button} size="xs">
+      <MenuButton colorScheme="gray" as={Button} size="xs">
         View Settings
       </MenuButton>
       <MenuList>

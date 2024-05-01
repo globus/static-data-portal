@@ -9,10 +9,7 @@ import Context from "./Context";
 import { initialState } from "./GlobusAuthState";
 import { reducer } from "./reducer";
 
-import { authorization, logger } from "@globus/sdk/cjs";
-
-logger.setLogger(console);
-logger.setLogLevel("debug");
+import { authorization } from "@globus/sdk/cjs";
 
 export const GlobusAuthorizationManagerProvider = ({
   redirect,
