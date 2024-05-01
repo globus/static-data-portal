@@ -26,7 +26,7 @@ The base type for a `static.json` file.
 
 #### Defined in
 
-[static.ts:6](https://github.com/globus/static-data-portal/blob/a31cee6/utils/static.ts#L6)
+[static.ts:7](https://github.com/globus/static-data-portal/blob/a3bc933421ed957d0c9cd14628f5ebbb05855ab0/utils/static.ts#L7)
 
 ___
 
@@ -40,8 +40,9 @@ The type used for `data` by the [@globus/static-data-portal generator](https://g
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `attributes` | \{ `content`: \{ `privacy_policy?`: `string` ; `tagline?`: `string` ; `terms_of_service?`: `string` ; `title`: `string`  } ; `globus`: \{ `application`: \{ `client_id`: `string` ; `redirect_uri?`: `string`  } ; `transfer`: \{ `collection_id`: `string` ; `path?`: `string`  }  }  } | - |
-| `attributes.content` | \{ `privacy_policy?`: `string` ; `tagline?`: `string` ; `terms_of_service?`: `string` ; `title`: `string`  } | - |
+| `attributes` | \{ `content`: \{ `image?`: `string` ; `privacy_policy?`: `string` ; `tagline?`: `string` ; `terms_of_service?`: `string` ; `title`: `string`  } ; `globus`: \{ `application`: \{ `client_id`: `string` ; `redirect_uri?`: `string`  } ; `transfer`: \{ `collection_id`: `string` ; `path?`: `string`  }  } ; `theme?`: `ThemeSettings`  } | - |
+| `attributes.content` | \{ `image?`: `string` ; `privacy_policy?`: `string` ; `tagline?`: `string` ; `terms_of_service?`: `string` ; `title`: `string`  } | - |
+| `attributes.content.image?` | `string` | The URL of the portal's header image. |
 | `attributes.content.privacy_policy?` | `string` | A privacy policy to be rendered at `/privacy-policy`. This is especially useful for associating the published URL with your registered Globus Auth application. |
 | `attributes.content.tagline?` | `string` | - |
 | `attributes.content.terms_of_service?` | `string` | Terms and conditions to be rendered at `/terms-and-conditions`. This is especially useful for associating the published URL with your registered Globus Auth application. |
@@ -53,11 +54,12 @@ The type used for `data` by the [@globus/static-data-portal generator](https://g
 | `attributes.globus.transfer` | \{ `collection_id`: `string` ; `path?`: `string`  } | Configuration for Transfer-related functionality in the portal. |
 | `attributes.globus.transfer.collection_id` | `string` | The UUID of the Globus collection to list and transfer files from. |
 | `attributes.globus.transfer.path?` | `string` | The path on the collection to list and transfer files from. |
+| `attributes.theme?` | `ThemeSettings` | - |
 | `version` | `string` | The version of the `data` object, which is used to determine how the generator will render its `attributes`. **`Example`** ```ts "1.0.0" ``` |
 
 #### Defined in
 
-[static.ts:36](https://github.com/globus/static-data-portal/blob/a31cee6/utils/static.ts#L36)
+[static.ts:37](https://github.com/globus/static-data-portal/blob/a3bc933421ed957d0c9cd14628f5ebbb05855ab0/utils/static.ts#L37)
 
 ___
 
@@ -67,4 +69,18 @@ ___
 
 #### Defined in
 
-[static.ts:96](https://github.com/globus/static-data-portal/blob/a31cee6/utils/static.ts#L96)
+[static.ts:107](https://github.com/globus/static-data-portal/blob/a3bc933421ed957d0c9cd14628f5ebbb05855ab0/utils/static.ts#L107)
+
+## Functions
+
+### getEnvironment
+
+▸ **getEnvironment**(): ``null`` \| `string`
+
+#### Returns
+
+``null`` \| `string`
+
+#### Defined in
+
+[static.ts:121](https://github.com/globus/static-data-portal/blob/a3bc933421ed957d0c9cd14628f5ebbb05855ab0/utils/static.ts#L121)
