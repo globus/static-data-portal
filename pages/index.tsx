@@ -23,10 +23,15 @@ import {
   Card,
   CardBody,
   Spacer,
+  Link,
 } from "@chakra-ui/react";
-import { PlayCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import {
+  PlayCircleIcon,
+  XCircleIcon,
+  ArrowTopRightOnSquareIcon,
+} from "@heroicons/react/24/outline";
 
-import { transfer } from "@globus/sdk/cjs";
+import { transfer, webapp } from "@globus/sdk/cjs";
 
 import FileBrowser from "@/components/file-browser/FileBrowser";
 import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
@@ -103,7 +108,23 @@ export default function Home() {
     if (response.ok) {
       toast({
         title: data.code,
-        description: data.message,
+        description: (
+          <>
+            {data.message}
+            {"task_id" in data && (
+              <Flex>
+                <Spacer />
+                <Link
+                  href={webapp.urlFor("TASK", [data.task_id]).toString()}
+                  isExternal
+                >
+                  View task in Globus Web App{" "}
+                  <Icon as={ArrowTopRightOnSquareIcon} />
+                </Link>
+              </Flex>
+            )}
+          </>
+        ),
         status: "success",
         isClosable: true,
       });
@@ -162,6 +183,7 @@ export default function Home() {
                   <InputLeftAddon>Source</InputLeftAddon>
                   <Input
                     value={source ? source.display_name || source.name : "..."}
+                    variant="filled"
                     isReadOnly
                   />
                 </InputGroup>
