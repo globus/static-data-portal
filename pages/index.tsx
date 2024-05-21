@@ -48,6 +48,7 @@ import transferSettingsReducer, {
 } from "@/components/transfer-settings-context/reducer";
 
 import { STATIC } from "@/utils/static";
+import { isDirectory } from "@/utils/globus";
 
 export default function Home() {
   const auth = useGlobusAuth();
@@ -93,7 +94,7 @@ export default function Home() {
             DATA_TYPE: "transfer_item",
             source_path: `${transferSettings.source_path}${item.name}`,
             destination_path: `${transferSettings.destination_path}${item.name}`,
-            recursive: item.type === "dir",
+            recursive: isDirectory(item),
           };
         }),
       },

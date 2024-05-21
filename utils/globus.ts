@@ -1,3 +1,5 @@
+import type { FileDocument } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
+
 /**
  * This module provides utilities for working with the Globus API.
  * All these methods are candidates for being moved to the Globus SDK.
@@ -33,4 +35,8 @@ export function readable(bytes: number, truncate = 2) {
   }
   const value = bytes / bytesInUnit;
   return `${value.toFixed(truncate)} ${unit}`;
+}
+
+export function isDirectory(entry: FileDocument) {
+  return entry.type === "dir";
 }

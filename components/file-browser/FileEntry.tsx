@@ -14,10 +14,11 @@ import {
   Tooltip,
   Tr,
 } from "@chakra-ui/react";
+import { ArrowUpOnSquareIcon } from "@heroicons/react/24/outline";
+
 import type { FileDocument } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
 import FileNameForm from "./FileNameForm";
-import { readable } from "@/utils/globus";
-import { ArrowUpOnSquareIcon } from "@heroicons/react/24/outline";
+import { isDirectory, readable } from "@/utils/globus";
 import FileEntryIcon from "./FileEntryIcon";
 import { TransferSettingsDispatchContext } from "../transfer-settings-context/Context";
 import { FileBrowserContext } from "./Context";
@@ -56,7 +57,6 @@ export default function FileEntry({
       }
     }
   };
-  const isDirectory = item.type === "dir";
   const includeLastModified =
     fileBrowser.view.columns.includes("last_modified");
   const includeSize = fileBrowser.view.columns.includes("size");
@@ -94,17 +94,17 @@ export default function FileEntry({
                 await handleRename(name);
                 setIsLoading(false);
               }}
-              label={item.type === "dir" ? "Folder Name" : "File Name"}
+              label={isDirectory(item) ? "Folder Name" : "File Name"}
               icon={<FileEntryIcon entry={item} />}
               toggleShowForm={setShowEditView}
               initialValue={item.name}
             />
-          ) : isDirectory ? (
-            <Button variant="link" onClick={openDirectory}>
+          ) : isDirectory(item) ? (
+            <Button textColor="black" variant="link" onClick={openDirectory}>
               {item.name}
             </Button>
           ) : (
-            <Text>{item.name}</Text>
+            <Text textColor="black">{item.name}</Text>
           )}
         </HStack>
       </Td>
