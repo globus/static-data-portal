@@ -94,7 +94,7 @@ export default function FileEntry({
                 await handleRename(name);
                 setIsLoading(false);
               }}
-              label="File Name"
+              label={item.type === "dir" ? "Folder Name" : "File Name"}
               icon={<FileEntryIcon entry={item} />}
               toggleShowForm={setShowEditView}
               initialValue={item.name}

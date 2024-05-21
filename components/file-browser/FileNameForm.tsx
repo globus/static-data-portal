@@ -2,10 +2,10 @@ import React, { ReactNode, useState } from "react";
 import {
   FormControl,
   FormLabel,
-  Flex,
   IconButton,
   Input,
-  Text,
+  Icon,
+  HStack,
 } from "@chakra-ui/react";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
@@ -25,43 +25,41 @@ export default function FileNameForm({
   const [name, setName] = useState(initialValue);
 
   return (
-    <Flex align="end">
-      <FormControl isRequired>
-        <FormLabel>
-          {icon}
-          <Text as="span" ml="2">
-            {label}
-          </Text>
-        </FormLabel>
-        <Input
-          onChange={(e) => {
-            setName(e.target.value || "");
-          }}
-          value={name}
+    <form
+      onSubmit={() => {
+        onSubmit(name);
+        toggleShowForm(false);
+      }}
+    >
+      <HStack>
+        {icon}
+        <FormControl variant="floating" isRequired>
+          <Input
+            onChange={(e) => {
+              setName(e.target.value || "");
+            }}
+            value={name}
+            placeholder=" "
+          />
+          <FormLabel>{label}</FormLabel>
+        </FormControl>
+        <IconButton
+          aria-label="Submit"
+          icon={<Icon as={CheckIcon} />}
+          isDisabled={!name}
+          size="sm"
+          type="submit"
         />
-      </FormControl>
-      <IconButton
-        aria-label="Submit"
-        icon={<CheckIcon />}
-        onClick={() => {
-          onSubmit(name);
-          toggleShowForm(false);
-        }}
-        isDisabled={!name}
-        size="sm"
-        type="submit"
-        mx="2"
-        my="2"
-      />
-      <IconButton
-        aria-label="Cancel"
-        onClick={() => {
-          toggleShowForm(false);
-        }}
-        icon={<XMarkIcon />}
-        size="sm"
-        my="2"
-      />
-    </Flex>
+        <IconButton
+          aria-label="Cancel"
+          onClick={() => {
+            toggleShowForm(false);
+          }}
+          icon={<Icon as={XMarkIcon} />}
+          size="sm"
+          colorScheme="gray"
+        />
+      </HStack>
+    </form>
   );
 }

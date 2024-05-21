@@ -33,14 +33,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { transfer } from "@globus/sdk/cjs";
 
-import type {
-  DirectoryListingError,
-  FileDocument,
-} from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
-import {
-  mkdir,
-  rename,
-} from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
 import { useGlobusAuth } from "../globus-auth-context/useGlobusAuth";
 import { TransferSettingsDispatchContext } from "../transfer-settings-context/Context";
 
@@ -51,6 +43,11 @@ import { FileBrowserContext, FileBrowserDispatchContext } from "./Context";
 import fileBrowserReducer, { initialState } from "./reducer";
 import FileNameForm from "./FileNameForm";
 import FileEntry from "./FileEntry";
+
+import type {
+  DirectoryListingError,
+  FileDocument,
+} from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
 
 export default function FileBrowser({
   variant,
@@ -160,7 +157,7 @@ export default function FileBrowser({
 
   const addDirectory = async (name: string) => {
     setIsLoading(true);
-    const response = await mkdir(collection, {
+    const response = await transfer.fileOperations.mkdir(collection, {
       payload: { path: `${browserPath}${name}` },
       headers: {
         Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
@@ -174,12 +171,12 @@ export default function FileBrowser({
     }
     fetchItems();
   };
-  const renameFile = async (
+  const rename = async (
     file: FileDocument,
     absolutePath: string,
     updatedName: string,
   ) => {
-    const response = await rename(collection, {
+    const response = await transfer.fileOperations.rename(collection, {
       payload: {
         old_path: `${absolutePath}${file.name}/`,
         new_path: `${absolutePath}${updatedName}/`,
@@ -287,12 +284,12 @@ export default function FileBrowser({
                     <Tbody>
                       {showAddDirectory && (
                         <Tr>
-                          <Td colSpan={2}>
+                          <Td colSpan={3}>
                             <FileNameForm
                               onSubmit={addDirectory}
                               toggleShowForm={setShowAddDirectory}
-                              label="New Folder"
                               icon={<Icon as={FolderPlusIcon} />}
+                              label="Folder Name"
                             />
                           </Td>
                         </Tr>
@@ -311,7 +308,7 @@ export default function FileBrowser({
                             setShowAddDirectory(false);
                           }}
                           handleRename={async (updatedName: string) => {
-                            await renameFile(
+                            await rename(
                               item,
                               lsResponse.absolute_path,
                               updatedName,
