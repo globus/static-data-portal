@@ -10,7 +10,6 @@
       "prerelease": false,
       "include-v-in-tag": false,
       "include-component-in-tag": false,
-      "changelog-type": "github",
       "changelog-sections": [
         {
           "type": "feat",
