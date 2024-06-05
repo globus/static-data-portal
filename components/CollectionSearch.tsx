@@ -57,6 +57,7 @@ export function CollectionSearch({
       <Box position="sticky" top="0" zIndex={1} bgColor="white">
         <InputGroup>
           <Input
+            aria-label="Search for a collection"
             onInput={(e) => handleSearch(e)}
             placeholder="e.g. Globus Tutorial Collection"
           />
