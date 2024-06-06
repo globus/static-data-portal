@@ -1,5 +1,12 @@
 import type { FileDocument } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
 
+export const CLIENT_INFO = {
+  product: "@globus/static-data-portal",
+  // x-release-please-start-version
+  version: "1.3.0",
+  // x-release-please-end
+};
+
 /**
  * This module provides utilities for working with the Globus API.
  * All these methods are candidates for being moved to the Globus SDK.
