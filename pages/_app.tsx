@@ -9,8 +9,10 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
+import { info } from "@globus/sdk/cjs";
 import theme from "@/theme";
 import { STATIC, getEnvironment, getRedirectUri } from "@/utils/static";
+import { CLIENT_INFO } from "@/utils/globus";
 import Header from "@/components/Header";
 import { GlobusAuthorizationManagerProvider } from "@/components/globus-auth-context/Provider";
 
@@ -21,6 +23,8 @@ if (env) {
   // @ts-ignore
   globalThis.GLOBUS_SDK_ENVIRONMENT = env;
 }
+
+info.addClientInfo(CLIENT_INFO);
 
 const redirect = getRedirectUri();
 const client = STATIC.data.attributes.globus.application.client_id;

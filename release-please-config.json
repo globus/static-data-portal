@@ -10,6 +10,7 @@
       "prerelease": false,
       "include-v-in-tag": false,
       "include-component-in-tag": false,
+      "extra-files": ["utils/globus.ts"],
       "changelog-sections": [
         {
           "type": "feat",
