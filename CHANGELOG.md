@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/globus/static-data-portal/compare/1.3.0...1.4.0) (2024-06-18)
+
+
+### Features
+
+* Adds support for mkdir and rename in destination browser. ([#58](https://github.com/globus/static-data-portal/issues/58)) ([a1e93a4](https://github.com/globus/static-data-portal/commit/a1e93a4a182492926d0381224f3d3571c1d42f59))
+
 ## 1.3.0 (2024-05-01)
 
 ## What's Changed
