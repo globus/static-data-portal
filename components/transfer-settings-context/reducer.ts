@@ -12,12 +12,28 @@ type State = {
 export const initialState: State = {
   source: null,
   source_path: null,
-  destination: null,
-  destination_path: null,
+  destination: JSON.parse(
+    globalThis?.sessionStorage?.getItem?.("destination") ?? "null",
+  ),
+  destination_path:
+    globalThis?.sessionStorage?.getItem?.("destination_path") ?? null,
   items: [],
 };
 
 export type Dispatcher = (action: Action) => void;
+
+// This function is used to persist the destination and destination_path
+// values in sessionStorage but could be extended to any State value that
+// needs to be persisted by calling it in the reducer for that value.
+function persistStateValues(key: keyof State, value: State[keyof State]) {
+  if (!globalThis) return;
+
+  if (value === null || value === undefined) {
+    globalThis.sessionStorage.removeItem(key);
+    return;
+  }
+  globalThis.sessionStorage.setItem(key, JSON.stringify(value));
+}
 
 export default function transferSettingsReducer(
   state: State,
@@ -31,9 +47,11 @@ export default function transferSettingsReducer(
       return { ...state, source_path: action.payload };
     }
     case "SET_DESTINATION": {
+      persistStateValues("destination", action.payload);
       return { ...state, destination: action.payload };
     }
     case "SET_DESTINATION_PATH": {
+      persistStateValues("destination_path", action.payload);
       return { ...state, destination_path: action.payload };
     }
     case "RESET_ITEMS": {
