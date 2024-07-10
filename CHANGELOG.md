@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/globus/static-data-portal/compare/1.4.0...1.5.0) (2024-07-10)
+
+
+### Features
+
+* adds support for content.subtitle ([#140](https://github.com/globus/static-data-portal/issues/140)) ([d74bf52](https://github.com/globus/static-data-portal/commit/d74bf52420b3d96a06dbcbf75cfeca9d48f6bf3e))
+* adds support for MDX ([#142](https://github.com/globus/static-data-portal/issues/142)) ([7c02ca0](https://github.com/globus/static-data-portal/commit/7c02ca05eff386194e6200ec350ab5dfa20dadaf))
+
+
+### Fixes
+
+* Adds Globus logo to "Powered by Globus" footer. ([d74bf52](https://github.com/globus/static-data-portal/commit/d74bf52420b3d96a06dbcbf75cfeca9d48f6bf3e))
+
 ## [1.4.0](https://github.com/globus/static-data-portal/compare/1.3.0...1.4.0) (2024-06-18)
 
 
