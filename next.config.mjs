@@ -16,6 +16,9 @@ const nextConfig = {
    * as the `basePath` for the Next.js application.
    */
   basePath: STATIC._static?.host?.base_path || undefined,
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default withMDX(nextConfig);
