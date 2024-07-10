@@ -16,9 +16,12 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import { STATIC } from "@/utils/static";
 import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
 
-export default function Header({ title }: { title: string }) {
+export default function Header() {
   const auth = useGlobusAuth();
   const user = auth.authorization?.user;
+
+  const title = STATIC.data.attributes.content.title;
+  const subtitle = STATIC.data.attributes.content?.subtitle;
 
   const image =
     STATIC.data.attributes.content.image ||
@@ -33,16 +36,34 @@ export default function Header({ title }: { title: string }) {
           justify="space-between"
           h="20vh"
         >
-          <Heading
-            as="h1"
-            textColor="white"
-            fontSize="2xl"
-            py={2}
-            px={4}
-            backgroundColor="rgba(0,0,0,0.75)"
-          >
-            {title}
-          </Heading>
+          <Box>
+            <Heading
+              as="h1"
+              textColor="white"
+              fontSize="3xl"
+              borderRadius={4}
+              py={2}
+              px={4}
+              backgroundColor="rgba(0,0,0,0.75)"
+            >
+              {title}
+            </Heading>
+            {subtitle && (
+              <Heading
+                as="p"
+                textColor="white"
+                fontSize="md"
+                borderRadius={4}
+                my={1}
+                py={2}
+                px={4}
+                backgroundColor="rgba(0,0,0,0.75)"
+              >
+                {subtitle}
+              </Heading>
+            )}
+          </Box>
+
           {auth.isAuthenticated && user ? (
             <Menu placement="bottom-end">
               <MenuButton

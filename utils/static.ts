@@ -49,6 +49,10 @@ export type Data = {
        */
       title: string;
       /**
+       * The subtitle of the research data portal.
+       */
+      subtitle?: string;
+      /**
        * A privacy policy to be rendered at `/privacy-policy`.
        * This is especially useful for associating the published URL with your registered Globus Auth application.
        */
