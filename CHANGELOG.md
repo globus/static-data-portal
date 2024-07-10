@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/globus/static-data-portal/compare/1.6.0...1.7.0) (2024-07-10)
+
+
+### Features
+
+* Persist collection (destination) selection state in session storage ([#128](https://github.com/globus/static-data-portal/issues/128)) ([d6a0d12](https://github.com/globus/static-data-portal/commit/d6a0d123e24367ebc3d3720d36bcac69b98d1af9))
+
+
+### Fixes
+
+* build error encountered due to image configurations ([bbf2cfc](https://github.com/globus/static-data-portal/commit/bbf2cfcca305daf0c168db451af366bb69b1e68e))
+
 ## [1.5.0](https://github.com/globus/static-data-portal/compare/1.4.0...1.5.0) (2024-07-10)
 
 
