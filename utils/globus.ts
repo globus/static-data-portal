@@ -3,7 +3,7 @@ import type { FileDocument } from "@globus/sdk/cjs/lib/services/transfer/service
 export const CLIENT_INFO = {
   product: "@globus/static-data-portal",
   // x-release-please-start-version
-  version: "1.6.0",
+  version: "1.7.0",
   // x-release-please-end
 };
 
