@@ -31,9 +31,10 @@ export default function Header() {
     <Box as="header" bgImage={image} bgSize="cover" bgPosition="center">
       <Container maxW="container.xl">
         <Flex
+          direction={{ base: "column", md: "row" }}
           minWidth="max-content"
-          alignItems="center"
-          justify="space-between"
+          alignItems={{ base: "flex-start", md: "center" }}
+          justify={{ base: "space-around", md: "space-between" }}
           h="20vh"
         >
           <Box>

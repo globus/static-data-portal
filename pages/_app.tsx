@@ -21,6 +21,8 @@ import { GlobusAuthorizationManagerProvider } from "@/components/globus-auth-con
 
 import type { AppProps } from "next/app";
 
+import GlobusLogo from "@/public/icons/globus.svg";
+
 const env = getEnvironment();
 if (env) {
   // @ts-ignore
@@ -71,8 +73,9 @@ export default function App({ Component, pageProps }: AppProps) {
                       <Text fontSize="sm">Powered by Globus</Text>{" "}
                       <Icon
                         as={Image}
-                        src="/icons/globus.svg"
+                        src={GlobusLogo}
                         viewBox="0 0 256 256"
+                        width="100px"
                         boxSize={6}
                         color="gray.500"
                       />
