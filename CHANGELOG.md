@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/globus/static-data-portal/compare/1.7.0...1.7.1) (2024-07-11)
+
+
+### Fixes
+
+* improve header rendering on smaller devices ([#154](https://github.com/globus/static-data-portal/issues/154)) ([3de3e29](https://github.com/globus/static-data-portal/commit/3de3e29b5c385c375a9366530a5234395ea3583c))
+
 ## [1.7.0](https://github.com/globus/static-data-portal/compare/1.6.0...1.7.0) (2024-07-10)
 
 
