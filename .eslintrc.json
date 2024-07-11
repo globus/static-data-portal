@@ -4,8 +4,7 @@
     "standard",
     "standard-jsx",
     "standard-react",
-    "plugin:prettier/recommended",
-    "prettier"
+    "plugin:prettier/recommended"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
