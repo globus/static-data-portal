@@ -21,10 +21,12 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run build
+        env:
+          NEXTJS_BASE_PATH: /static-data-portal/previews/${{ github.sha }}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ASSUMED_ROLE }}
           aws-region: ${{ secrets.AWS_ASSUMED_ROLE_REGION }}
       - run: |
-          aws s3 sync ./out ${{ secrets.AWS_S3_UPLOAD_PATH }}/${{ github.sha }}
+          aws s3 sync ./out s3://${{secrets.AWS_S3_BUCKET}}/static-data-portal/previews/${{ github.sha }}

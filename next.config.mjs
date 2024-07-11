@@ -15,7 +15,10 @@ const nextConfig = {
    * If the `static.json` file contains a `host` object, use the `base_path` value
    * as the `basePath` for the Next.js application.
    */
-  basePath: STATIC._static?.host?.base_path || undefined,
+  basePath:
+    process.env.NEXTJS_BASE_PATH ||
+    STATIC._static?.host?.base_path ||
+    undefined,
   images: {
     unoptimized: true,
   },
