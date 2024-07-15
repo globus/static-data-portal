@@ -15,3 +15,22 @@ This is a Globus-powered research data portal `generator` created using Next.js.
 ---
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Developer Documentation
+
+### `static.json`
+
+- The `static.json` file is the main configuration file for the data portal.
+- The `utils/static.ts` file is used to enforce a TypeScript type on this file.
+- All pages and components that source information from the user-provided `static.json` should use `utils/static.ts` and its available helpers.
+- Typedoc is configured to generate documentation from `utils/static.ts`.
+
+### MDX Support
+
+[MDX](https://nextjs.org/docs/pages/building-your-application/configuring/mdx) support has been added to the project.
+
+For simple pages, e.g. "Terms and Conditions" and "Privacy Policy" `.mdx` is used to simplify these files being overwritten by end consumers using a `overrides` or `content` directory.
+
+### `content` Directory
+
+A end-user provided `content` directory can be defined to provide MDX files that will be added as `pages` in the Next.js project. This allows for the end-user to provide custom pages without modifying the core project (via `overrides`). This also allows us to provide backwards compatibility should we decide to move away from Next.js in the future.
