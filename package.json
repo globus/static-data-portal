@@ -31,7 +31,7 @@
   "devDependencies": {
     "@globus/types": "^0.0.7",
     "@heroicons/react": "^2.1.5",
-    "@playwright/test": "^1.45.1",
+    "@playwright/test": "^1.45.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
