@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import {
   Box,
   Center,
@@ -59,12 +59,6 @@ export default function Home() {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const getTransferHeaders = useCallback(() => {
-    return {
-      Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
-    };
-  }, [auth.authorization?.tokens.transfer?.access_token]);
-
   async function handleStartTransfer() {
     if (
       !transferSettings.source ||
@@ -76,32 +70,31 @@ export default function Home() {
     }
 
     const id = await (
-      await transfer.taskSubmission.submissionId({
-        headers: {
-          ...getTransferHeaders(),
-        },
-      })
+      await transfer.taskSubmission.submissionId(
+        {},
+        { manager: auth.authorization },
+      )
     ).json();
 
-    const response = await transfer.taskSubmission.submitTransfer({
-      payload: {
-        submission_id: id.value,
-        label: `Transfer from ${STATIC.data.attributes.content.title}`,
-        source_endpoint: transferSettings.source.id,
-        destination_endpoint: transferSettings.destination.id,
-        DATA: transferSettings.items.map((item) => {
-          return {
-            DATA_TYPE: "transfer_item",
-            source_path: `${transferSettings.source_path}${item.name}`,
-            destination_path: `${transferSettings.destination_path}${item.name}`,
-            recursive: isDirectory(item),
-          };
-        }),
+    const response = await transfer.taskSubmission.submitTransfer(
+      {
+        payload: {
+          submission_id: id.value,
+          label: `Transfer from ${STATIC.data.attributes.content.title}`,
+          source_endpoint: transferSettings.source.id,
+          destination_endpoint: transferSettings.destination.id,
+          DATA: transferSettings.items.map((item) => {
+            return {
+              DATA_TYPE: "transfer_item",
+              source_path: `${transferSettings.source_path}${item.name}`,
+              destination_path: `${transferSettings.destination_path}${item.name}`,
+              recursive: isDirectory(item),
+            };
+          }),
+        },
       },
-      headers: {
-        ...getTransferHeaders(),
-      },
-    });
+      { manager: auth.authorization },
+    );
 
     const data = await response.json();
 
@@ -145,18 +138,15 @@ export default function Home() {
       }
       const response = await transfer.endpoint.get(
         STATIC.data.attributes.globus.transfer.collection_id,
-        {
-          headers: {
-            ...getTransferHeaders(),
-          },
-        },
+        {},
+        { manager: auth.authorization },
       );
       const data = await response.json();
       dispatch({ type: "SET_SOURCE", payload: data });
       dispatch({ type: "SET_SOURCE_PATH", payload: data.default_directory });
     }
     fetchCollection();
-  }, [auth.isAuthenticated, getTransferHeaders]);
+  }, [auth.isAuthenticated, auth.authorization]);
 
   if (!auth.isAuthenticated) {
     return (

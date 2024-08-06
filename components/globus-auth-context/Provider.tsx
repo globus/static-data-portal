@@ -26,42 +26,37 @@ export const GlobusAuthorizationManagerProvider = ({
     ReturnType<typeof authorization.create> | undefined
   >(undefined);
 
+  const handleAuthenticated = ({
+    isAuthenticated,
+  }: {
+    isAuthenticated: boolean;
+  }) => {
+    dispatch({ type: "AUTHENTICATED", payload: isAuthenticated });
+  };
+
+  const handleRevoke = () => {
+    dispatch({ type: "REVOKE" });
+  };
+
   useEffect(() => {
     const i = authorization.create({
       redirect,
       scopes,
       client,
       useRefreshTokens: true,
+      events: {
+        authenticated: handleAuthenticated,
+        revoke: handleRevoke,
+      },
     });
+
     setInstance(i);
-  }, [redirect, scopes, client]);
-
-  /**
-   * Register event listeners for the authorization instance.
-   */
-  useEffect(() => {
-    if (!instance) return;
-
-    const handleRevoke = () => {
-      dispatch({ type: "REVOKE" });
-    };
-
-    instance.events.revoke.addListener(handleRevoke);
-
-    const handleAuthenticated = ({
-      isAuthenticated,
-    }: {
-      isAuthenticated: boolean;
-    }) => {
-      dispatch({ type: "AUTHENTICATED", payload: isAuthenticated });
-    };
-    instance.events.authenticated.addListener(handleAuthenticated);
 
     return () => {
-      instance.events.revoke.removeListener(handleRevoke);
-      instance.events.authenticated.removeListener(handleAuthenticated);
+      i.events.revoke.removeListener(handleRevoke);
+      i.events.authenticated.removeListener(handleAuthenticated);
     };
-  }, [instance]);
+  }, [redirect, scopes, client]);
 
   return (
     <Context.Provider
