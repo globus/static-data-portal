@@ -37,6 +37,7 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                     width="100px"
                     boxSize={6}
                     color="gray.500"
+                    alt=""
                   />
                 </HStack>
               </Link>
