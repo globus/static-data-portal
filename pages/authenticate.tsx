@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
-import { Spinner } from "@chakra-ui/react";
+import { Center, Container, Spinner, Text } from "@chakra-ui/react";
 
 export default function Authenticate() {
   const auth = useGlobusAuth();
@@ -11,14 +11,34 @@ export default function Authenticate() {
   useEffect(() => {
     async function attempt() {
       if (auth.isAuthenticated) {
+        /**
+         * If the user is authenticated, refresh the tokens and redirect to the home page.
+         */
+        await instance?.refreshTokens();
         return router.replace("/");
       } else {
+        /**
+         * Attempt to handle incoming OAuth2 redirect.
+         */
         await instance?.handleCodeRedirect({
+          /**
+           * We'll handle the redirect ourselves...
+           */
           shouldReplace: false,
         });
       }
     }
     attempt();
-  }, [router, instance, instance?.handleCodeRedirect, auth.isAuthenticated]);
-  return <Spinner />;
+  }, [router, instance, auth.isAuthenticated]);
+
+  return (
+    <>
+      <Container>
+        <Center mt={4}>
+          <Spinner mr="2" />
+          <Text>Attempting to validate credentials...</Text>
+        </Center>
+      </Container>
+    </>
+  );
 }
