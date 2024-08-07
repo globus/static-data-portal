@@ -2,7 +2,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "@/styles/globals.css";
 import React, { PropsWithChildren, useEffect } from "react";
 import Head from "next/head";
-import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import { info } from "@globus/sdk/cjs";
 import theme from "@/theme";
 import { STATIC, getEnvironment, getRedirectUri } from "@/utils/static";

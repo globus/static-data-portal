@@ -3,7 +3,6 @@ import {
   Box,
   Input,
   InputGroup,
-  InputRightAddon,
   Icon,
   List,
   ListItem,
@@ -21,7 +20,6 @@ import { transfer } from "@globus/sdk/cjs";
 
 import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
 import throttle from "lodash/throttle";
-import { set } from "lodash";
 
 type Endpoint = Record<string, any>;
 

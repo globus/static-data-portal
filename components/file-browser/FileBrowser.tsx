@@ -275,28 +275,30 @@ export default function FileBrowser({
                           </Td>
                         </Tr>
                       )}
-                      {data?.DATA?.map((item, i) => (
-                        <FileEntry
-                          key={i}
-                          item={item}
-                          isSource={isSource}
-                          endpoint={endpoint}
-                          absolutePath={data.absolute_path}
-                          openDirectory={() => {
-                            setBrowserPath(
-                              `${data.absolute_path}${item.name}/`,
-                            );
-                            setShowAddDirectory(false);
-                          }}
-                          handleRename={async (updatedName: string) => {
-                            renameMutation.mutate({
-                              file: item,
-                              path: data.absolute_path,
-                              name: updatedName,
-                            });
-                          }}
-                        />
-                      ))}
+                      {"DATA" in data &&
+                        data.DATA.map((item, i) => {
+                          const base = data.absolute_path || "/";
+                          return (
+                            <FileEntry
+                              key={i}
+                              item={item}
+                              isSource={isSource}
+                              endpoint={endpoint}
+                              absolutePath={base}
+                              openDirectory={() => {
+                                setBrowserPath(`${base}${item.name}/`);
+                                setShowAddDirectory(false);
+                              }}
+                              handleRename={async (updatedName: string) => {
+                                renameMutation.mutate({
+                                  file: item,
+                                  path: base,
+                                  name: updatedName,
+                                });
+                              }}
+                            />
+                          );
+                        })}
                     </Tbody>
                   </Table>
                 </TableContainer>
