@@ -12,11 +12,7 @@ import { GlobusAuthorizationManagerProvider } from "@/components/globus-auth-con
 import type { AppProps } from "next/app";
 
 import Layout from "@/components/Layout";
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
 
 const env = getEnvironment();
@@ -31,8 +27,6 @@ const redirect = getRedirectUri();
 const client = STATIC.data.attributes.globus.application.client_id;
 const scopes = "urn:globus:auth:scope:transfer.api.globus.org:all";
 
-const { ToastContainer, toast } = createStandaloneToast();
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -43,16 +37,6 @@ const queryClient = new QueryClient({
       retry: false,
     },
   },
-  // queryCache: new QueryCache({
-  //   onError: (error) => {
-  //     console.log(error);
-  //     toast({
-  //       title: "Query Error",
-  //       description: error.message,
-  //       status: "error",
-  //     });
-  //   },
-  // }),
 });
 function reset() {
   queryClient.cancelQueries();
@@ -74,7 +58,6 @@ const QueryProvider = ({ children }: PropsWithChildren) => {
     <>
       <QueryClientProvider client={queryClient}>
         {children}
-        <ToastContainer />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>
