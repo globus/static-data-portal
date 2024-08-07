@@ -49,6 +49,7 @@ import transferSettingsReducer, {
 
 import { STATIC } from "@/utils/static";
 import { isDirectory } from "@/utils/globus";
+import { useCollection } from "@/hooks/useTransfer";
 
 export default function Home() {
   const auth = useGlobusAuth();
@@ -59,6 +60,8 @@ export default function Home() {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [inflightTask, setInflightTask] = React.useState(false);
+
   async function handleStartTransfer() {
     if (
       !transferSettings.source ||
@@ -68,6 +71,8 @@ export default function Home() {
     ) {
       return;
     }
+
+    setInflightTask(true);
 
     const id = await (
       await transfer.taskSubmission.submissionId(
@@ -129,24 +134,21 @@ export default function Home() {
         isClosable: true,
       });
     }
+    setInflightTask(false);
   }
 
+  const collection = useCollection(
+    STATIC.data.attributes.globus.transfer.collection_id,
+  );
+
   useEffect(() => {
-    async function fetchCollection() {
-      if (!auth.isAuthenticated) {
-        return;
-      }
-      const response = await transfer.endpoint.get(
-        STATIC.data.attributes.globus.transfer.collection_id,
-        {},
-        { manager: auth.authorization },
-      );
-      const data = await response.json();
-      dispatch({ type: "SET_SOURCE", payload: data });
-      dispatch({ type: "SET_SOURCE_PATH", payload: data.default_directory });
-    }
-    fetchCollection();
-  }, [auth.isAuthenticated, auth.authorization]);
+    const data = collection.isSuccess ? collection.data : null;
+    dispatch({ type: "SET_SOURCE", payload: data });
+    dispatch({
+      type: "SET_SOURCE_PATH",
+      payload: data ? data.default_directory : null,
+    });
+  }, [collection.isSuccess, collection.data]);
 
   if (!auth.isAuthenticated) {
     return (
@@ -192,7 +194,10 @@ export default function Home() {
                   <InputGroup>
                     <InputLeftAddon>Destination</InputLeftAddon>
                     <Input
-                      value={destination.display_name || destination.name}
+                      defaultValue={
+                        destination.display_name || destination.name
+                      }
+                      isReadOnly
                     />
                     <InputRightElement>
                       <IconButton
@@ -279,6 +284,7 @@ export default function Home() {
                   onClick={() => handleStartTransfer()}
                   isDisabled={!source || !destination}
                   leftIcon={<Icon as={PlayCircleIcon} boxSize={6} />}
+                  isLoading={inflightTask}
                 >
                   Start Transfer
                 </Button>

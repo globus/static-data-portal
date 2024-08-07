@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Input,
@@ -12,11 +12,16 @@ import {
   Stack,
   CardBody,
   Text,
+  InputRightElement,
+  Spinner,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { transfer } from "@globus/sdk/cjs";
 
 import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
+import throttle from "lodash/throttle";
+import { set } from "lodash";
 
 type Endpoint = Record<string, any>;
 
@@ -27,25 +32,39 @@ export function CollectionSearch({
 }) {
   const auth = useGlobusAuth();
   const [results, setResults] = useState<Endpoint[]>([]);
+  const [keyword, setKeyword] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  async function handleSearch(e: React.FormEvent<HTMLInputElement>) {
-    const query = e.currentTarget.value;
-    if (!query) {
+  const search = useCallback(
+    throttle(async (query) => {
+      const response = await transfer.endpointSearch(
+        {
+          query: {
+            filter_fulltext: query,
+            limit: 20,
+          },
+        },
+        { manager: auth.authorization },
+      );
+      const data = await response.json();
+      setResults(data && "DATA" in data ? data.DATA : []);
+      setIsRefreshing(false);
+    }, 300),
+    [],
+  );
+
+  useEffect(() => {
+    if (!keyword) {
       setResults([]);
       return;
     }
+    setIsRefreshing(true);
+    search(keyword);
+  }, [search, keyword]);
 
-    const response = await transfer.endpointSearch({
-      query: {
-        filter_fulltext: query,
-        limit: 20,
-      },
-      headers: {
-        Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
-      },
-    });
-    const data = await response.json();
-    setResults(data.DATA);
+  async function handleSearch(e: React.FormEvent<HTMLInputElement>) {
+    const query = e.currentTarget.value;
+    setKeyword(query ?? null);
   }
 
   function handleSelect(endpoint: Endpoint) {
@@ -56,14 +75,19 @@ export function CollectionSearch({
     <Stack>
       <Box position="sticky" top="0" zIndex={1} bgColor="white">
         <InputGroup>
+          <InputLeftAddon>
+            <Icon as={MagnifyingGlassIcon} />
+          </InputLeftAddon>
           <Input
             aria-label="Search for a collection"
             onInput={(e) => handleSearch(e)}
             placeholder="e.g. Globus Tutorial Collection"
           />
-          <InputRightAddon>
-            <Icon as={MagnifyingGlassIcon} />
-          </InputRightAddon>
+          {isRefreshing && (
+            <InputRightElement>
+              <Spinner />
+            </InputRightElement>
+          )}
         </InputGroup>
       </Box>
       {results.map((result) => (
@@ -83,12 +107,14 @@ export function CollectionSearch({
               <Text fontSize="xs">
                 <ListItem>ID: {result.id}</ListItem>
                 <ListItem>Owner: {result.owner_id}</ListItem>
-                <ListItem>Domain: {result.domain || "\u2014"}</ListItem>
-                <ListItem>
-                  <Text noOfLines={1}>
-                    Description: {result.description || "\u2014"}
-                  </Text>
-                </ListItem>
+                {result.description && (
+                  <ListItem>
+                    <Text noOfLines={1}>Description: {result.description}</Text>
+                  </ListItem>
+                )}
+                {result.tlsftp_server && (
+                  <ListItem>{result.tlsftp_server}</ListItem>
+                )}
               </Text>
             </List>
           </CardBody>
