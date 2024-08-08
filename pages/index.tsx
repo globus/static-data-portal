@@ -48,7 +48,6 @@ import transferSettingsReducer, {
 } from "@/components/transfer-settings-context/reducer";
 
 import { STATIC } from "@/utils/static";
-import { isDirectory } from "@/utils/globus";
 import { useCollection } from "@/hooks/useTransfer";
 
 export default function Home() {
@@ -93,7 +92,7 @@ export default function Home() {
               DATA_TYPE: "transfer_item",
               source_path: `${transferSettings.source_path}${item.name}`,
               destination_path: `${transferSettings.destination_path}${item.name}`,
-              recursive: isDirectory(item),
+              recursive: transfer.utils.isDirectory(item),
             };
           }),
         },

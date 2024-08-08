@@ -15,10 +15,10 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { ArrowUpOnSquareIcon } from "@heroicons/react/24/outline";
+import { transfer } from "@globus/sdk/cjs";
 
 import type { FileDocument } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
 import FileNameForm from "./FileNameForm";
-import { isDirectory, readable } from "@/utils/globus";
 import FileEntryIcon from "./FileEntryIcon";
 import { TransferSettingsDispatchContext } from "../transfer-settings-context/Context";
 import { FileBrowserContext } from "./Context";
@@ -94,12 +94,14 @@ export default function FileEntry({
                 await handleRename(name);
                 setIsLoading(false);
               }}
-              label={isDirectory(item) ? "Folder Name" : "File Name"}
+              label={
+                transfer.utils.isDirectory(item) ? "Folder Name" : "File Name"
+              }
               icon={<FileEntryIcon entry={item} />}
               toggleShowForm={setShowEditView}
               initialValue={item.name}
             />
-          ) : isDirectory(item) ? (
+          ) : transfer.utils.isDirectory(item) ? (
             <Button textColor="black" variant="link" onClick={openDirectory}>
               {item.name}
             </Button>
@@ -139,7 +141,7 @@ export default function FileEntry({
           {item.size ? (
             <Tooltip label={`${item.size} B`} variant="outline" hasArrow>
               <Text _hover={{ cursor: "help" }}>
-                {item.size && readable(item.size)}
+                {item.size && transfer.utils.readableBytes(item.size)}
               </Text>
             </Tooltip>
           ) : (

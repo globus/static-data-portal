@@ -111,7 +111,9 @@ export function CollectionSearch({
                   </ListItem>
                 )}
                 {result.tlsftp_server && (
-                  <ListItem>{result.tlsftp_server}</ListItem>
+                  <ListItem>
+                    {transfer.utils.getDomainFromEndpoint(result)}
+                  </ListItem>
                 )}
               </Text>
             </List>
