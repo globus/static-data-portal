@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.8.0](https://github.com/globus/static-data-portal/compare/1.7.1...1.8.0) (2024-08-08)
+
+
+### Features
+
+* adds support for "content" directory ([#159](https://github.com/globus/static-data-portal/issues/159)) ([8a21371](https://github.com/globus/static-data-portal/commit/8a213718b6aed456fae275ad08cc60c6f78da0ce))
+* Improves network request performance and loading states by implementing a cache layer. ([#194](https://github.com/globus/static-data-portal/issues/194)) ([070ab91](https://github.com/globus/static-data-portal/commit/070ab91789faf2424fa8bce4e1839e059a6ef9bb))
+* upgrade to @globus/sdk 3.8.0 and use new Transfer utility methods ([#199](https://github.com/globus/static-data-portal/issues/199)) ([989cc44](https://github.com/globus/static-data-portal/commit/989cc446d3b96a407c32f32ad46271eb8c491c76))
+
+
+### Fixes
+
+* Adds loading states to "Refresh" and "Start Transfer" buttons. ([070ab91](https://github.com/globus/static-data-portal/commit/070ab91789faf2424fa8bce4e1839e059a6ef9bb))
+* ensure the /authorization route refreshes tokens (when returning from an authorization_requirements prompt) ([#195](https://github.com/globus/static-data-portal/issues/195)) ([b042a81](https://github.com/globus/static-data-portal/commit/b042a818963d9fc98f48c596a4d4bc2172cb9c26))
+* Only render "Size" values for files in file browsers. ([a89c2d0](https://github.com/globus/static-data-portal/commit/a89c2d067e92dd603daad8b7c063b3670dc246bc))
+* Throttles the `&lt;CollectionSearch&gt;` requests. ([070ab91](https://github.com/globus/static-data-portal/commit/070ab91789faf2424fa8bce4e1839e059a6ef9bb))
+
 ## [1.7.1](https://github.com/globus/static-data-portal/compare/1.7.0...1.7.1) (2024-07-11)
 
 
