@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 
 import {
   Table,
@@ -48,17 +42,20 @@ import type {
   DirectoryListingError,
   FileDocument,
 } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
+import { useCollection, useListDirectory } from "@/hooks/useTransfer";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function FileBrowser({
   variant,
-  collection,
-  path,
+  collection: id,
+  path: initialPath,
 }: {
   variant: "source" | "destination";
   collection: string;
   path?: string;
 }) {
   const auth = useGlobusAuth();
+  const queryClient = useQueryClient();
 
   const [fileBrowser, fileBrowserDispatch] = useReducer(
     fileBrowserReducer,
@@ -69,133 +66,114 @@ export default function FileBrowser({
 
   const isSource = variant === "source";
 
-  const [browserPath, setBrowserPath] = useState(path);
-  const [isLoading, setIsLoading] = useState(false);
+  const [browserPath, setBrowserPath] = useState(initialPath);
   const [showAddDirectory, setShowAddDirectory] = useState(false);
-  const [endpoint, setEndpoint] = useState<Record<string, any> | null>(null);
-  const [lsResponse, setLsResponse] = useState<Record<string, any> | null>(
-    null,
-  );
-  const [items, setItems] = useState<FileDocument[] | []>([]);
   const [error, setError] = useState<DirectoryListingError | unknown | null>(
     null,
   );
   const toast = useToast();
 
-  useEffect(() => {
-    async function fetchEndpoint() {
-      if (!auth.isAuthenticated) {
-        return;
-      }
-      const response = await transfer.endpoint.get(collection, {
-        headers: {
-          Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
-        },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        setError("code" in data ? data : null);
-        return;
-      }
-      setEndpoint(data);
-    }
-    fetchEndpoint();
-  }, [auth, collection]);
+  let endpoint = null;
+  const c = useCollection(id);
 
-  const fetchItems = useCallback(async () => {
-    if (!auth.isAuthenticated) {
-      return;
-    }
-    setIsLoading(true);
-    const isSource = variant === "source";
-    if (isSource) {
-      transferSettingsDispatch({
-        type: "RESET_ITEMS",
-      });
-    }
-    const response = await transfer.fileOperations.ls(collection, {
-      headers: {
-        Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
-      },
-      query: {
-        path: browserPath ?? undefined,
-        show_hidden: fileBrowser.view.show_hidden ? "true" : "false",
-      },
-    });
-    const data = await response.json();
-    setIsLoading(false);
-    setLsResponse(data);
-    if (!response.ok) {
-      setError("code" in data ? data : null);
-      return;
-    }
-    setItems("DATA" in data ? data.DATA : []);
-    const transferPath = "absolute_path" in data ? data.absolute_path : null;
+  if (c.isError) {
+    const error = c.data && "code" in c.data ? c.data : null;
+    setError(error);
+  }
+
+  if (c.isSuccess) {
+    endpoint = c.data;
+  }
+
+  const {
+    data,
+    isSuccess,
+    isLoading,
+    isError,
+    isFetching,
+    error: lsError,
+    refetch,
+  } = useListDirectory(id, browserPath, {
+    query: {
+      show_hidden: fileBrowser.view.show_hidden ? "true" : "false",
+    },
+  });
+
+  useEffect(() => {
+    setError(lsError);
+  }, [lsError]);
+
+  const absolutePath =
+    isSuccess && data && "absolute_path" in data ? data.absolute_path : null;
+  useEffect(() => {
     /**
      * If there is no browser path specified, we've loaded the "default path"
      * for the collection, so set the browser path to the returned absolute path.
      */
-    if (!browserPath && transferPath) {
-      setBrowserPath(transferPath);
+    if (!browserPath && absolutePath) {
+      setBrowserPath(absolutePath);
     }
-    transferSettingsDispatch({
-      type: isSource ? "SET_SOURCE_PATH" : "SET_DESTINATION_PATH",
-      payload: transferPath,
-    });
-  }, [
-    auth,
-    browserPath,
-    collection,
-    transferSettingsDispatch,
-    variant,
-    fileBrowser.view.show_hidden,
-  ]);
+  }, [browserPath, absolutePath]);
 
   useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
+    transferSettingsDispatch({
+      type: isSource ? "SET_SOURCE_PATH" : "SET_DESTINATION_PATH",
+      payload: browserPath,
+    });
+  }, [transferSettingsDispatch, isSource, browserPath]);
 
-  const addDirectory = async (name: string) => {
-    setIsLoading(true);
-    const response = await transfer.fileOperations.mkdir(collection, {
-      payload: { path: `${browserPath}${name}` },
-      headers: {
-        Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
-      },
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      showErrorToast(data);
-    } else {
-      fetchItems();
-    }
-    fetchItems();
-  };
-  const rename = async (
-    file: FileDocument,
-    absolutePath: string,
-    updatedName: string,
-  ) => {
-    const response = await transfer.fileOperations.rename(collection, {
-      payload: {
-        old_path: `${absolutePath}${file.name}/`,
-        new_path: `${absolutePath}${updatedName}/`,
-      },
-      headers: {
-        Authorization: `Bearer ${auth.authorization?.tokens.transfer?.access_token}`,
-      },
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      showErrorToast(data);
-    } else {
-      setItems(
-        items.map((item) =>
-          item.name === file.name ? { ...item, name: updatedName } : item,
-        ),
+  const addDirectoryMutation = useMutation({
+    mutationFn: async (name: string) => {
+      const response = await transfer.fileOperations.mkdir(
+        id,
+        {
+          payload: { path: `${browserPath}${name}` },
+        },
+        { manager: auth.authorization },
       );
-    }
-  };
+      const data = await response.json();
+      if (!response.ok) {
+        showErrorToast(data);
+      }
+      return data;
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["collections", id, "ls"],
+      }),
+  });
+
+  const renameMutation = useMutation({
+    mutationFn: async ({
+      file,
+      path,
+      name,
+    }: {
+      file: FileDocument;
+      path: string;
+      name: string;
+    }) => {
+      const response = await transfer.fileOperations.rename(
+        id,
+        {
+          payload: {
+            old_path: `${path}${file.name}/`,
+            new_path: `${path}${name}/`,
+          },
+        },
+        { manager: auth.authorization },
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        showErrorToast(data);
+      }
+      return data;
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["collections", id, "ls"],
+      }),
+  });
 
   const showErrorToast = (data: DirectoryListingError) => {
     toast({
@@ -218,15 +196,15 @@ export default function FileBrowser({
             </Box>
           )}
 
-          {error ? <FileBrowserError error={error} /> : null}
+          {isError && <FileBrowserError error={error} />}
 
-          {!isLoading && !error && lsResponse && (
+          {isSuccess && data && (
             <>
               <Box p={2}>
                 <ChevronRightIcon />
-                <Code>{lsResponse.absolute_path}</Code>
+                <Code>{browserPath}</Code>
               </Box>
-              <Flex justify="end">
+              <Flex justify="end" my={2}>
                 <FileBrowserViewMenu />
                 <Spacer />
                 <ButtonGroup>
@@ -259,7 +237,8 @@ export default function FileBrowser({
                     colorScheme="gray"
                     size="xs"
                     leftIcon={<Icon as={ArrowPathIcon} />}
-                    onClick={() => fetchItems()}
+                    onClick={() => refetch()}
+                    isLoading={isFetching}
                   >
                     Refresh
                   </Button>
@@ -286,7 +265,9 @@ export default function FileBrowser({
                         <Tr>
                           <Td colSpan={3}>
                             <FileNameForm
-                              onSubmit={addDirectory}
+                              onSubmit={(name) =>
+                                addDirectoryMutation.mutate(name)
+                              }
                               toggleShowForm={setShowAddDirectory}
                               icon={<Icon as={FolderPlusIcon} />}
                               label="Folder Name"
@@ -294,28 +275,30 @@ export default function FileBrowser({
                           </Td>
                         </Tr>
                       )}
-                      {items.map((item, i) => (
-                        <FileEntry
-                          key={i}
-                          item={item}
-                          isSource={isSource}
-                          endpoint={endpoint}
-                          absolutePath={lsResponse.absolute_path}
-                          openDirectory={() => {
-                            setBrowserPath(
-                              `${lsResponse.absolute_path}${item.name}/`,
-                            );
-                            setShowAddDirectory(false);
-                          }}
-                          handleRename={async (updatedName: string) => {
-                            await rename(
-                              item,
-                              lsResponse.absolute_path,
-                              updatedName,
-                            );
-                          }}
-                        />
-                      ))}
+                      {"DATA" in data &&
+                        data.DATA.map((item, i) => {
+                          const base = data.absolute_path || "/";
+                          return (
+                            <FileEntry
+                              key={i}
+                              item={item}
+                              isSource={isSource}
+                              endpoint={endpoint}
+                              absolutePath={base}
+                              openDirectory={() => {
+                                setBrowserPath(`${base}${item.name}/`);
+                                setShowAddDirectory(false);
+                              }}
+                              handleRename={async (updatedName: string) => {
+                                renameMutation.mutate({
+                                  file: item,
+                                  path: base,
+                                  name: updatedName,
+                                });
+                              }}
+                            />
+                          );
+                        })}
                     </Tbody>
                   </Table>
                 </TableContainer>

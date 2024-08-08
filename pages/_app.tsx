@@ -1,27 +1,19 @@
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "@/styles/globals.css";
-import React from "react";
+import React, { PropsWithChildren, useEffect } from "react";
 import Head from "next/head";
-import Image from "next/image";
-import {
-  ChakraProvider,
-  Link,
-  Container,
-  Box,
-  Flex,
-  Text,
-  Icon,
-  HStack,
-} from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import { info } from "@globus/sdk/cjs";
 import theme from "@/theme";
 import { STATIC, getEnvironment, getRedirectUri } from "@/utils/static";
 import { CLIENT_INFO } from "@/utils/globus";
-import Header from "@/components/Header";
 import { GlobusAuthorizationManagerProvider } from "@/components/globus-auth-context/Provider";
 
 import type { AppProps } from "next/app";
 
-import GlobusLogo from "@/public/icons/globus.svg";
+import Layout from "@/components/Layout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
 
 const env = getEnvironment();
 if (env) {
@@ -35,7 +27,42 @@ const redirect = getRedirectUri();
 const client = STATIC.data.attributes.globus.application.client_id;
 const scopes = "urn:globus:auth:scope:transfer.api.globus.org:all";
 
-const hasCustomImage = STATIC.data.attributes.content.image !== undefined;
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      /**
+       * Many errors encountered during queries need to be manually addressed,
+       * so we disable automatic retries by default.
+       */
+      retry: false,
+    },
+  },
+});
+function reset() {
+  queryClient.cancelQueries();
+  queryClient.removeQueries();
+  queryClient.clear();
+}
+
+const QueryProvider = ({ children }: PropsWithChildren) => {
+  const auth = useGlobusAuth();
+  useEffect(() => {
+    auth.authorization?.events.revoke.addListener(reset);
+    auth.authorization?.events.authenticated.addListener(reset);
+    return () => {
+      auth.authorization?.events.revoke.removeListener(reset);
+      auth.authorization?.events.authenticated.removeListener(reset);
+    };
+  }, [auth.authorization]);
+  return (
+    <>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </>
+  );
+};
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -60,49 +87,11 @@ export default function App({ Component, pageProps }: AppProps) {
           client={client}
           scopes={scopes}
         >
-          <Flex direction="column" flex="1" h="100vh">
-            <Header />
-            <Flex as="main" role="main" direction="column" flex="1">
+          <QueryProvider>
+            <Layout>
               <Component {...pageProps} />
-            </Flex>
-            <Box as="footer">
-              <Container maxW="container.xl" pb={2}>
-                <Flex justify="space-between">
-                  <Link href="https://www.globus.org/" isExternal>
-                    <HStack>
-                      <Text fontSize="sm">Powered by Globus</Text>{" "}
-                      <Icon
-                        as={Image}
-                        src={GlobusLogo}
-                        viewBox="0 0 256 256"
-                        width="100px"
-                        boxSize={6}
-                        color="gray.500"
-                      />
-                    </HStack>
-                  </Link>
-                  {!hasCustomImage && (
-                    <Text fontSize="xs">
-                      Photo by{" "}
-                      <Link
-                        isExternal
-                        href="https://unsplash.com/@nasa?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-                      >
-                        NASA
-                      </Link>{" "}
-                      on{" "}
-                      <Link
-                        isExternal
-                        href="https://unsplash.com/photos/photo-of-outer-space-Q1p7bh3SHj8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-                      >
-                        Unsplash
-                      </Link>
-                    </Text>
-                  )}
-                </Flex>
-              </Container>
-            </Box>
-          </Flex>
+            </Layout>
+          </QueryProvider>
         </GlobusAuthorizationManagerProvider>
       </ChakraProvider>
     </>
