@@ -61,6 +61,9 @@ export default function FileEntry({
     fileBrowser.view.columns.includes("last_modified");
   const includeSize = fileBrowser.view.columns.includes("size");
 
+  const isFile = item.type === "file";
+  const isDirectory = transfer.utils.isDirectory(item);
+
   return (
     <Tr onContextMenu={displayContextMenu}>
       {isSource && (
@@ -94,14 +97,12 @@ export default function FileEntry({
                 await handleRename(name);
                 setIsLoading(false);
               }}
-              label={
-                transfer.utils.isDirectory(item) ? "Folder Name" : "File Name"
-              }
+              label={isDirectory ? "Folder Name" : "File Name"}
               icon={<FileEntryIcon entry={item} />}
               toggleShowForm={setShowEditView}
               initialValue={item.name}
             />
-          ) : transfer.utils.isDirectory(item) ? (
+          ) : isDirectory ? (
             <Button textColor="black" variant="link" onClick={openDirectory}>
               {item.name}
             </Button>
@@ -138,7 +139,7 @@ export default function FileEntry({
       )}
       {includeSize && (
         <Td>
-          {item.size ? (
+          {isFile && item.size ? (
             <Tooltip label={`${item.size} B`} variant="outline" hasArrow>
               <Text _hover={{ cursor: "help" }}>
                 {item.size && transfer.utils.readableBytes(item.size)}

@@ -9,7 +9,7 @@ type State = {
 export const initialState: State = {
   view: {
     show_hidden: false,
-    columns: ["name", "last_modified", "size"],
+    columns: ["name", "size"],
   },
 };
 
