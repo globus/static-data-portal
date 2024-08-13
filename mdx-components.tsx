@@ -1,5 +1,5 @@
 import React from "react";
-import { Heading, Link } from "@chakra-ui/react";
+import { Code, Heading, Link, List, Text } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 import type { MDXComponents } from "mdx/types";
@@ -7,6 +7,15 @@ import type { MDXComponents } from "mdx/types";
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     ...components,
+    ul(props) {
+      return <List styleType="disc" {...props} />;
+    },
+    code(props) {
+      return <Code {...props} />;
+    },
+    p(props) {
+      return <Text as="p" my={2} lineHeight="tall" {...props} />;
+    },
     h1(props) {
       return <Heading as="h1" size="xl" {...props} />;
     },

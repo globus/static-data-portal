@@ -25,7 +25,11 @@ export default function Layout({ children }: PropsWithChildren) {
       <Flex direction="column" flex="1">
         <Header />
         <Flex as="main" role="main" direction="column" flex="1" mb="50px">
-          {useContainer ? <Container>{children}</Container> : children}
+          {useContainer ? (
+            <Container maxW="2xl">{children}</Container>
+          ) : (
+            children
+          )}
         </Flex>
         <Box
           as="footer"
