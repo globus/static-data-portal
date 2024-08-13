@@ -16,6 +16,7 @@ import NextLink from "next/link";
 import { STATIC } from "@/utils/static";
 import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
 import { useRouter } from "next/router";
+import { useLayout } from "@/hooks/useLayout";
 
 export type NavigationItem =
   | {
@@ -66,9 +67,10 @@ const NavigationItemLink = (props: NavigationItem) => {
   );
 };
 
-export default function Navigation({ isCondensed }: { isCondensed: boolean }) {
+export default function Navigation() {
   const auth = useGlobusAuth();
   const router = useRouter();
+  const { isCondensed } = useLayout();
   const user = auth.authorization?.user;
   const nav = NAVIGATION;
   return (

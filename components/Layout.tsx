@@ -13,16 +13,19 @@ import Header from "@/components/Header";
 import GlobusLogo from "@/public/icons/globus.svg";
 
 import { STATIC } from "@/utils/static";
+import { useLayout } from "@/hooks/useLayout";
 
 const hasCustomImage = STATIC.data.attributes.content.image !== undefined;
 
 export default function Layout({ children }: PropsWithChildren) {
+  const { useContainer } = useLayout();
+
   return (
     <>
       <Flex direction="column" flex="1">
         <Header />
         <Flex as="main" role="main" direction="column" flex="1" mb="50px">
-          {children}
+          {useContainer ? <Container>{children}</Container> : children}
         </Flex>
         <Box
           as="footer"

@@ -1,13 +1,13 @@
 import React from "react";
 import { Box, Container, Flex, Heading } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { useLayout } from "@/hooks/useLayout";
 import { STATIC } from "@/utils/static";
+
 import Navigation from "./Navigation";
-import { useRouter } from "next/router";
 
 export default function Header() {
-  const router = useRouter();
-
-  const isCondensed = router.pathname === "/transfer";
+  const { isCondensed } = useLayout();
 
   const title = STATIC.data.attributes.content.title;
   const subtitle = STATIC.data.attributes.content?.subtitle;
@@ -25,7 +25,7 @@ export default function Header() {
       transition="all 300ms"
       minH={isCondensed ? "50px" : "20vh"}
     >
-      <Navigation isCondensed={isCondensed} />
+      <Navigation />
       {!isCondensed && (
         <Container maxW="container.xl">
           <Flex
@@ -35,17 +35,19 @@ export default function Header() {
             justify={{ base: "space-around", md: "space-between" }}
           >
             <Box>
-              <Heading
-                as="h1"
-                textColor="white"
-                fontSize="3xl"
-                borderRadius={4}
-                py={2}
-                px={4}
-                backgroundColor="rgba(0,0,0,0.75)"
-              >
-                {title}
-              </Heading>
+              <NextLink href="/">
+                <Heading
+                  as="h1"
+                  textColor="white"
+                  fontSize="3xl"
+                  borderRadius={4}
+                  py={2}
+                  px={4}
+                  backgroundColor="rgba(0,0,0,0.75)"
+                >
+                  {title}
+                </Heading>
+              </NextLink>
               {subtitle && (
                 <Heading
                   as="p"

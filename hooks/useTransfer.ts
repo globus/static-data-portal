@@ -1,4 +1,4 @@
-import { NotifyOnChangeProps, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { transfer } from "@globus/sdk/cjs";
 import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
 
