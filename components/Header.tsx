@@ -1,24 +1,13 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  Heading,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Text,
-} from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { Box, Container, Flex, Heading } from "@chakra-ui/react";
 import { STATIC } from "@/utils/static";
-import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
+import Navigation from "./Navigation";
+import { useRouter } from "next/router";
 
 export default function Header() {
-  const auth = useGlobusAuth();
-  const user = auth.authorization?.user;
+  const router = useRouter();
+
+  const isCondensed = router.pathname === "/transfer";
 
   const title = STATIC.data.attributes.content.title;
   const subtitle = STATIC.data.attributes.content?.subtitle;
@@ -28,73 +17,53 @@ export default function Header() {
     "background-images/nasa-Q1p7bh3SHj8-unsplash.jpg";
 
   return (
-    <Box as="header" bgImage={image} bgSize="cover" bgPosition="center">
-      <Container maxW="container.xl">
-        <Flex
-          direction={{ base: "column", md: "row" }}
-          minWidth="max-content"
-          alignItems={{ base: "flex-start", md: "center" }}
-          justify={{ base: "space-around", md: "space-between" }}
-          h="20vh"
-        >
-          <Box>
-            <Heading
-              as="h1"
-              textColor="white"
-              fontSize="3xl"
-              borderRadius={4}
-              py={2}
-              px={4}
-              backgroundColor="rgba(0,0,0,0.75)"
-            >
-              {title}
-            </Heading>
-            {subtitle && (
+    <Box
+      as="header"
+      bgImage={image}
+      bgSize="cover"
+      bgPosition="center"
+      transition="all 300ms"
+      minH={isCondensed ? "50px" : "20vh"}
+    >
+      <Navigation />
+      {!isCondensed && (
+        <Container maxW="container.xl">
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            minWidth="max-content"
+            alignItems={{ base: "flex-start", md: "center" }}
+            justify={{ base: "space-around", md: "space-between" }}
+          >
+            <Box>
               <Heading
-                as="p"
+                as="h1"
                 textColor="white"
-                fontSize="md"
+                fontSize="3xl"
                 borderRadius={4}
-                my={1}
                 py={2}
                 px={4}
                 backgroundColor="rgba(0,0,0,0.75)"
               >
-                {subtitle}
+                {title}
               </Heading>
-            )}
-          </Box>
-
-          {auth.isAuthenticated && user ? (
-            <Menu placement="bottom-end">
-              <MenuButton
-                colorScheme="gray"
-                size="sm"
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-              >
-                {user?.preferred_username}
-              </MenuButton>
-              <MenuList>
-                <Box px={2} textAlign="right">
-                  <Text>{user?.name}</Text>
-                  <Text fontSize="sm">{user?.organization}</Text>
-                </Box>
-                <MenuDivider />
-                <MenuItem
-                  onClick={async () => await auth.authorization?.revoke()}
+              {subtitle && (
+                <Heading
+                  as="p"
+                  textColor="white"
+                  fontSize="md"
+                  borderRadius={4}
+                  my={1}
+                  py={2}
+                  px={4}
+                  backgroundColor="rgba(0,0,0,0.75)"
                 >
-                  Log Out
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          ) : (
-            <Button size="sm" onClick={() => auth.authorization?.login()}>
-              Sign In
-            </Button>
-          )}
-        </Flex>
-      </Container>
+                  {subtitle}
+                </Heading>
+              )}
+            </Box>
+          </Flex>
+        </Container>
+      )}
     </Box>
   );
 }

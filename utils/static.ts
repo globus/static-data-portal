@@ -1,5 +1,6 @@
 import _STATIC from "../static.json";
 import { ThemeSettings } from "@/theme";
+import { NavigationOptions } from "@/components/Navigation";
 
 /**
  * The base type for a `static.json` file.
@@ -67,6 +68,10 @@ export type Data = {
        */
       image?: string;
       tagline?: string;
+      /**
+       * The navigation items for the portal.
+       */
+      navigation?: NavigationOptions;
     };
     globus: {
       /**

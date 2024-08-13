@@ -13,10 +13,9 @@ setup("authenticate", async ({ page }) => {
     );
   }
   await page.goto("/");
-  /**
-   * Store the
-   */
-  const url = page.url();
+
+  const url = new URL(page.url());
+  const redirect = new URL("/transfer", url.origin).toString();
 
   await page.getByRole("button", { name: "Sign In" }).click();
 
@@ -42,7 +41,7 @@ setup("authenticate", async ({ page }) => {
       .getByRole("button", { name: "Allow" })
       .waitFor()
       .then(() => true),
-    page.waitForURL(url).then(() => false),
+    page.waitForURL(redirect).then(() => false),
   ]);
 
   if (consentRequired) {
@@ -54,7 +53,7 @@ setup("authenticate", async ({ page }) => {
   /**
    * Wait for the OAuth handshake to complete (and token exchange)
    */
-  await page.waitForURL(url);
+  await page.waitForURL(redirect);
   await page.getByRole("button", {
     name: process.env.TEST_GLOBUS_ID_USERNAME,
   });

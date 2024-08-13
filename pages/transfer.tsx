@@ -3,7 +3,6 @@ import {
   Box,
   Center,
   Container,
-  Flex,
   IconButton,
   Input,
   InputGroup,
@@ -12,7 +11,6 @@ import {
   Icon,
   InputRightElement,
   Button,
-  useToast,
   SimpleGrid,
   useDisclosure,
   Drawer,
@@ -22,17 +20,9 @@ import {
   DrawerOverlay,
   Card,
   CardBody,
-  Spacer,
   Link,
 } from "@chakra-ui/react";
-import {
-  PlayCircleIcon,
-  XCircleIcon,
-  ArrowTopRightOnSquareIcon,
-} from "@heroicons/react/24/outline";
-
-import { transfer, webapp } from "@globus/sdk/cjs";
-
+import { XCircleIcon } from "@heroicons/react/24/outline";
 import FileBrowser from "@/components/file-browser/FileBrowser";
 import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
 
@@ -50,91 +40,13 @@ import transferSettingsReducer, {
 import { STATIC } from "@/utils/static";
 import { useCollection } from "@/hooks/useTransfer";
 
-export default function Home() {
+export default function Transfer() {
   const auth = useGlobusAuth();
   const [transferSettings, dispatch] = useReducer(
     transferSettingsReducer,
     initialState,
   );
-  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [inflightTask, setInflightTask] = React.useState(false);
-
-  async function handleStartTransfer() {
-    if (
-      !transferSettings.source ||
-      !transferSettings.source_path ||
-      !transferSettings.destination_path ||
-      !transferSettings.destination
-    ) {
-      return;
-    }
-
-    setInflightTask(true);
-
-    const id = await (
-      await transfer.taskSubmission.submissionId(
-        {},
-        { manager: auth.authorization },
-      )
-    ).json();
-
-    const response = await transfer.taskSubmission.submitTransfer(
-      {
-        payload: {
-          submission_id: id.value,
-          label: `Transfer from ${STATIC.data.attributes.content.title}`,
-          source_endpoint: transferSettings.source.id,
-          destination_endpoint: transferSettings.destination.id,
-          DATA: transferSettings.items.map((item) => {
-            return {
-              DATA_TYPE: "transfer_item",
-              source_path: `${transferSettings.source_path}${item.name}`,
-              destination_path: `${transferSettings.destination_path}${item.name}`,
-              recursive: transfer.utils.isDirectory(item),
-            };
-          }),
-        },
-      },
-      { manager: auth.authorization },
-    );
-
-    const data = await response.json();
-
-    if (response.ok) {
-      toast({
-        title: data.code,
-        description: (
-          <>
-            {data.message}
-            {"task_id" in data && (
-              <Flex>
-                <Spacer />
-                <Link
-                  href={webapp.urlFor("TASK", [data.task_id]).toString()}
-                  isExternal
-                >
-                  View task in Globus Web App{" "}
-                  <Icon as={ArrowTopRightOnSquareIcon} />
-                </Link>
-              </Flex>
-            )}
-          </>
-        ),
-        status: "success",
-        isClosable: true,
-      });
-    } else {
-      toast({
-        title: `Error (${data.code})`,
-        description: data.message,
-        status: "error",
-        isClosable: true,
-      });
-    }
-    setInflightTask(false);
-  }
 
   const collection = useCollection(
     STATIC.data.attributes.globus.transfer.collection_id,
@@ -151,13 +63,15 @@ export default function Home() {
 
   if (!auth.isAuthenticated) {
     return (
-      <>
-        <Center h="100%">
-          <Text color="gray.400" as="em" fontSize="2xl" fontWeight="extrabold">
-            {STATIC.data.attributes.content.tagline}
+      <Container>
+        <Center mt={4}>
+          <Text>
+            You must{" "}
+            <Link onClick={() => auth.authorization?.login()}>sign in</Link> to
+            transfer data using the portal.
           </Text>
         </Center>
-      </>
+      </Container>
     );
   }
 
@@ -229,7 +143,7 @@ export default function Home() {
                     <CardBody>
                       <Text pb={2}>
                         You are viewing data made available by{" "}
-                        {source?.display_name}.
+                        <Text as="em">{source?.display_name}</Text>.
                         <br /> To transfer data to another location,{" "}
                         <Button onClick={onOpen} variant="link">
                           search for a destination
@@ -270,26 +184,6 @@ export default function Home() {
               </Box>
             )}
           </SimpleGrid>
-
-          {source && destination && (
-            <Box position="sticky" bottom={0} bgColor="gray.100">
-              <Flex py={2} px={20} align="center">
-                <Text fontSize="sm">
-                  <Text as="strong">{transferSettings.items.length}</Text> items
-                  selected
-                </Text>
-                <Spacer />
-                <Button
-                  onClick={() => handleStartTransfer()}
-                  isDisabled={!source || !destination}
-                  leftIcon={<Icon as={PlayCircleIcon} boxSize={6} />}
-                  isLoading={inflightTask}
-                >
-                  Start Transfer
-                </Button>
-              </Flex>
-            </Box>
-          )}
         </TransferSettingsDispatchContext.Provider>
       </TransferSettingsContext.Provider>
     </>
