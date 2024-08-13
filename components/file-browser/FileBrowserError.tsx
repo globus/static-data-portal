@@ -11,6 +11,10 @@ import {
   AlertDescription,
   List,
   ListItem,
+  useDisclosure,
+  Collapse,
+  VStack,
+  ButtonProps,
 } from "@chakra-ui/react";
 
 import { useGlobusAuth } from "../globus-auth-context/useGlobusAuth";
@@ -20,6 +24,41 @@ import {
   isAuthorizationRequirementsError,
 } from "@globus/sdk/cjs/lib/core/errors";
 import type { DirectoryListingError } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
+
+const ErrorToggle = ({
+  error,
+  ...rest
+}: {
+  error: any;
+} & ButtonProps) => {
+  const { isOpen, onToggle } = useDisclosure();
+  return (
+    <>
+      <Button
+        size="xs"
+        variant="ghost"
+        colorScheme="red"
+        onClick={onToggle}
+        {...rest}
+      >
+        View Error Response
+      </Button>
+      <Collapse in={isOpen} animateOpacity>
+        <Box p={2}>
+          <Code
+            bgColor="red.50"
+            display="block"
+            whiteSpace="pre-wrap"
+            my={2}
+            p={1}
+          >
+            {JSON.stringify(error, null, 2)}
+          </Code>
+        </Box>
+      </Collapse>
+    </>
+  );
+};
 
 export default function FileBrowserError({
   error,
@@ -67,13 +106,13 @@ export default function FileBrowserError({
 
     return (
       <Alert status="error">
-        <Box>
+        <VStack align="start">
           <HStack>
             <AlertIcon />
             <AlertTitle>{session_message || error.message}</AlertTitle>
           </HStack>
           <AlertDescription>
-            <List p={2}>
+            <List my={2}>
               {session_required_mfa && (
                 <ListItem>Requires Multi-Factor Authentication</ListItem>
               )}
@@ -91,25 +130,21 @@ export default function FileBrowserError({
                   </ListItem>
                 )}
             </List>
-            <Button
-              onClick={() =>
-                auth.authorization?.handleAuthorizationRequirementsError(error)
-              }
-              size="sm"
-            >
-              Address
-            </Button>
-            <Code
-              bgColor="red.50"
-              display="block"
-              whiteSpace="pre-wrap"
-              my={2}
-              p={1}
-            >
-              {JSON.stringify(error, null, 2)}
-            </Code>
+            <Box>
+              <Button
+                onClick={() =>
+                  auth.authorization?.handleAuthorizationRequirementsError(
+                    error,
+                  )
+                }
+                size="sm"
+              >
+                Address
+              </Button>
+              <ErrorToggle ml={2} error={error} />
+            </Box>
           </AlertDescription>
-        </Box>
+        </VStack>
       </Alert>
     );
     /* eslint-enable camelcase */
@@ -139,21 +174,13 @@ export default function FileBrowserError({
   if (isWellFormed) {
     return (
       <Alert status="error" flexDirection="column">
-        <Box>
+        <VStack>
           <HStack>
             <AlertIcon />
             <Text>{error.message}</Text>
           </HStack>
-          <Code
-            bgColor="red.50"
-            display="block"
-            whiteSpace="pre-wrap"
-            my={2}
-            p={1}
-          >
-            {JSON.stringify(error, null, 2)}
-          </Code>
-        </Box>
+          <ErrorToggle error={error} />
+        </VStack>
       </Alert>
     );
   }

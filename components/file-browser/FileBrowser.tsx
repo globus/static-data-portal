@@ -193,9 +193,57 @@ export default function FileBrowser({
     <>
       <FileBrowserContext.Provider value={fileBrowser}>
         <FileBrowserDispatchContext.Provider value={fileBrowserDispatch}>
+          <Box p={2}>
+            <ChevronRightIcon />
+            <Code>{browserPath || "..."}</Code>
+          </Box>
+
+          <Flex justify="end" my={2}>
+            <FileBrowserViewMenu />
+            <Spacer />
+            <ButtonGroup>
+              {!isSource && (
+                <Button
+                  size="xs"
+                  leftIcon={<Icon as={FolderPlusIcon} />}
+                  onClick={() => {
+                    setShowAddDirectory(true);
+                  }}
+                  isDisabled={isError || isLoading}
+                >
+                  New Folder
+                </Button>
+              )}
+              <Button
+                colorScheme="gray"
+                size="xs"
+                leftIcon={<Icon as={ArrowUturnUpIcon} />}
+                isDisabled={!browserPath}
+                onClick={() => {
+                  if (!browserPath) return;
+                  const pathParts = browserPath.split("/");
+                  pathParts.pop();
+                  pathParts.pop();
+                  setBrowserPath(pathParts.join("/") + "/");
+                }}
+              >
+                Up One Folder
+              </Button>
+              <Button
+                colorScheme="gray"
+                size="xs"
+                leftIcon={<Icon as={ArrowPathIcon} />}
+                onClick={() => refetch()}
+                isLoading={isFetching}
+              >
+                Refresh
+              </Button>
+            </ButtonGroup>
+          </Flex>
+
           {isLoading && (
-            <Box mt={4}>
-              <Center>
+            <Box h="65vh" borderWidth={2} borderRadius={8}>
+              <Center mt={4}>
                 <Spinner />
               </Center>
             </Box>
@@ -205,50 +253,6 @@ export default function FileBrowser({
 
           {isSuccess && data && (
             <>
-              <Box p={2}>
-                <ChevronRightIcon />
-                <Code>{browserPath}</Code>
-              </Box>
-              <Flex justify="end" my={2}>
-                <FileBrowserViewMenu />
-                <Spacer />
-                <ButtonGroup>
-                  {!isSource && (
-                    <Button
-                      size="xs"
-                      leftIcon={<Icon as={FolderPlusIcon} />}
-                      onClick={() => {
-                        setShowAddDirectory(true);
-                      }}
-                    >
-                      New Folder
-                    </Button>
-                  )}
-                  <Button
-                    colorScheme="gray"
-                    size="xs"
-                    leftIcon={<Icon as={ArrowUturnUpIcon} />}
-                    onClick={() => {
-                      if (!browserPath) return;
-                      const pathParts = browserPath.split("/");
-                      pathParts.pop();
-                      pathParts.pop();
-                      setBrowserPath(pathParts.join("/") + "/");
-                    }}
-                  >
-                    Up One Folder
-                  </Button>
-                  <Button
-                    colorScheme="gray"
-                    size="xs"
-                    leftIcon={<Icon as={ArrowPathIcon} />}
-                    onClick={() => refetch()}
-                    isLoading={isFetching}
-                  >
-                    Refresh
-                  </Button>
-                </ButtonGroup>
-              </Flex>
               <Box h="65vh" overflowY="auto" borderWidth={2} borderRadius={8}>
                 <TableContainer minH="100%">
                   <Table variant="simple">
@@ -291,8 +295,11 @@ export default function FileBrowser({
                               endpoint={endpoint}
                               absolutePath={base}
                               openDirectory={() => {
-                                setBrowserPath(`${base}${item.name}/`);
+                                transferSettingsDispatch({
+                                  type: "RESET_ITEMS",
+                                });
                                 setShowAddDirectory(false);
+                                setBrowserPath(`${base}${item.name}/`);
                               }}
                               handleRename={async (updatedName: string) => {
                                 renameMutation.mutate({
