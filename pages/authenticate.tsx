@@ -15,7 +15,7 @@ export default function Authenticate() {
          * If the user is authenticated, refresh the tokens and redirect to the home page.
          */
         await instance?.refreshTokens();
-        return router.replace("/");
+        return router.replace("/transfer");
       } else {
         /**
          * Attempt to handle incoming OAuth2 redirect.

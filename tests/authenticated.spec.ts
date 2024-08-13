@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 
 test("authenticated state", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/transfer");
 
   await page
     .getByRole("button", {

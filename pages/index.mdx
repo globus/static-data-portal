@@ -1,0 +1,17 @@
+import React from "react";
+import { Container, Center, Text } from "@chakra-ui/react";
+import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
+
+import { STATIC } from "@/utils/static";
+
+export default function Index() {
+  return (
+    <Container p={2}>
+      <Center mt={4}>
+        <Text color="gray.400" as="em" fontSize="2xl" fontWeight="extrabold">
+          {STATIC.data.attributes.content.tagline}
+        </Text>
+      </Center>
+    </Container>
+  );
+}

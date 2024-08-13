@@ -18,6 +18,7 @@ import {
   Flex,
   Spacer,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import {
@@ -44,6 +45,8 @@ import type {
 } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
 import { useCollection, useListDirectory } from "@/hooks/useTransfer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTransferSettings } from "../transfer-settings-context/useTransferSettings";
+import StartTransferButton from "./StartTransferButton";
 
 export default function FileBrowser({
   variant,
@@ -61,6 +64,8 @@ export default function FileBrowser({
     fileBrowserReducer,
     initialState,
   );
+
+  const transferSettings = useTransferSettings();
 
   const transferSettingsDispatch = useContext(TransferSettingsDispatchContext);
 
@@ -244,8 +249,8 @@ export default function FileBrowser({
                   </Button>
                 </ButtonGroup>
               </Flex>
-              <Box h="60vh" overflowY="auto" p={2}>
-                <TableContainer>
+              <Box h="65vh" overflowY="auto" borderWidth={2} borderRadius={8}>
+                <TableContainer minH="100%">
                   <Table variant="simple">
                     <Thead>
                       <Tr>
@@ -302,6 +307,30 @@ export default function FileBrowser({
                     </Tbody>
                   </Table>
                 </TableContainer>
+
+                <Box position="sticky" bottom="0">
+                  {isSource ? (
+                    <Box p={2} bgColor="gray.100">
+                      <Text fontSize="sm">
+                        {transferSettings.items.length > 0 ? (
+                          <>
+                            <Text as="strong">
+                              {transferSettings.items.length}
+                            </Text>{" "}
+                            item{transferSettings.items.length > 1 ? "s" : ""}{" "}
+                            selected for transfer.
+                          </>
+                        ) : (
+                          <Text as="em">No items selected for transfer.</Text>
+                        )}
+                      </Text>
+                    </Box>
+                  ) : (
+                    <Flex p={2} bgColor="gray.100" justify="end">
+                      <StartTransferButton />
+                    </Flex>
+                  )}
+                </Box>
               </Box>
             </>
           )}

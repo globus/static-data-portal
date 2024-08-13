@@ -16,15 +16,21 @@ import { STATIC } from "@/utils/static";
 
 const hasCustomImage = STATIC.data.attributes.content.image !== undefined;
 
-export default function Layout({ children }: PropsWithChildren<{}>) {
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <>
-      <Flex direction="column" flex="1" h="100vh">
+      <Flex direction="column" flex="1">
         <Header />
-        <Flex as="main" role="main" direction="column" flex="1">
+        <Flex as="main" role="main" direction="column" flex="1" mb="50px">
           {children}
         </Flex>
-        <Box as="footer">
+        <Box
+          as="footer"
+          position={{ base: "relative", md: "fixed" }}
+          bottom="0"
+          left="0"
+          right="0"
+        >
           <Container maxW="container.xl" pb={2}>
             <Flex justify="space-between">
               <Link href="https://www.globus.org/" isExternal>

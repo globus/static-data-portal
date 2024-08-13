@@ -86,6 +86,16 @@ export default function FileEntry({
         </Td>
       )}
       <Td>
+        <Menu
+          isOpen={contextMenuOpen}
+          onClose={() => {
+            setContextMenuOpen(false);
+          }}
+        >
+          <MenuList ref={menuRef}>
+            <MenuItem onClick={() => setShowEditView(true)}>Rename</MenuItem>
+          </MenuList>
+        </Menu>
         <HStack>
           {!showEditView && <FileEntryIcon entry={item} />}
           {isLoading ? (
@@ -110,16 +120,6 @@ export default function FileEntry({
             <Text textColor="black">{item.name}</Text>
           )}
         </HStack>
-        <Menu
-          isOpen={contextMenuOpen}
-          onClose={() => {
-            setContextMenuOpen(false);
-          }}
-        >
-          <MenuList ref={menuRef}>
-            <MenuItem onClick={() => setShowEditView(true)}>Rename</MenuItem>
-          </MenuList>
-        </Menu>
       </Td>
       {includeLastModified && (
         <Td>
