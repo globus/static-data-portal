@@ -11,10 +11,11 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 import { STATIC } from "@/utils/static";
 import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
+import { useRouter } from "next/router";
 
 export type NavigationItem =
   | {
@@ -45,8 +46,8 @@ const DEFAULT_NAVIGATION: NavigationOptions = {
 const NAVIGATION = {
   ...(STATIC.data.attributes.content.navigation || {}),
   items: [
-    ...DEFAULT_NAVIGATION.items,
     ...(STATIC.data.attributes.content.navigation?.items || []),
+    ...DEFAULT_NAVIGATION.items,
   ],
 };
 
@@ -60,13 +61,14 @@ const NavigationItemLink = (props: NavigationItem) => {
   }
   return (
     <Link href={props.href} isExternal={props.href.startsWith("http")}>
-      {props.label}
+      {props.label} <ExternalLinkIcon mx="2px" />
     </Link>
   );
 };
 
-export default function Navigation() {
+export default function Navigation({ isCondensed }: { isCondensed: boolean }) {
   const auth = useGlobusAuth();
+  const router = useRouter();
   const user = auth.authorization?.user;
   const nav = NAVIGATION;
   return (
@@ -76,8 +78,8 @@ export default function Navigation() {
       bgGradient="linear(to-b, black, blackAlpha.600 80%, blackAlpha.50)"
     >
       <Box py={2} px={4}>
-        <Link as={NextLink} href="/">
-          <Text fontSize="lg" textColor="white">
+        <Link as={NextLink} href="/" display={isCondensed ? "block" : "none"}>
+          <Text fontWeight="bold" fontSize="lg" textColor="white">
             {STATIC.data.attributes.content.title}
           </Text>
         </Link>
@@ -114,7 +116,10 @@ export default function Navigation() {
               </Box>
               <MenuDivider />
               <MenuItem
-                onClick={async () => await auth.authorization?.revoke()}
+                onClick={async () => {
+                  await auth.authorization?.revoke();
+                  router.push("/");
+                }}
               >
                 Log Out
               </MenuItem>

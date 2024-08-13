@@ -67,6 +67,9 @@ export type Data = {
        * The URL of the portal's header image.
        */
       image?: string;
+      /**
+       * @deprecated `tagline` will be removed in a future release. For customization of the homepage, use a `index.mdx` file.
+       */
       tagline?: string;
       /**
        * The navigation items for the portal.
