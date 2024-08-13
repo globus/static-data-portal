@@ -7,10 +7,10 @@ export default function PrivacyPolicy() {
   const policy = STATIC.data.attributes.content.privacy_policy;
   return (
     policy && (
-      <Container p={2}>
+      <>
         <Text fontSize="xl">Privacy Policy</Text>
         <Text>{policy}</Text>
-      </Container>
+      </>
     )
   );
 }

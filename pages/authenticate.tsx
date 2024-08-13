@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
-import { Center, Container, Spinner, Text } from "@chakra-ui/react";
+import { Center, Spinner, Text } from "@chakra-ui/react";
 
 export default function Authenticate() {
   const auth = useGlobusAuth();
@@ -33,12 +33,10 @@ export default function Authenticate() {
 
   return (
     <>
-      <Container>
-        <Center mt={4}>
-          <Spinner mr="2" />
-          <Text>Attempting to validate credentials...</Text>
-        </Center>
-      </Container>
+      <Center mt={4}>
+        <Spinner mr="2" />
+        <Text>Attempting to validate credentials...</Text>
+      </Center>
     </>
   );
 }
