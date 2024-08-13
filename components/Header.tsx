@@ -25,7 +25,7 @@ export default function Header() {
       transition="all 300ms"
       minH={isCondensed ? "50px" : "20vh"}
     >
-      <Navigation />
+      <Navigation isCondensed={isCondensed} />
       {!isCondensed && (
         <Container maxW="container.xl">
           <Flex
