@@ -17,7 +17,7 @@ setup("authenticate", async ({ page }) => {
   const url = new URL(page.url());
   const redirect = new URL("/transfer", url.origin).toString();
 
-  await page.getByRole("button", { name: "Sign In" }).click();
+  await page.getByRole("button", { name: "Sign In" }).first().click();
 
   /**
    * Globus Auth – Log In (Account Select)

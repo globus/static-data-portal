@@ -1,15 +1,29 @@
 import React from "react";
-import { Container, Center, Text } from "@chakra-ui/react";
+import { Box, Container, Center, Text, Button } from "@chakra-ui/react";
 import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
+import { RequireAuthentication } from "@/components/RequireAuthentication";
+
 
 import { STATIC } from "@/utils/static";
 
-export default function Index() {
+<Center mt={4}>
+  <Text color="gray.400" as="em" fontSize="2xl" fontWeight="extrabold">
+    {STATIC.data.attributes.content.tagline}
+  </Text>
+</Center>
+
+
+<Center mt={4}>
+<Box>
+<RequireAuthentication fallback={(auth) => {
   return (
-      <Center mt={4}>
-        <Text color="gray.400" as="em" fontSize="2xl" fontWeight="extrabold">
-          {STATIC.data.attributes.content.tagline}
-        </Text>
-      </Center>
-  );
-}
+    <>
+      <Button variant="link" onClick={() => auth.authorization.login()}>Sign In</Button> to get started.
+    </>
+  )
+}}>
+  Browse the available datasets on the [Transfer](/transfer) page.
+</RequireAuthentication>
+</Box>
+</Center>
+
