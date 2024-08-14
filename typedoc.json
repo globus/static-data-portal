@@ -1,8 +1,9 @@
 {
+  "$schema": "https://typedoc-plugin-markdown.org/schema.json",
   "entryPoints": ["utils/static.ts"],
   "out": "docs",
-  "plugin": ["typedoc-plugin-markdown"],
+  "plugin": ["typedoc-plugin-markdown", "typedoc-plugin-missing-exports"],
   "excludePrivate": true,
   "hideBreadcrumbs": true,
-  "hideInPageTOC": true
+  "outputFileStrategy": "modules"
 }

@@ -10,7 +10,7 @@ This is a Globus-powered research data portal `generator` created using Next.js.
 
 ---
 
-- [static.json Type Documentation](docs/modules.md#static)
+- [static.json Type Documentation](docs/globals.md)
 
 ---
 
@@ -33,4 +33,4 @@ For simple pages, e.g. "Terms and Conditions" and "Privacy Policy" `.mdx` is use
 
 ### `content` Directory
 
-A end-user provided `content` directory can be defined to provide MDX files that will be added as `pages` in the Next.js project. This allows for the end-user to provide custom pages without modifying the core project (via `overrides`). This also allows us to provide backwards compatibility should we decide to move away from Next.js in the future.
+An end-user provided `content` directory can be defined to provide Markdown (or MDX) files that will be added as `pages` in the Next.js project. This allows for the end-user to provide custom pages without modifying the core project (via `overrides`). This also allows us to provide backwards compatibility should we decide to move away from Next.js in the future.
