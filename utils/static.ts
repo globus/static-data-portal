@@ -130,6 +130,9 @@ const {
   data: { attributes },
 } = STATIC;
 
+/**
+ * @private
+ */
 export function getEnvironment() {
   return attributes.globus.environment || null;
 }
