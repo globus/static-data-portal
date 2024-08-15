@@ -5,8 +5,8 @@
   "files": [],
   "license": "Apache-2.0",
   "scripts": {
-    "predev": "node scripts/prebuild.js",
     "dev": "next dev",
+    "preview": "node scripts/preview.js && next dev",
     "prebuild": "node scripts/prebuild.js",
     "build": "next build",
     "start": "next start",
