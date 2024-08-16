@@ -19,6 +19,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  publicRuntimeConfig: {
+    basePath: `${STATIC._static?.host?.base_path || ""}`,
+  },
 };
 
 export default withMDX(nextConfig);
