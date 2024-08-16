@@ -60,9 +60,25 @@ const NavigationItemLink = (props: NavigationItem) => {
       </Link>
     );
   }
+
+  /**
+   * @todo This should probably check the hostname, not just the protocol.
+   */
+  const isExternal = props.href.startsWith("http");
+  if (!isExternal) {
+    return <Link href={props.href}>{props.label}</Link>;
+  }
+
   return (
-    <Link href={props.href} isExternal={props.href.startsWith("http")}>
-      {props.label} <ExternalLinkIcon mx="2px" />
+    <Link href={props.href} position="relative" pr={4} isExternal>
+      {props.label}{" "}
+      <ExternalLinkIcon
+        as="sup"
+        position="absolute"
+        top={0}
+        right={0}
+        fontSize="xs"
+      />
     </Link>
   );
 };

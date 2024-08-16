@@ -26,7 +26,7 @@ export default function Layout({ children }: PropsWithChildren) {
         <Header />
         <Flex as="main" role="main" direction="column" flex="1" mb="50px">
           {useContainer ? (
-            <Container maxW="2xl">{children}</Container>
+            <Container maxW="5xl">{children}</Container>
           ) : (
             children
           )}
