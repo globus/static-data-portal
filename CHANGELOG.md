@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.8.0](https://github.com/globus/static-data-portal/compare/1.7.1...1.8.0) (2024-08-19)
+
+
+### Features
+
+* adds support for "content" directory ([#159](https://github.com/globus/static-data-portal/issues/159)) ([8a21371](https://github.com/globus/static-data-portal/commit/8a213718b6aed456fae275ad08cc60c6f78da0ce))
+* Globus Transfer interactions have been moved to the /transfer route. This allows for custom homepages on `/` using a `index.(mdx/tsx)` file. ([#204](https://github.com/globus/static-data-portal/issues/204)) ([c282f81](https://github.com/globus/static-data-portal/commit/c282f8176a37be64e582edbd640f41ec5f04b586))
+* Improves network request performance and loading states by implementing a cache layer. ([#194](https://github.com/globus/static-data-portal/issues/194)) ([070ab91](https://github.com/globus/static-data-portal/commit/070ab91789faf2424fa8bce4e1839e059a6ef9bb))
+* support content/assets/* =&gt; public/* ([2e5945d](https://github.com/globus/static-data-portal/commit/2e5945dd220a29782c1e860a7f796be174c73873))
+* upgrade to @globus/sdk 3.8.0 and use new Transfer utility methods ([#199](https://github.com/globus/static-data-portal/issues/199)) ([989cc44](https://github.com/globus/static-data-portal/commit/989cc446d3b96a407c32f32ad46271eb8c491c76))
+
+
+### Fixes
+
+* `content` file overrides for well-known pages (e.g. `index.*`, `privacy-policy.*`), no longer need to match the generator's extension ([#224](https://github.com/globus/static-data-portal/issues/224)) ([e3754a9](https://github.com/globus/static-data-portal/commit/e3754a9ad0e22daa4c4b6e676782f39ee12b1704))
+* Adds external link icon to external links in the main navigation and reorders custom links. ([34b6915](https://github.com/globus/static-data-portal/commit/34b691519b54826d64751e1e933c64b2224dcd13))
+* Adds loading states to "Refresh" and "Start Transfer" buttons. ([070ab91](https://github.com/globus/static-data-portal/commit/070ab91789faf2424fa8bce4e1839e059a6ef9bb))
+* adds predev script (runs prebuild) ([d027fe4](https://github.com/globus/static-data-portal/commit/d027fe49efe012e4e866a47824a2cbd6e9907d78))
+* adds useLayout hook and improves rendering of pages by sharing a Container ([#207](https://github.com/globus/static-data-portal/issues/207)) ([68bccd8](https://github.com/globus/static-data-portal/commit/68bccd82e389ee3ff7f8d85e4449201922cf9015))
+* Ensure full hosted base path is used in various image rendering contexts. ([#218](https://github.com/globus/static-data-portal/issues/218)) ([03a3c43](https://github.com/globus/static-data-portal/commit/03a3c4387ab63deb6a8d657a0117029427d87695))
+* Ensure relative links in Markdown use Next.js Link component for rendering. ([#206](https://github.com/globus/static-data-portal/issues/206)) ([34b6915](https://github.com/globus/static-data-portal/commit/34b691519b54826d64751e1e933c64b2224dcd13))
+* ensure relative paths can be used for images in Markdown ([#217](https://github.com/globus/static-data-portal/issues/217)) ([92ebdf3](https://github.com/globus/static-data-portal/commit/92ebdf3f056a52a936a5c8a3399b9403b4cc84d3))
+* ensure the /authorization route refreshes tokens (when returning from an authorization_requirements prompt) ([#195](https://github.com/globus/static-data-portal/issues/195)) ([b042a81](https://github.com/globus/static-data-portal/commit/b042a818963d9fc98f48c596a4d4bc2172cb9c26))
+* Improves base Markdown rendering for various elements ([#216](https://github.com/globus/static-data-portal/issues/216)) ([b3e1f30](https://github.com/globus/static-data-portal/commit/b3e1f30fd10a9a07497a617e6557369c158ae371))
+* improves the loading states of file browsers ([#205](https://github.com/globus/static-data-portal/issues/205)) ([fe58559](https://github.com/globus/static-data-portal/commit/fe585599c1bbbace33fc257b2e5a1c3ae4c38367))
+* Only render "Size" values for files in file browsers. ([a89c2d0](https://github.com/globus/static-data-portal/commit/a89c2d067e92dd603daad8b7c063b3670dc246bc))
+* Throttles the `&lt;CollectionSearch&gt;` requests. ([070ab91](https://github.com/globus/static-data-portal/commit/070ab91789faf2424fa8bce4e1839e059a6ef9bb))
+
 ## [1.7.1](https://github.com/globus/static-data-portal/compare/1.7.0...1.7.1) (2024-07-11)
 
 
