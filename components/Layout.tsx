@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React, { type PropsWithChildren } from "react";
 import Header from "@/components/Header";
-import GlobusLogo from "@/public/icons/globus.svg";
+import GlobusLogo from "@/public/_default/globus.svg";
 
 import { STATIC } from "@/utils/static";
 import { useLayout } from "@/hooks/useLayout";

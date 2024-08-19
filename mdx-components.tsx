@@ -2,10 +2,8 @@ import React from "react";
 import { Box, Code, Heading, Image, Link, List, Text } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
-import getConfig from "next/config";
 import type { MDXComponents } from "mdx/types";
-
-const { publicRuntimeConfig } = getConfig();
+import { getAbsoluteURL, isRelativePath } from "./utils/path";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -54,18 +52,14 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       return <Heading as="h5" size="sm" my={1} {...props} />;
     },
     img(props) {
-      let { src, alt } = props;
-      const isRelative = src?.startsWith("/");
-      if (isRelative) {
-        src = `${publicRuntimeConfig.basePath}${src}`;
-      }
-      return <Image {...props} alt={alt || ""} src={src} />;
+      const { src, alt } = props;
+      return <Image {...props} alt={alt || ""} src={getAbsoluteURL(src)} />;
     },
     a({ href, ...rest }) {
       if (!href) {
         return <Link {...rest} href="#" />;
       }
-      const isRelative = href.startsWith("/");
+      const isRelative = isRelativePath(href);
       if (isRelative) {
         /**
          * If the link is relative, use Next.js's `Link` component.

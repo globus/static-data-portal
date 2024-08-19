@@ -3,18 +3,18 @@ import { Box, Container, Flex, Heading } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useLayout } from "@/hooks/useLayout";
 import { STATIC } from "@/utils/static";
+import { getAbsoluteURL } from "@/utils/path";
 
 import Navigation from "./Navigation";
 
 export default function Header() {
   const { isCondensed } = useLayout();
-
   const title = STATIC.data.attributes.content.title;
   const subtitle = STATIC.data.attributes.content?.subtitle;
 
   const image =
-    STATIC.data.attributes.content.image ||
-    "background-images/nasa-Q1p7bh3SHj8-unsplash.jpg";
+    getAbsoluteURL(STATIC.data.attributes.content.image) ||
+    "_default/nasa-Q1p7bh3SHj8-unsplash.jpg";
 
   return (
     <Box
