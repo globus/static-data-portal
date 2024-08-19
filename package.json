@@ -56,6 +56,7 @@
     "eslint-plugin-promise": "^6.6.0",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "glob": "^11.0.0",
     "prettier": "3.3.3",
     "typedoc": "^0.26.5",
     "typedoc-plugin-markdown": "^4.2.5",
