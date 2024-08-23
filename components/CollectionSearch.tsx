@@ -38,6 +38,11 @@ export function CollectionSearch({
       const response = await transfer.endpointSearch(
         {
           query: {
+            /**
+             * In the context of the data portal, we only want to return
+             * results that will support Globus Transfer behaviors.
+             */
+            filter_non_functional: false,
             filter_fulltext: query,
             limit: 20,
           },
