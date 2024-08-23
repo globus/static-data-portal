@@ -22,6 +22,10 @@ updates:
          - "react-dom"
          - "@types/react"
          - "@types/react-dom"
+      react-query:
+        patterns:
+         - "@tanstack/react-query"
+         - "@tanstack/react-query-devtools"
       next:
         patterns:
          - "next"
