@@ -7,7 +7,6 @@ import {
   Th,
   Td,
   Thead,
-  Code,
   Icon,
   Button,
   Box,
@@ -20,7 +19,6 @@ import {
   useToast,
   Text,
 } from "@chakra-ui/react";
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import {
   ArrowPathIcon,
   ArrowUturnUpIcon,
@@ -47,6 +45,7 @@ import { useCollection, useListDirectory } from "@/hooks/useTransfer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTransferSettings } from "../transfer-settings-context/useTransferSettings";
 import StartTransferButton from "./StartTransferButton";
+import PathInput from "./PathInput";
 
 export default function FileBrowser({
   variant,
@@ -193,11 +192,12 @@ export default function FileBrowser({
     <>
       <FileBrowserContext.Provider value={fileBrowser}>
         <FileBrowserDispatchContext.Provider value={fileBrowserDispatch}>
-          <Box p={2}>
-            <ChevronRightIcon />
-            <Code>{browserPath || "..."}</Code>
-          </Box>
-
+          <PathInput
+            initialPath={browserPath || ""}
+            onPathChange={(path) => {
+              setBrowserPath(path);
+            }}
+          />
           <Flex justify="end" my={2}>
             <FileBrowserViewMenu />
             <Spacer />
@@ -222,7 +222,12 @@ export default function FileBrowser({
                 onClick={() => {
                   if (!browserPath) return;
                   const pathParts = browserPath.split("/");
-                  pathParts.pop();
+                  if (browserPath.endsWith("/")) {
+                    /**
+                     * Account for trailing slash in path.
+                     */
+                    pathParts.pop();
+                  }
                   pathParts.pop();
                   setBrowserPath(pathParts.join("/") + "/");
                 }}

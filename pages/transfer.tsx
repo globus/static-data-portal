@@ -83,7 +83,7 @@ export default function Transfer() {
         <TransferSettingsDispatchContext.Provider value={dispatch}>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={1}>
             <Box p={2}>
-              <Box p={2}>
+              <Box mb={1}>
                 <InputGroup>
                   <InputLeftAddon>Source</InputLeftAddon>
                   <Input
@@ -103,7 +103,7 @@ export default function Transfer() {
             </Box>
             {destination ? (
               <Box p={2}>
-                <Box p={2}>
+                <Box mb={1}>
                   <InputGroup>
                     <InputLeftAddon>Destination</InputLeftAddon>
                     <Input
