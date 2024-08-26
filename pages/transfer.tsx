@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import {
   Box,
   Center,
@@ -21,6 +21,8 @@ import {
   Card,
   CardBody,
   Link,
+  Flex,
+  InputRightAddon,
 } from "@chakra-ui/react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import FileBrowser from "@/components/file-browser/FileBrowser";
@@ -39,6 +41,24 @@ import transferSettingsReducer, {
 
 import { STATIC } from "@/utils/static";
 import { useCollection } from "@/hooks/useTransfer";
+import SourceSelector from "@/components/SourceSelector";
+
+export type TransferCollectionConfiguration = {
+  /**
+   * The UUID of the Globus collection to list and transfer files from.
+   */
+  collection_id: string;
+  /**
+   * The path on the collection to list and transfer files from.
+   */
+  path?: string;
+};
+
+export function getCollectionsConfiguration() {
+  return "collections" in STATIC.data.attributes.globus.transfer
+    ? STATIC.data.attributes.globus.transfer.collections
+    : [STATIC.data.attributes.globus.transfer];
+}
 
 export default function Transfer() {
   const auth = useGlobusAuth();
@@ -48,9 +68,16 @@ export default function Transfer() {
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const collection = useCollection(
-    STATIC.data.attributes.globus.transfer.collection_id,
+  /**
+   * The static.json configured collection(s).
+   */
+  const collections = getCollectionsConfiguration();
+
+  const [selectedSourceCollection, setSourceCollection] = useState(
+    collections[0],
   );
+
+  const collection = useCollection(selectedSourceCollection.collection_id);
 
   useEffect(() => {
     const data = collection.isSuccess ? collection.data : null;
@@ -85,7 +112,7 @@ export default function Transfer() {
         <TransferSettingsDispatchContext.Provider value={dispatch}>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={1}>
             <Box p={2}>
-              <Box mb={1}>
+              <Flex mb={2} align="center" gap={2} pos="relative">
                 <InputGroup>
                   <InputLeftAddon>Source</InputLeftAddon>
                   <Input
@@ -94,13 +121,21 @@ export default function Transfer() {
                     isReadOnly
                   />
                 </InputGroup>
-              </Box>
+                {collections.length > 1 && (
+                  <Box position="absolute" right={4}>
+                    <SourceSelector
+                      onSelect={(collection) => {
+                        setSourceCollection(collection);
+                      }}
+                      selected={selectedSourceCollection}
+                    />
+                  </Box>
+                )}
+              </Flex>
               <FileBrowser
                 variant="source"
-                collection={
-                  STATIC.data.attributes.globus.transfer.collection_id
-                }
-                path={STATIC.data.attributes.globus.transfer?.path}
+                collection={selectedSourceCollection.collection_id}
+                path={selectedSourceCollection?.path}
               />
             </Box>
             {destination ? (

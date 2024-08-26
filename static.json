@@ -35,7 +35,22 @@
           "client_id": "75661b49-2bb6-489b-9a4b-2d3c568360f8"
         },
         "transfer": {
-          "collection_id": "543aade1-db97-4a4b-9bdf-0b58e78dfa69"
+          "recommended": [
+            {
+              "label": "CosmoDC2v1.1.4",
+              "collection_id": "54603428-87b6-4a27-9a7b-8e9a471f8cd1",
+              "path": "/"
+            }
+          ],
+          "collections": [
+            {
+              "collection_id": "543aade1-db97-4a4b-9bdf-0b58e78dfa69"
+            },
+            {
+              "collection_id": "8062693f-f8c2-46be-86d0-de651a974ff3",
+              "path": "/home/u_odwnwpvxpjhatlzwj4ap3svc3q/My First Folder"
+            }
+          ]
         }
       }
     }
