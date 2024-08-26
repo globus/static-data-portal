@@ -10,23 +10,26 @@ export default function Authenticate() {
 
   useEffect(() => {
     async function attempt() {
-      if (auth.isAuthenticated) {
-        /**
-         * If the user is authenticated, refresh the tokens and redirect to the home page.
-         */
-        await instance?.refreshTokens();
-        return router.replace("/transfer");
-      } else {
-        /**
-         * Attempt to handle incoming OAuth2 redirect.
-         */
-        await instance?.handleCodeRedirect({
-          /**
-           * We'll handle the redirect ourselves...
-           */
-          shouldReplace: false,
-        });
+      if (!instance) {
+        return;
       }
+      /**
+       * Attempt to handle incoming OAuth2 redirect.
+       */
+      await instance.handleCodeRedirect({
+        /**
+         * We'll handle the redirect ourselves...
+         */
+        shouldReplace: false,
+      });
+      /**
+       * @todo This current processing means that the token created from `handleCodeRedirect`
+       * is immediately refreshed...
+       */
+      if (auth.isAuthenticated) {
+        await instance.refreshTokens();
+      }
+      return router.replace("/transfer");
     }
     attempt();
   }, [router, instance, auth.isAuthenticated]);
