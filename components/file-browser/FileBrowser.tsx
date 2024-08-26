@@ -7,7 +7,6 @@ import {
   Th,
   Td,
   Thead,
-  Code,
   Icon,
   Button,
   Box,
@@ -19,12 +18,7 @@ import {
   Spacer,
   useToast,
   Text,
-  InputGroup,
-  Input,
-  InputLeftAddon,
-  InputRightElement,
 } from "@chakra-ui/react";
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import {
   ArrowPathIcon,
   ArrowUturnUpIcon,
