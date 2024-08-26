@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.9.0](https://github.com/globus/static-data-portal/compare/1.8.0...1.9.0) (2024-08-26)
+
+
+### Features
+
+* Updates the "Path" field to be editable for easy directory navigation. ([#242](https://github.com/globus/static-data-portal/issues/242)) ([a3a2d03](https://github.com/globus/static-data-portal/commit/a3a2d03bc4857e413c596f6884397467c259b612))
+
+
+### Fixes
+
+* Address scenarios where post-consent an existing (refreshed) token would be used instead of the result of the token response. ([a3a2d03](https://github.com/globus/static-data-portal/commit/a3a2d03bc4857e413c596f6884397467c259b612))
+* **Search:** Ensures GCSv5 Endpoints ("nonfunctional" endpoints that do not support transfer) are not displayed in destination collection search results. ([#231](https://github.com/globus/static-data-portal/issues/231)) ([1702e62](https://github.com/globus/static-data-portal/commit/1702e629f4ca7f01ee692481669a5c7d165762f2))
+
 ## [1.8.0](https://github.com/globus/static-data-portal/compare/1.7.1...1.8.0) (2024-08-19)
 
 
