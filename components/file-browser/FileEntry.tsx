@@ -15,9 +15,9 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { ArrowUpOnSquareIcon } from "@heroicons/react/24/outline";
-import { transfer } from "@globus/sdk/cjs";
+import { transfer } from "@globus/sdk";
 
-import type { FileDocument } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
+import type { FileDocument } from "@globus/sdk/services/transfer/service/file-operations";
 import FileNameForm from "./FileNameForm";
 import FileEntryIcon from "./FileEntryIcon";
 import { TransferSettingsDispatchContext } from "../transfer-settings-context/Context";

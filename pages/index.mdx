@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Container, Center, Text, Button } from "@chakra-ui/react";
-import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
 import { RequireAuthentication } from "@/components/RequireAuthentication";
 
 
@@ -18,7 +17,7 @@ import { STATIC } from "@/utils/static";
 <RequireAuthentication fallback={(auth) => {
   return (
     <>
-      <Button variant="link" onClick={() => auth.authorization.login()}>Sign In</Button> to get started.
+      <Button variant="link" onClick={async () => await auth.authorization.login()}>Sign In</Button> to get started.
     </>
   )
 }}>

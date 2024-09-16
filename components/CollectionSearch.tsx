@@ -16,9 +16,9 @@ import {
   InputLeftAddon,
 } from "@chakra-ui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { transfer } from "@globus/sdk/cjs";
+import { transfer } from "@globus/sdk";
 
-import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
+import { useGlobusAuth } from "@globus/react-auth-context";
 import throttle from "lodash/throttle";
 
 type Endpoint = Record<string, any>;

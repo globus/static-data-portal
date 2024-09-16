@@ -17,13 +17,14 @@ import {
   ButtonProps,
 } from "@chakra-ui/react";
 
-import { useGlobusAuth } from "../globus-auth-context/useGlobusAuth";
+import { useGlobusAuth } from "@globus/react-auth-context";
 import {
-  isErrorWellFormed,
   isConsentRequiredError,
+  isErrorWellFormed,
   isAuthorizationRequirementsError,
-} from "@globus/sdk/cjs/lib/core/errors";
-import type { DirectoryListingError } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
+} from "@globus/sdk/core/errors";
+
+import { type DirectoryListingError } from "@globus/sdk/services/transfer/service/file-operations";
 
 const ErrorToggle = ({
   error,

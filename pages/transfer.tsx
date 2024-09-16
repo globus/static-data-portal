@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import FileBrowser from "@/components/file-browser/FileBrowser";
-import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
+import { useGlobusAuth } from "@globus/react-auth-context";
 
 import { CollectionSearch } from "@/components/CollectionSearch";
 
