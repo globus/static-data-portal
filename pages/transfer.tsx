@@ -67,8 +67,10 @@ export default function Transfer() {
         <Center mt={4}>
           <Text>
             You must{" "}
-            <Link onClick={() => auth.authorization?.login()}>sign in</Link> to
-            transfer data using the portal.
+            <Link onClick={async () => await auth.authorization?.login()}>
+              sign in
+            </Link>{" "}
+            to transfer data using the portal.
           </Text>
         </Center>
       </Container>

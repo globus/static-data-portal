@@ -83,8 +83,8 @@ export default function FileBrowserError({
               You'll need to grant access to this resource in order to proceed.
             </Text>
             <Button
-              onClick={() =>
-                auth.authorization?.handleConsentRequiredError(error)
+              onClick={async () =>
+                await auth.authorization?.handleConsentRequiredError(error)
               }
               size="sm"
             >
@@ -163,7 +163,10 @@ export default function FileBrowserError({
             <Text my={2}>
               Please try logging in again to refresh your credentials.
             </Text>
-            <Button onClick={() => auth.authorization?.login()} size="sm">
+            <Button
+              onClick={async () => await auth.authorization?.login()}
+              size="sm"
+            >
               Log In
             </Button>
           </AlertDescription>

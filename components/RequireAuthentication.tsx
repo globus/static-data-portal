@@ -24,7 +24,7 @@ export function RequireAuthentication({
             <>
               &nbsp;&mdash;&nbsp;
               <Button
-                onClick={() => auth.authorization?.login()}
+                onClick={async () => await auth.authorization?.login()}
                 variant="link"
               >
                 sign in
