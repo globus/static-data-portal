@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
+import { useGlobusAuth } from "@globus/react-auth-context";
 import { Center, Spinner, Text } from "@chakra-ui/react";
 
 export default function Authenticate() {
@@ -8,6 +8,9 @@ export default function Authenticate() {
   const router = useRouter();
   const instance = auth.authorization;
 
+  /**
+   * Attempt to handle the incoming OAuth2 redirect.
+   */
   useEffect(() => {
     async function attempt() {
       if (!instance) {
@@ -22,16 +25,22 @@ export default function Authenticate() {
          */
         shouldReplace: false,
       });
-      /**
-       * @todo This current processing means that the token created from `handleCodeRedirect`
-       * is immediately refreshed...
-       */
-      if (auth.isAuthenticated) {
-        await instance.refreshTokens();
-      }
-      return router.replace("/transfer");
     }
     attempt();
+  }, [instance]);
+
+  /**
+   * Once the user is authenticated, refresh the tokens and redirect to the transfer page.
+   */
+  useEffect(() => {
+    async function redirect() {
+      if (!instance || !auth.isAuthenticated) {
+        return;
+      }
+      await instance.refreshTokens();
+      return router.replace("/transfer");
+    }
+    redirect();
   }, [router, instance, auth.isAuthenticated]);
 
   return (

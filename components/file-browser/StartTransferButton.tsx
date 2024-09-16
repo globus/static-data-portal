@@ -1,9 +1,9 @@
 import React from "react";
-import { useGlobusAuth } from "../globus-auth-context/useGlobusAuth";
+import { useGlobusAuth } from "@globus/react-auth-context";
 import { useTransferSettings } from "../transfer-settings-context/useTransferSettings";
 import { STATIC } from "@/utils/static";
 import { Flex, Spacer, Icon, Button, useToast, Link } from "@chakra-ui/react";
-import { transfer, webapp } from "@globus/sdk/cjs";
+import { transfer, webapp } from "@globus/sdk";
 import {
   ArrowTopRightOnSquareIcon,
   PlayCircleIcon,

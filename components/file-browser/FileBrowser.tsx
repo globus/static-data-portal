@@ -24,9 +24,9 @@ import {
   ArrowUturnUpIcon,
   FolderPlusIcon,
 } from "@heroicons/react/24/outline";
-import { transfer } from "@globus/sdk/cjs";
+import { transfer } from "@globus/sdk";
 
-import { useGlobusAuth } from "../globus-auth-context/useGlobusAuth";
+import { useGlobusAuth } from "@globus/react-auth-context";
 import { TransferSettingsDispatchContext } from "../transfer-settings-context/Context";
 
 import FileBrowserViewMenu from "./FileBrowserViewMenu";
@@ -40,7 +40,8 @@ import FileEntry from "./FileEntry";
 import type {
   DirectoryListingError,
   FileDocument,
-} from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
+} from "@globus/sdk/services/transfer/service/file-operations";
+
 import { useCollection, useListDirectory } from "@/hooks/useTransfer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTransferSettings } from "../transfer-settings-context/useTransferSettings";

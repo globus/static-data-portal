@@ -1,4 +1,4 @@
-import { FileDocument } from "@globus/sdk/cjs/lib/services/transfer/service/file-operations";
+import { FileDocument } from "@globus/sdk/services/transfer/service/file-operations";
 
 type Action = { type: string; payload?: any };
 type State = {

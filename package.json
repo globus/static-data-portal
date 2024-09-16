@@ -19,7 +19,8 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@globus/sdk": "^3.8.1",
+    "@globus/react-auth-context": "^0.0.5",
+    "@globus/sdk": "4.0.0-rc.3",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
     "@next/mdx": "^14.2.6",
@@ -28,7 +29,7 @@
     "@types/mdx": "^2.0.13",
     "framer-motion": "^11.3.30",
     "lodash": "^4.17.21",
-    "next": "14.2.7",
+    "next": "^14.2.7",
     "react": "^18",
     "react-dom": "^18"
   },

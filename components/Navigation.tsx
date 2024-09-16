@@ -14,7 +14,7 @@ import {
 import { ChevronDownIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 import { STATIC } from "@/utils/static";
-import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
+import { useGlobusAuth } from "@globus/react-auth-context";
 import { useRouter } from "next/router";
 import { useLayout } from "@/hooks/useLayout";
 

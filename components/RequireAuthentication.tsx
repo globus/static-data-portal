@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import { Box, Button, Center, Text } from "@chakra-ui/react";
-import { useGlobusAuth } from "./globus-auth-context/useGlobusAuth";
+import { useGlobusAuth } from "@globus/react-auth-context";
 
 export function RequireAuthentication({
   children,

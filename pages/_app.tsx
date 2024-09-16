@@ -3,17 +3,18 @@ import "@/styles/globals.css";
 import React, { PropsWithChildren, useEffect } from "react";
 import Head from "next/head";
 import { ChakraProvider } from "@chakra-ui/react";
-import { info } from "@globus/sdk/cjs";
+import { info } from "@globus/sdk";
 import theme from "@/theme";
 import { STATIC, getEnvironment, getRedirectUri } from "@/utils/static";
 import { CLIENT_INFO } from "@/utils/globus";
-import { GlobusAuthorizationManagerProvider } from "@/components/globus-auth-context/Provider";
-
 import type { AppProps } from "next/app";
 
 import Layout from "@/components/Layout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
+import {
+  useGlobusAuth,
+  Provider as GlobusAuthorizationManagerProvider,
+} from "@globus/react-auth-context";
 
 const env = getEnvironment();
 if (env) {

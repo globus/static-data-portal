@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { transfer } from "@globus/sdk/cjs";
-import { useGlobusAuth } from "@/components/globus-auth-context/useGlobusAuth";
+import { transfer } from "@globus/sdk";
+import { useGlobusAuth } from "@globus/react-auth-context";
 
-import { type AuthorizationManager } from "@globus/sdk/cjs/lib/core/authorization/AuthorizationManager";
+import { type AuthorizationManager } from "@globus/sdk/core/authorization/AuthorizationManager";
 
 export async function fetchCollection(
   authorization: AuthorizationManager | undefined,
