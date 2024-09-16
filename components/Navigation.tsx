@@ -144,7 +144,10 @@ export default function Navigation() {
             </MenuList>
           </Menu>
         ) : (
-          <Button size="sm" onClick={() => auth.authorization?.login()}>
+          <Button
+            size="sm"
+            onClick={async () => await auth.authorization?.login()}
+          >
             Sign In
           </Button>
         )}
