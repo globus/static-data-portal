@@ -36,7 +36,7 @@
   "devDependencies": {
     "@globus/types": "^0.0.7",
     "@heroicons/react": "^2.1.5",
-    "@playwright/test": "^1.46.1",
+    "@playwright/test": "^1.47.1",
     "@tanstack/eslint-plugin-query": "^5.56.1",
     "@types/node": "^22",
     "@types/react": "^18",
