@@ -52,6 +52,11 @@ export type TransferCollectionConfiguration = {
    * The path on the collection to list and transfer files from.
    */
   path?: string;
+  /**
+   * A human-readable label for the Source Selector. If not provided,
+   * the Collection's `display_name` (and `path`) will be used.
+   */
+  label?: string;
 };
 
 export function getCollectionsConfiguration() {

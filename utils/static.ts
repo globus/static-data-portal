@@ -2,7 +2,6 @@ import _STATIC from "../static.json";
 import { ThemeSettings } from "@/theme";
 import { NavigationOptions } from "@/components/Navigation";
 import { TransferCollectionConfiguration } from "@/pages/transfer";
-import { RecommendedCollection } from "@/components/SourceSelector";
 
 /**
  * The base type for a `static.json` file.
@@ -107,7 +106,6 @@ export type Data = {
       transfer:
         | TransferCollectionConfiguration
         | {
-            recommended?: RecommendedCollection[];
             collections: TransferCollectionConfiguration[];
           };
     };
