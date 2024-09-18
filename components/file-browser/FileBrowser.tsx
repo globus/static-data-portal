@@ -71,11 +71,16 @@ export default function FileBrowser({
 
   const isSource = variant === "source";
 
-  const [browserPath, setBrowserPath] = useState(initialPath);
+  const [browserPath, setBrowserPath] = useState<string>();
   const [showAddDirectory, setShowAddDirectory] = useState(false);
   const [error, setError] = useState<DirectoryListingError | unknown | null>(
     null,
   );
+
+  useEffect(() => {
+    setBrowserPath(initialPath);
+  }, [initialPath]);
+
   const toast = useToast();
 
   let endpoint = null;
@@ -110,15 +115,6 @@ export default function FileBrowser({
 
   const absolutePath =
     isSuccess && data && "absolute_path" in data ? data.absolute_path : null;
-  useEffect(() => {
-    /**
-     * If there is no browser path specified, we've loaded the "default path"
-     * for the collection, so set the browser path to the returned absolute path.
-     */
-    if (!browserPath && absolutePath) {
-      setBrowserPath(absolutePath);
-    }
-  }, [browserPath, absolutePath]);
 
   useEffect(() => {
     transferSettingsDispatch({
@@ -194,7 +190,7 @@ export default function FileBrowser({
       <FileBrowserContext.Provider value={fileBrowser}>
         <FileBrowserDispatchContext.Provider value={fileBrowserDispatch}>
           <PathInput
-            initialPath={browserPath || ""}
+            initialPath={absolutePath || ""}
             onPathChange={(path) => {
               setBrowserPath(path);
             }}
@@ -219,11 +215,11 @@ export default function FileBrowser({
                 colorScheme="gray"
                 size="xs"
                 leftIcon={<Icon as={ArrowUturnUpIcon} />}
-                isDisabled={!browserPath}
+                isDisabled={!absolutePath}
                 onClick={() => {
-                  if (!browserPath) return;
-                  const pathParts = browserPath.split("/");
-                  if (browserPath.endsWith("/")) {
+                  if (!absolutePath) return;
+                  const pathParts = absolutePath.split("/");
+                  if (absolutePath.endsWith("/")) {
                     /**
                      * Account for trailing slash in path.
                      */
@@ -292,7 +288,7 @@ export default function FileBrowser({
                       )}
                       {"DATA" in data &&
                         data.DATA.map((item, i) => {
-                          const base = data.absolute_path || "/";
+                          const base = absolutePath || "/";
                           return (
                             <FileEntry
                               key={i}
