@@ -22,7 +22,6 @@ import {
   CardBody,
   Link,
   Flex,
-  InputRightAddon,
 } from "@chakra-ui/react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import FileBrowser from "@/components/file-browser/FileBrowser";
