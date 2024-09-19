@@ -128,7 +128,7 @@ export default function FileBrowser({
       const response = await transfer.fileOperations.mkdir(
         id,
         {
-          payload: { path: `${browserPath}${name}` },
+          payload: { path: `${absolutePath || ""}${name}` },
         },
         { manager: auth.authorization },
       );
@@ -287,7 +287,9 @@ export default function FileBrowser({
                         </Tr>
                       )}
                       {"DATA" in data &&
-                        data.DATA.map((item, i) => {
+                        data.DATA.sort((a, b) => {
+                          return a.name.localeCompare(b.name);
+                        }).map((item, i) => {
                           const base = absolutePath || "/";
                           return (
                             <FileEntry
