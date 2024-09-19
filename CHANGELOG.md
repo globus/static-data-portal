@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/globus/static-data-portal/compare/1.10.0...1.10.1) (2024-09-19)
+
+
+### Fixes
+
+* Addresses issue causing new folders being prefixed with "undefined", updates file listing to be sorted by "Name" ([#278](https://github.com/globus/static-data-portal/issues/278)) ([1e1431c](https://github.com/globus/static-data-portal/commit/1e1431c8502668d422b856e0db51a902c17574ba))
+
 ## [1.10.0](https://github.com/globus/static-data-portal/compare/1.9.0...1.10.0) (2024-09-18)
 
 
