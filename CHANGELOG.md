@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.0](https://github.com/globus/static-data-portal/compare/1.9.0...1.10.0) (2024-09-18)
+
+
+### Features
+
+* Adds Source Selection support. ([#271](https://github.com/globus/static-data-portal/issues/271)) ([2ea1da9](https://github.com/globus/static-data-portal/commit/2ea1da9c96d0fbd40289855ceb3c8be79c1f13a0))
+
+
+### Fixes
+
+* ensure AuthorizationManager methods are awaited ([#263](https://github.com/globus/static-data-portal/issues/263)) ([1306141](https://github.com/globus/static-data-portal/commit/1306141e20a72432f3a71f09a062a75da58956dd))
+
 ## [1.9.0](https://github.com/globus/static-data-portal/compare/1.8.0...1.9.0) (2024-08-26)
 
 
