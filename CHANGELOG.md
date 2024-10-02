@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.2](https://github.com/globus/static-data-portal/compare/1.10.1...1.10.2) (2024-10-02)
+
+
+### Fixes
+
+* Addresses issue preventing HTTPS download button appearing on file entries. ([#295](https://github.com/globus/static-data-portal/issues/295)) ([27effc7](https://github.com/globus/static-data-portal/commit/27effc7bb4da866284cfa0b396ee4153935cae7b))
+
 ## [1.10.1](https://github.com/globus/static-data-portal/compare/1.10.0...1.10.1) (2024-09-19)
 
 
