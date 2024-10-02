@@ -23,6 +23,8 @@ import FileEntryIcon from "./FileEntryIcon";
 import { TransferSettingsDispatchContext } from "../transfer-settings-context/Context";
 import { FileBrowserContext } from "./Context";
 
+import type { Collection } from "../../hooks/useTransfer";
+
 export default function FileEntry({
   item,
   isSource,
@@ -32,7 +34,7 @@ export default function FileEntry({
   handleRename,
 }: {
   item: FileDocument;
-  endpoint: Record<string, any> | null;
+  endpoint: Collection | null;
   isSource: boolean;
   absolutePath: string;
   openDirectory: () => void;
@@ -152,16 +154,19 @@ export default function FileEntry({
       )}
       {isSource && (
         <Td>
-          {endpoint?.httpsServer && item.type === "file" && (
-            <IconButton
-              as="a"
-              aria-label="Open"
-              href={`${endpoint?.httpsServer}${absolutePath}${item.name}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              size="xs"
-              icon={<Icon as={ArrowUpOnSquareIcon} />}
-            />
+          {endpoint?.https_server && item.type === "file" && (
+            <Tooltip hasArrow label={`Download file "${item.name}" via HTTPS`}>
+              <IconButton
+                as="a"
+                aria-label={`Download "${item.name}" via HTTPS`}
+                href={`${endpoint?.https_server}${absolutePath}${item.name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="xs"
+                variant="outline"
+                icon={<Icon as={ArrowUpOnSquareIcon} />}
+              />
+            </Tooltip>
           )}
         </Td>
       )}

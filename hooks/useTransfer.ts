@@ -16,6 +16,8 @@ export async function fetchCollection(
   return response.json();
 }
 
+export type Collection = Awaited<ReturnType<typeof fetchCollection>>;
+
 export function useCollection(id: string) {
   const auth = useGlobusAuth();
   return useQuery({
