@@ -119,9 +119,9 @@ export default function FileBrowser({
   useEffect(() => {
     transferSettingsDispatch({
       type: isSource ? "SET_SOURCE_PATH" : "SET_DESTINATION_PATH",
-      payload: browserPath,
+      payload: browserPath || absolutePath,
     });
-  }, [transferSettingsDispatch, isSource, browserPath]);
+  }, [transferSettingsDispatch, isSource, browserPath, absolutePath]);
 
   const addDirectoryMutation = useMutation({
     mutationFn: async (name: string) => {
