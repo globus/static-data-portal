@@ -75,7 +75,7 @@ https://github.com/from-static/actions
 
 #### Defined in
 
-[utils/static.ts:8](https://github.com/globus/static-data-portal/blob/1b3fe99b60b8d3ee1c63518384fabe5e257a214e/utils/static.ts#L8)
+[utils/static.ts:9](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/utils/static.ts#L9)
 
 ***
 
@@ -177,21 +177,9 @@ To use the portal's built-in authorization handling, redirects should be sent to
 
 ##### attributes.globus.transfer
 
-> **transfer**: `object`
+> **transfer**: [`TransferCollectionConfiguration`](-internal-.md#transfercollectionconfiguration) \| `object`
 
 Configuration for Transfer-related functionality in the portal.
-
-##### attributes.globus.transfer.collection\_id
-
-> **collection\_id**: `string`
-
-The UUID of the Globus collection to list and transfer files from.
-
-##### attributes.globus.transfer.path?
-
-> `optional` **path**: `string`
-
-The path on the collection to list and transfer files from.
 
 ##### attributes.theme?
 
@@ -212,7 +200,7 @@ the generator will render its `attributes`.
 
 #### Defined in
 
-[utils/static.ts:38](https://github.com/globus/static-data-portal/blob/1b3fe99b60b8d3ee1c63518384fabe5e257a214e/utils/static.ts#L38)
+[utils/static.ts:39](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/utils/static.ts#L39)
 
 ***
 
@@ -228,7 +216,7 @@ the generator will render its `attributes`.
 
 #### Defined in
 
-[utils/static.ts:119](https://github.com/globus/static-data-portal/blob/1b3fe99b60b8d3ee1c63518384fabe5e257a214e/utils/static.ts#L119)
+[utils/static.ts:115](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/utils/static.ts#L115)
 
 ## Modules
 

@@ -1,6 +1,10 @@
 import { STATIC } from "./utils/static";
 
-import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react";
+import {
+  theme as baseTheme,
+  extendTheme,
+  withDefaultColorScheme,
+} from "@chakra-ui/react";
 
 export type ColorDefinition =
   | {
@@ -26,12 +30,12 @@ export type ThemeSettings = {
   colorScheme?: string;
   /**
    * Specific color definitions to use in the theme.
-   * The most common use case is to define a `brand` color.
+   * The most common use case is to define a `primary` color.
    * @example
    * ```json
    * {
    *   "colors": {
-   *     "brand": {
+   *     "primary": {
    *      "50": "#E5F2FF",
    *      "100": "#B8DBFF",
    *      "200": "#8AC4FF",
@@ -56,7 +60,7 @@ export type ThemeSettings = {
   extendTheme?: Parameters<typeof extendTheme>[0];
 };
 
-const brand: ColorDefinition = {
+const primary: ColorDefinition = {
   "50": "#E5F2FF",
   "100": "#B8DBFF",
   "200": "#8AC4FF",
@@ -69,12 +73,20 @@ const brand: ColorDefinition = {
   "900": "#001933",
 };
 
-let colorScheme = {};
-if (STATIC.data.attributes.theme?.colorScheme) {
-  colorScheme = withDefaultColorScheme({
-    colorScheme: STATIC.data.attributes.theme?.colorScheme,
-  });
-}
+const secondary = baseTheme.colors.gray;
+
+const colorScheme = withDefaultColorScheme({
+  colorScheme:
+    /**
+     * Ensure legacy "brand" color scheme uses the new "primary" color scheme.
+     */
+    STATIC.data.attributes.theme?.colorScheme === "brand"
+      ? "primary"
+      : /**
+         * If no color scheme is provided, use the "primary" color scheme.
+         */
+        STATIC.data.attributes.theme?.colorScheme || "primary",
+});
 
 const activeLabelStyles = {
   transform: "scale(0.85) translateY(-24px)",
@@ -116,7 +128,11 @@ const theme = extendTheme(
   },
   {
     colors: {
-      brand,
+      /**
+       * Allow the legacy "brand" to be used as the primary color.
+       */
+      primary: STATIC.data.attributes.theme?.colors?.brand || primary,
+      secondary,
       ...(STATIC.data.attributes.theme?.colors || {}),
     },
   },

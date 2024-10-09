@@ -7,9 +7,6 @@
   "data": {
     "version": "1.0.0",
     "attributes": {
-      "theme": {
-        "colorScheme": "brand"
-      },
       "content": {
         "title": "Globus : Data Distribution Portal",
         "subtitle": "An example of a data distribution portal built with Globus.",

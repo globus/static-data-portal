@@ -12,7 +12,7 @@
 
 #### Defined in
 
-[theme.ts:5](https://github.com/globus/static-data-portal/blob/1b3fe99b60b8d3ee1c63518384fabe5e257a214e/theme.ts#L5)
+[theme.ts:9](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/theme.ts#L9)
 
 ***
 
@@ -22,7 +22,7 @@
 
 #### Defined in
 
-[components/Navigation.tsx:21](https://github.com/globus/static-data-portal/blob/1b3fe99b60b8d3ee1c63518384fabe5e257a214e/components/Navigation.tsx#L21)
+[components/Navigation.tsx:21](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/components/Navigation.tsx#L21)
 
 ***
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[components/Navigation.tsx:33](https://github.com/globus/static-data-portal/blob/1b3fe99b60b8d3ee1c63518384fabe5e257a214e/components/Navigation.tsx#L33)
+[components/Navigation.tsx:33](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/components/Navigation.tsx#L33)
 
 ***
 
@@ -98,14 +98,14 @@ https://v2.chakra-ui.com/docs/styled-system/theme#colors for available color sch
 > `optional` **colors**: [`Record`](-internal-.md#recordk-t)\<`string`, [`ColorDefinition`](-internal-.md#colordefinition)\>
 
 Specific color definitions to use in the theme.
-The most common use case is to define a `brand` color.
+The most common use case is to define a `primary` color.
 
 ###### Example
 
 ```json
 {
   "colors": {
-    "brand": {
+    "primary": {
      "50": "#E5F2FF",
      "100": "#B8DBFF",
      "200": "#8AC4FF",
@@ -137,7 +137,38 @@ https://v2.chakra-ui.com/docs/styled-system/customize-theme#using-theme-extensio
 
 #### Defined in
 
-[theme.ts:20](https://github.com/globus/static-data-portal/blob/1b3fe99b60b8d3ee1c63518384fabe5e257a214e/theme.ts#L20)
+[theme.ts:24](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/theme.ts#L24)
+
+***
+
+### TransferCollectionConfiguration
+
+> **TransferCollectionConfiguration**: `object`
+
+#### Type declaration
+
+##### collection\_id
+
+> **collection\_id**: `string`
+
+The UUID of the Globus collection to list and transfer files from.
+
+##### label?
+
+> `optional` **label**: `string`
+
+A human-readable label for the Source Selector. If not provided,
+the Collection's `display_name` (and `path`) will be used.
+
+##### path?
+
+> `optional` **path**: `string`
+
+The path on the collection to list and transfer files from.
+
+#### Defined in
+
+[pages/transfer.tsx:45](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/pages/transfer.tsx#L45)
 
 ## Functions
 
