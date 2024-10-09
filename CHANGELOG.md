@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.0](https://github.com/globus/static-data-portal/compare/1.10.2...1.11.0) (2024-10-09)
+
+
+### Features
+
+* **Theming:** Use "primary" and "secondary" color palettes for theming instead of "brand". ([#319](https://github.com/globus/static-data-portal/issues/319)) ([2a9c5f6](https://github.com/globus/static-data-portal/commit/2a9c5f67d28e7a0433648880166691fbbdca8e73))
+
+
+### Fixes
+
+* Addresses an issue preventing Transfers being initiated to the "server default" path on a destination collection. ([#312](https://github.com/globus/static-data-portal/issues/312)) ([e72ff70](https://github.com/globus/static-data-portal/commit/e72ff70837edb6bca3090b3ff38733cdb32234e5))
+
 ## [1.10.2](https://github.com/globus/static-data-portal/compare/1.10.1...1.10.2) (2024-10-02)
 
 
