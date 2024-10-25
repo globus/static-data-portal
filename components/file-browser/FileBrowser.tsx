@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 
 import {
   Table,
@@ -24,10 +24,11 @@ import {
   ArrowUturnUpIcon,
   FolderPlusIcon,
 } from "@heroicons/react/24/outline";
+import { useShallow } from "zustand/react/shallow";
 import { transfer } from "@globus/sdk";
 
 import { useGlobusAuth } from "@globus/react-auth-context";
-import { TransferSettingsDispatchContext } from "../transfer-settings-context/Context";
+import { useGlobusTransferStore } from "../store/globus-transfer";
 
 import FileBrowserViewMenu from "./FileBrowserViewMenu";
 import FileBrowserError from "./FileBrowserError";
@@ -44,7 +45,6 @@ import type {
 
 import { useCollection, useListDirectory } from "@/hooks/useTransfer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useTransferSettings } from "../transfer-settings-context/useTransferSettings";
 import StartTransferButton from "./StartTransferButton";
 import PathInput from "./PathInput";
 
@@ -59,15 +59,12 @@ export default function FileBrowser({
 }) {
   const auth = useGlobusAuth();
   const queryClient = useQueryClient();
+  const transferStore = useGlobusTransferStore();
 
   const [fileBrowser, fileBrowserDispatch] = useReducer(
     fileBrowserReducer,
     initialState,
   );
-
-  const transferSettings = useTransferSettings();
-
-  const transferSettingsDispatch = useContext(TransferSettingsDispatchContext);
 
   const isSource = variant === "source";
 
@@ -117,11 +114,34 @@ export default function FileBrowser({
     isSuccess && data && "absolute_path" in data ? data.absolute_path : null;
 
   useEffect(() => {
-    transferSettingsDispatch({
-      type: isSource ? "SET_SOURCE_PATH" : "SET_DESTINATION_PATH",
-      payload: browserPath || absolutePath,
-    });
-  }, [transferSettingsDispatch, isSource, browserPath, absolutePath]);
+    const path = browserPath || absolutePath;
+    if (isSource) {
+      transferStore.setSourcePath(path);
+    } else {
+      transferStore.setDestinationPath(path);
+    }
+  }, [
+    transferStore.setSourcePath,
+    transferStore.setDestinationPath,
+    isSource,
+    browserPath,
+    absolutePath,
+  ]);
+
+  /**
+   * Change the browser directory based on user interaction.
+   */
+  function changeBrowserDirectory(path: string) {
+    /**
+     * If the user is changing the directory on the source, where items might
+     * be selected for transfer, reset the selected items.
+     */
+    if (isSource) {
+      transferStore.resetItems();
+    }
+    setShowAddDirectory(false);
+    setBrowserPath(path);
+  }
 
   const addDirectoryMutation = useMutation({
     mutationFn: async (name: string) => {
@@ -190,10 +210,8 @@ export default function FileBrowser({
       <FileBrowserContext.Provider value={fileBrowser}>
         <FileBrowserDispatchContext.Provider value={fileBrowserDispatch}>
           <PathInput
-            initialPath={absolutePath || ""}
-            onPathChange={(path) => {
-              setBrowserPath(path);
-            }}
+            initialPath={absolutePath || browserPath || ""}
+            onPathChange={(path) => changeBrowserDirectory(path)}
           />
           <Flex justify="end" my={2}>
             <FileBrowserViewMenu />
@@ -226,7 +244,7 @@ export default function FileBrowser({
                     pathParts.pop();
                   }
                   pathParts.pop();
-                  setBrowserPath(pathParts.join("/") + "/");
+                  changeBrowserDirectory(pathParts.join("/") + "/");
                 }}
               >
                 Up One Folder
@@ -299,11 +317,7 @@ export default function FileBrowser({
                               endpoint={endpoint}
                               absolutePath={base}
                               openDirectory={() => {
-                                transferSettingsDispatch({
-                                  type: "RESET_ITEMS",
-                                });
-                                setShowAddDirectory(false);
-                                setBrowserPath(`${base}${item.name}/`);
+                                changeBrowserDirectory(`${base}${item.name}/`);
                               }}
                               handleRename={async (updatedName: string) => {
                                 renameMutation.mutate({
@@ -321,21 +335,7 @@ export default function FileBrowser({
 
                 <Box position="sticky" bottom="0">
                   {isSource ? (
-                    <Box p={2} bgColor="gray.100">
-                      <Text fontSize="sm">
-                        {transferSettings.items.length > 0 ? (
-                          <>
-                            <Text as="strong">
-                              {transferSettings.items.length}
-                            </Text>{" "}
-                            item{transferSettings.items.length > 1 ? "s" : ""}{" "}
-                            selected for transfer.
-                          </>
-                        ) : (
-                          <Text as="em">No items selected for transfer.</Text>
-                        )}
-                      </Text>
-                    </Box>
+                    <SelectedItemsTracker />
                   ) : (
                     <Flex p={2} bgColor="gray.100" justify="end">
                       <StartTransferButton />
@@ -348,5 +348,23 @@ export default function FileBrowser({
         </FileBrowserDispatchContext.Provider>
       </FileBrowserContext.Provider>
     </>
+  );
+}
+
+function SelectedItemsTracker() {
+  const items = useGlobusTransferStore(useShallow((state) => state.items));
+  return (
+    <Box p={2} bgColor="gray.100">
+      <Text fontSize="sm">
+        {items.length > 0 ? (
+          <>
+            <Text as="strong">{items.length}</Text> item
+            {items.length > 1 ? "s" : ""} selected for transfer.
+          </>
+        ) : (
+          <Text as="em">No items selected for transfer.</Text>
+        )}
+      </Text>
+    </Box>
   );
 }

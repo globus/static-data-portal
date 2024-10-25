@@ -34,7 +34,6 @@ export default function PathInput({
 
   const triggerPathChange = () => {
     onPathChange(path);
-    setPath("");
   };
 
   const hasChanged = path !== initialPath;
