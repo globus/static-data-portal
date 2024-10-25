@@ -47,6 +47,7 @@ import { useCollection, useListDirectory } from "@/hooks/useTransfer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StartTransferButton from "./StartTransferButton";
 import PathInput from "./PathInput";
+import { hasHTTPSSupport } from "./HTTPSActions";
 
 export default function FileBrowser({
   variant,
@@ -279,6 +280,7 @@ export default function FileBrowser({
                     <Thead>
                       <Tr>
                         {isSource && <Td />}
+                        {isSource && hasHTTPSSupport(endpoint) && <Td />}
                         <Th>Name</Th>
                         {fileBrowser.view.columns.includes("last_modified") && (
                           <Th>Last Modified</Th>
@@ -286,7 +288,6 @@ export default function FileBrowser({
                         {fileBrowser.view.columns.includes("size") && (
                           <Th>Size</Th>
                         )}
-                        {isSource && <Td />}
                       </Tr>
                     </Thead>
                     <Tbody>
