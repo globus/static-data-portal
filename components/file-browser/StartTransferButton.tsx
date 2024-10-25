@@ -1,6 +1,5 @@
 import React from "react";
 import { useGlobusAuth } from "@globus/react-auth-context";
-import { useTransferSettings } from "../transfer-settings-context/useTransferSettings";
 import { STATIC } from "@/utils/static";
 import { Flex, Spacer, Icon, Button, useToast, Link } from "@chakra-ui/react";
 import { transfer, webapp } from "@globus/sdk";
@@ -8,19 +7,20 @@ import {
   ArrowTopRightOnSquareIcon,
   PlayCircleIcon,
 } from "@heroicons/react/24/outline";
+import { useGlobusTransferStore } from "../store/globus-transfer";
 
 export default function StartTransferButton() {
-  const transferSettings = useTransferSettings();
+  const transferStore = useGlobusTransferStore();
   const auth = useGlobusAuth();
   const toast = useToast();
   const [inflightTask, setInflightTask] = React.useState(false);
 
   async function handleStartTransfer() {
     if (
-      !transferSettings.source ||
-      !transferSettings.source_path ||
-      !transferSettings.destination_path ||
-      !transferSettings.destination
+      !transferStore.source ||
+      !transferStore.source_path ||
+      !transferStore.destination_path ||
+      !transferStore.destination
     ) {
       return;
     }
@@ -39,13 +39,13 @@ export default function StartTransferButton() {
         payload: {
           submission_id: id.value,
           label: `Transfer from ${STATIC.data.attributes.content.title}`,
-          source_endpoint: transferSettings.source.id,
-          destination_endpoint: transferSettings.destination.id,
-          DATA: transferSettings.items.map((item) => {
+          source_endpoint: transferStore.source.id,
+          destination_endpoint: transferStore.destination.id,
+          DATA: transferStore.items.map((item) => {
             return {
               DATA_TYPE: "transfer_item",
-              source_path: `${transferSettings.source_path}${item.name}`,
-              destination_path: `${transferSettings.destination_path}${item.name}`,
+              source_path: `${transferStore.source_path}${item.name}`,
+              destination_path: `${transferStore.destination_path}${item.name}`,
               recursive: transfer.utils.isDirectory(item),
             };
           }),
@@ -94,9 +94,9 @@ export default function StartTransferButton() {
     <Button
       onClick={() => handleStartTransfer()}
       isDisabled={
-        !transferSettings.source ||
-        !transferSettings.destination ||
-        !transferSettings.items.length
+        !transferStore.source ||
+        !transferStore.destination ||
+        !transferStore.items.length
       }
       leftIcon={<Icon as={PlayCircleIcon} boxSize={6} />}
       isLoading={inflightTask}

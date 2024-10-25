@@ -20,8 +20,9 @@ import { transfer } from "@globus/sdk";
 import type { FileDocument } from "@globus/sdk/services/transfer/service/file-operations";
 import FileNameForm from "./FileNameForm";
 import FileEntryIcon from "./FileEntryIcon";
-import { TransferSettingsDispatchContext } from "../transfer-settings-context/Context";
 import { FileBrowserContext } from "./Context";
+
+import { useGlobusTransferStore } from "../store/globus-transfer";
 
 import type { Collection } from "../../hooks/useTransfer";
 
@@ -40,23 +41,24 @@ export default function FileEntry({
   openDirectory: () => void;
   handleRename: (name: string) => void;
 }) {
+  const transferStore = useGlobusTransferStore();
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showEditView, setShowEditView] = useState(false);
   const menuRef = React.useRef<HTMLTableRowElement>(null);
-  const transferSettingsDispatch = useContext(TransferSettingsDispatchContext);
   const fileBrowser = useContext(FileBrowserContext);
   const displayContextMenu: MouseEventHandler<
     HTMLButtonElement | HTMLParagraphElement
   > = (event) => {
-    if (!isSource && !showEditView) {
-      event.preventDefault();
-      setContextMenuOpen(true);
-      if (menuRef.current?.parentElement) {
-        const { parentElement } = menuRef.current;
-        parentElement.style.top = `${event.pageY}px`;
-        parentElement.style.left = `${event.pageX}px`;
-      }
+    event.preventDefault();
+    if (showEditView) {
+      return;
+    }
+    setContextMenuOpen(true);
+    if (menuRef.current?.parentElement) {
+      const { parentElement } = menuRef.current;
+      parentElement.style.top = `${event.pageY}px`;
+      parentElement.style.left = `${event.pageX}px`;
     }
   };
   const includeLastModified =
@@ -67,37 +69,39 @@ export default function FileEntry({
   const isDirectory = transfer.utils.isDirectory(item);
 
   return (
-    <Tr onContextMenu={displayContextMenu}>
+    <Tr
+      onContextMenu={displayContextMenu}
+      style={{
+        contentVisibility: "auto",
+        containIntrinsicSize: "auto 60px",
+      }}
+    >
       {isSource && (
         <Td>
           <Checkbox
             onChange={(e) => {
               if (e.target.checked) {
-                transferSettingsDispatch({
-                  type: "ADD_ITEM",
-                  payload: item,
-                });
+                transferStore.addItem(item);
               } else {
-                transferSettingsDispatch({
-                  type: "REMOVE_ITEM",
-                  payload: item,
-                });
+                transferStore.removeItem(item);
               }
             }}
           />
         </Td>
       )}
       <Td>
-        <Menu
-          isOpen={contextMenuOpen}
-          onClose={() => {
-            setContextMenuOpen(false);
-          }}
-        >
-          <MenuList ref={menuRef}>
-            <MenuItem onClick={() => setShowEditView(true)}>Rename</MenuItem>
-          </MenuList>
-        </Menu>
+        {!isSource && (
+          <Menu
+            isOpen={contextMenuOpen}
+            onClose={() => {
+              setContextMenuOpen(false);
+            }}
+          >
+            <MenuList ref={menuRef}>
+              <MenuItem onClick={() => setShowEditView(true)}>Rename</MenuItem>
+            </MenuList>
+          </Menu>
+        )}
         <HStack>
           {!showEditView && <FileEntryIcon entry={item} />}
           {isLoading ? (

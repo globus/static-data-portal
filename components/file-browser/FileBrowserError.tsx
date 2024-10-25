@@ -25,6 +25,7 @@ import {
 } from "@globus/sdk/core/errors";
 
 import { type DirectoryListingError } from "@globus/sdk/services/transfer/service/file-operations";
+import { useGlobusTransferStore } from "../store/globus-transfer";
 
 const ErrorToggle = ({
   error,
@@ -67,6 +68,7 @@ export default function FileBrowserError({
   error: DirectoryListingError | unknown;
 }) {
   const auth = useGlobusAuth();
+  const transferStore = useGlobusTransferStore();
 
   const isWellFormed = isErrorWellFormed(error);
 
@@ -83,9 +85,10 @@ export default function FileBrowserError({
               You'll need to grant access to this resource in order to proceed.
             </Text>
             <Button
-              onClick={async () =>
-                await auth.authorization?.handleConsentRequiredError(error)
-              }
+              onClick={async () => {
+                transferStore.resetItems();
+                await auth.authorization?.handleConsentRequiredError(error);
+              }}
               size="sm"
             >
               Consent
@@ -133,11 +136,12 @@ export default function FileBrowserError({
             </List>
             <Box>
               <Button
-                onClick={() =>
+                onClick={() => {
+                  transferStore.resetItems();
                   auth.authorization?.handleAuthorizationRequirementsError(
                     error,
-                  )
-                }
+                  );
+                }}
                 size="sm"
               >
                 Address
@@ -164,7 +168,10 @@ export default function FileBrowserError({
               Please try logging in again to refresh your credentials.
             </Text>
             <Button
-              onClick={async () => await auth.authorization?.login()}
+              onClick={async () => {
+                transferStore.resetItems();
+                await auth.authorization?.login();
+              }}
               size="sm"
             >
               Log In

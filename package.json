@@ -31,7 +31,8 @@
     "lodash": "^4.17.21",
     "next": "^14.2.15",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
     "@globus/types": "^0.0.7",
