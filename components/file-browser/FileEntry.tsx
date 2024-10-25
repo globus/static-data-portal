@@ -3,8 +3,6 @@ import {
   Button,
   Checkbox,
   HStack,
-  Icon,
-  IconButton,
   Menu,
   MenuItem,
   MenuList,
@@ -14,7 +12,6 @@ import {
   Tooltip,
   Tr,
 } from "@chakra-ui/react";
-import { ArrowUpOnSquareIcon } from "@heroicons/react/24/outline";
 import { transfer } from "@globus/sdk";
 
 import type { FileDocument } from "@globus/sdk/services/transfer/service/file-operations";
@@ -25,6 +22,8 @@ import { FileBrowserContext } from "./Context";
 import { useGlobusTransferStore } from "../store/globus-transfer";
 
 import type { Collection } from "../../hooks/useTransfer";
+import { DateWithTooltip } from "./DateWithTooltip";
+import HTTPSActions, { hasHTTPSSupport } from "./HTTPSActions";
 
 export default function FileEntry({
   item,
@@ -89,6 +88,15 @@ export default function FileEntry({
           />
         </Td>
       )}
+      {isSource && hasHTTPSSupport(endpoint) && (
+        <Td>
+          <HTTPSActions
+            item={item}
+            endpoint={endpoint}
+            absolutePath={absolutePath}
+          />
+        </Td>
+      )}
       <Td>
         {!isSource && (
           <Menu
@@ -130,14 +138,7 @@ export default function FileEntry({
       {includeLastModified && (
         <Td>
           {item.last_modified ? (
-            <Tooltip label={item.last_modified} variant="outline" hasArrow>
-              <Text _hover={{ cursor: "help" }}>
-                {new Intl.DateTimeFormat("en-US", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }).format(new Date(item.last_modified))}
-              </Text>
-            </Tooltip>
+            <DateWithTooltip value={item.last_modified} />
           ) : (
             <Text>&mdash;</Text>
           )}
@@ -153,24 +154,6 @@ export default function FileEntry({
             </Tooltip>
           ) : (
             <Text>&mdash;</Text>
-          )}
-        </Td>
-      )}
-      {isSource && (
-        <Td>
-          {endpoint?.https_server && item.type === "file" && (
-            <Tooltip hasArrow label={`Download file "${item.name}" via HTTPS`}>
-              <IconButton
-                as="a"
-                aria-label={`Download "${item.name}" via HTTPS`}
-                href={`${endpoint?.https_server}${absolutePath}${item.name}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                size="xs"
-                variant="outline"
-                icon={<Icon as={ArrowUpOnSquareIcon} />}
-              />
-            </Tooltip>
           )}
         </Td>
       )}
