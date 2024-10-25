@@ -120,7 +120,13 @@ export default function FileBrowser({
     } else {
       transferStore.setDestinationPath(path);
     }
-  }, [isSource, browserPath, absolutePath]);
+  }, [
+    transferStore.setSourcePath,
+    transferStore.setDestinationPath,
+    isSource,
+    browserPath,
+    absolutePath,
+  ]);
 
   /**
    * Change the browser directory based on user interaction.
@@ -205,7 +211,7 @@ export default function FileBrowser({
         <FileBrowserDispatchContext.Provider value={fileBrowserDispatch}>
           <PathInput
             initialPath={absolutePath || browserPath || ""}
-            onPathChange={changeBrowserDirectory}
+            onPathChange={(path) => changeBrowserDirectory(path)}
           />
           <Flex justify="end" my={2}>
             <FileBrowserViewMenu />
