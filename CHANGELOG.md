@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.0](https://github.com/globus/static-data-portal/compare/1.11.0...1.12.0) (2024-10-25)
+
+
+### Features
+
+* Adds button to open files in a new tab when collections support HTTPS. ([#337](https://github.com/globus/static-data-portal/issues/337)) ([d6cc729](https://github.com/globus/static-data-portal/commit/d6cc729252243fd79c434f4dd8fdf2041803c7b0))
+
+
+### Fixes
+
+* use zustand for state management and resolve various state issues in the File Browser ([#335](https://github.com/globus/static-data-portal/issues/335)) ([6b221e5](https://github.com/globus/static-data-portal/commit/6b221e598067c5a945582a50820618d4b3bef503))
+
 ## [1.11.0](https://github.com/globus/static-data-portal/compare/1.10.2...1.11.0) (2024-10-09)
 
 
