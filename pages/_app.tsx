@@ -27,6 +27,9 @@ info.addClientInfo(CLIENT_INFO);
 const redirect = getRedirectUri();
 const client = STATIC.data.attributes.globus.application.client_id;
 const scopes = "urn:globus:auth:scope:transfer.api.globus.org:all";
+const storage = STATIC.data.attributes.features?.useLocalStorage
+  ? globalThis.localStorage
+  : undefined;
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -87,6 +90,7 @@ export default function App({ Component, pageProps }: AppProps) {
           redirect={redirect}
           client={client}
           scopes={scopes}
+          storage={storage}
         >
           <QueryProvider>
             <Layout>
