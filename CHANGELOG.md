@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/globus/static-data-portal/compare/1.12.0...2.0.0) (2024-10-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* Use in-memory based storage for authorization tokens, by default. ([#347](https://github.com/globus/static-data-portal/issues/347))
+
+### Features
+
+* Use in-memory based storage for authorization tokens, by default. ([#347](https://github.com/globus/static-data-portal/issues/347)) ([c6ac0f8](https://github.com/globus/static-data-portal/commit/c6ac0f881531cd2dd7e5cfc234b6b6065d77b3b5))
+
 ## [1.12.0](https://github.com/globus/static-data-portal/compare/1.11.0...1.12.0) (2024-10-25)
 
 
