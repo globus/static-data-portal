@@ -1,12 +1,12 @@
-import { test as setup } from "@playwright/test";
-import "dotenv/config";
-
-const AUTH_FILE = "playwright/.auth/user.json";
+import { Page } from "@playwright/test";
 
 const USERNAME = process.env.TEST_GLOBUS_ID_USERNAME;
 const PASSWORD = process.env.TEST_GLOBUS_ID_PASSWORD;
 
-setup("authenticate", async ({ page }) => {
+/**
+ * Authenticate with the environment provided credentials using the UI.
+ */
+export async function authenticate(page: Page) {
   if (!USERNAME || !PASSWORD) {
     throw Error(
       "TEST_GLOBUS_ID_USERNAME and TEST_GLOBUS_ID_PASSWORD are required for this test.",
@@ -57,7 +57,4 @@ setup("authenticate", async ({ page }) => {
   await page.getByRole("button", {
     name: process.env.TEST_GLOBUS_ID_USERNAME,
   });
-  // End of authentication steps.
-
-  await page.context().storageState({ path: AUTH_FILE });
-});
+}
