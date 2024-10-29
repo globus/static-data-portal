@@ -44,6 +44,9 @@ export type Data = {
    */
   version: string;
   attributes: {
+    features?: {
+      useLocalStorage?: boolean;
+    };
     theme?: ThemeSettings;
     content: {
       /**
