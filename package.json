@@ -11,7 +11,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "docs": "npx typedoc"
+    "docs": "npx typedoc",
+    "test": "jest"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",
@@ -37,8 +38,12 @@
   "devDependencies": {
     "@globus/types": "^0.0.7",
     "@heroicons/react": "^2.1.5",
+    "@jest/globals": "^29.7.0",
     "@playwright/test": "^1.48.1",
     "@tanstack/eslint-plugin-query": "^5.59.7",
+    "@testing-library/jest-dom": "^6.6.2",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -59,7 +64,10 @@
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "glob": "^11.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "prettier": "3.3.3",
+    "ts-node": "^10.9.2",
     "typedoc": "^0.26.10",
     "typedoc-plugin-markdown": "^4.2.9",
     "typedoc-plugin-missing-exports": "^3.0.0",
