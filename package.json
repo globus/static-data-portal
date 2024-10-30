@@ -33,7 +33,7 @@
     "next": "^14.2.15",
     "react": "^18",
     "react-dom": "^18",
-    "zustand": "^5.0.0"
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@globus/types": "^0.0.7",
