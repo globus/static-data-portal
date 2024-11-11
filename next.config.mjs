@@ -1,4 +1,4 @@
-import STATIC from "./static.json" assert { type: "json" };
+import STATIC from "./static.json" with { type: "json" };
 
 import mdx from "@next/mdx";
 
