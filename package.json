@@ -21,7 +21,7 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@globus/react-auth-context": "^0.0.9",
-    "@globus/sdk": "5.0.0",
+    "@globus/sdk": "5.1.0",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^14.2.14",
