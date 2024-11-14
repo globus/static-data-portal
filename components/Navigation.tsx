@@ -90,11 +90,7 @@ export default function Navigation() {
   const user = auth.authorization?.user;
   const nav = NAVIGATION;
   return (
-    <HStack
-      justify="space-between"
-      fontSize="md"
-      bgGradient="linear(to-b, black, blackAlpha.600 80%, blackAlpha.50)"
-    >
+    <HStack justify="space-between" fontSize="md">
       <Box py={2} px={4}>
         <Link as={NextLink} href="/" display={isCondensed ? "block" : "none"}>
           <Text fontWeight="bold" fontSize="lg" textColor="white">
