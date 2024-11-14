@@ -359,8 +359,22 @@ function SelectedItemsTracker() {
       <Text fontSize="sm">
         {items.length > 0 ? (
           <>
-            <Text as="strong">{items.length}</Text> item
-            {items.length > 1 ? "s" : ""} selected for transfer.
+            <Flex>
+              <Text>
+                <Text as="strong">{items.length}</Text> item
+                {items.length > 1 ? "s" : ""} selected for transfer.
+              </Text>
+              <Spacer />
+              <Button
+                size="xs"
+                variant="ghost"
+                onClick={() => {
+                  useGlobusTransferStore.getState().resetItems();
+                }}
+              >
+                Clear Selected
+              </Button>
+            </Flex>
           </>
         ) : (
           <Text as="em">No items selected for transfer.</Text>

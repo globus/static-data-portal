@@ -78,6 +78,7 @@ export default function FileEntry({
       {isSource && (
         <Td>
           <Checkbox
+            isChecked={transferStore.items.includes(item)}
             onChange={(e) => {
               if (e.target.checked) {
                 transferStore.addItem(item);

@@ -11,15 +11,19 @@ import {
   Stack,
   CardBody,
   Text,
-  InputRightElement,
   Spinner,
   InputLeftAddon,
+  FormControl,
+  FormLabel,
+  Switch,
+  Tooltip,
 } from "@chakra-ui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { transfer } from "@globus/sdk";
 
 import { useGlobusAuth } from "@globus/react-auth-context";
 import throttle from "lodash/throttle";
+import { QuestionIcon } from "@chakra-ui/icons";
 
 type Endpoint = Record<string, any>;
 
@@ -31,6 +35,7 @@ export function CollectionSearch({
   const auth = useGlobusAuth();
   const [results, setResults] = useState<Endpoint[]>([]);
   const [keyword, setKeyword] = useState<string | null>(null);
+  const [scope, setScope] = useState<string>("hide-no-permissions");
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const search = useCallback(
@@ -44,6 +49,7 @@ export function CollectionSearch({
              */
             filter_non_functional: false,
             filter_fulltext: query,
+            filter_scope: scope,
             limit: 20,
           },
         },
@@ -52,8 +58,8 @@ export function CollectionSearch({
       const data = await response.json();
       setResults(data && "DATA" in data ? data.DATA : []);
       setIsRefreshing(false);
-    }, 300),
-    [],
+    }, 500),
+    [scope],
   );
 
   useEffect(() => {
@@ -86,13 +92,32 @@ export function CollectionSearch({
             onInput={(e) => handleSearch(e)}
             placeholder="e.g. Globus Tutorial Collection"
           />
-          {isRefreshing && (
-            <InputRightElement>
-              <Spinner />
-            </InputRightElement>
-          )}
         </InputGroup>
+        <FormControl display="flex" alignItems="center" my="2">
+          <Switch
+            id="search-all"
+            isChecked={scope === "all"}
+            onChange={() => {
+              setScope(scope === "all" ? "hide-no-permissions" : "all");
+            }}
+            mr={2}
+          />
+          <FormLabel htmlFor="search-all" mb="0">
+            Search All Collections
+          </FormLabel>
+          <Tooltip label="By default, we'll hide collections you don't have Transfer-related permissions on. If you can't find what you're looking for, you can search all public collections.">
+            <Icon as={QuestionIcon} />
+          </Tooltip>
+        </FormControl>
+        <Box mb={2}>
+          {isRefreshing && (
+            <Text fontSize="sm">
+              <Spinner size="xs" /> Fetching results...
+            </Text>
+          )}
+        </Box>
       </Box>
+
       {results.map((result) => (
         <Card
           size="sm"
