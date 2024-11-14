@@ -12,9 +12,10 @@ export default function Header() {
   const title = STATIC.data.attributes.content.title;
   const subtitle = STATIC.data.attributes.content?.subtitle;
 
-  const image =
-    getAbsoluteURL(STATIC.data.attributes.content.image) ||
-    "_default/nasa-Q1p7bh3SHj8-unsplash.jpg";
+  const image = getAbsoluteURL(
+    STATIC.data.attributes.content.image ||
+      "/_default/nasa-Q1p7bh3SHj8-unsplash.jpg",
+  );
 
   return (
     <Box
