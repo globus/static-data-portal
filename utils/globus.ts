@@ -4,7 +4,7 @@ import { FileDocument } from "@globus/sdk/cjs/services/transfer/service/file-ope
 export const CLIENT_INFO = {
   product: "@globus/static-data-portal",
   // x-release-please-start-version
-  version: "2.0.0",
+  version: "2.1.0",
   // x-release-please-end
 };
 
