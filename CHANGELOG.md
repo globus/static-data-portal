@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.1.0](https://github.com/globus/static-data-portal/compare/2.0.0...2.1.0) (2024-11-15)
+
+
+### Features
+
+* Adds "Clear Selected" button to the source file browser. ([79058b6](https://github.com/globus/static-data-portal/commit/79058b6b2828a7c30f4c9552e42e7a730d7ca9c5))
+* Adds "Search All Collections" toggle in the search panel. ([79058b6](https://github.com/globus/static-data-portal/commit/79058b6b2828a7c30f4c9552e42e7a730d7ca9c5))
+* Updates Destination search to hide collections the user does not have Transfer-related permissions on (by default) ([#370](https://github.com/globus/static-data-portal/issues/370)) ([79058b6](https://github.com/globus/static-data-portal/commit/79058b6b2828a7c30f4c9552e42e7a730d7ca9c5))
+
+
+### Fixes
+
+* Address issue causing the default header image not rendering on deep pages when portal was published. ([#369](https://github.com/globus/static-data-portal/issues/369)) ([ac3b7d2](https://github.com/globus/static-data-portal/commit/ac3b7d23abbe241968b98aec993479691148ff71))
+
 ## [2.0.0](https://github.com/globus/static-data-portal/compare/1.12.0...2.0.0) (2024-10-29)
 
 
