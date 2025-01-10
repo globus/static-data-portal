@@ -1,4 +1,4 @@
-[**@globus/static-data-portal**](README.md) • **Docs**
+[**@globus/static-data-portal**](README.md)
 
 ***
 
@@ -8,21 +8,17 @@
 
 ### ColorDefinition
 
-> **ColorDefinition**: `object` \| `string`
+> **ColorDefinition**: \{ `100`: `string`; `200`: `string`; `300`: `string`; `400`: `string`; `50`: `string`; `500`: `string`; `600`: `string`; `700`: `string`; `800`: `string`; `900`: `string`; \} \| `string`
 
-#### Defined in
-
-[theme.ts:9](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/theme.ts#L9)
+Defined in: [theme.ts:9](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/theme.ts#L9)
 
 ***
 
 ### NavigationItem
 
-> **NavigationItem**: `object` \| `object`
+> **NavigationItem**: \{ `authenticated`: `boolean`; `label`: `string`; `to`: `string`; \} \| \{ `authenticated`: `boolean`; `href`: `string`; `label`: `string`; \}
 
-#### Defined in
-
-[components/Navigation.tsx:21](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/components/Navigation.tsx#L21)
+Defined in: [components/Navigation.tsx:21](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/components/Navigation.tsx#L21)
 
 ***
 
@@ -30,15 +26,13 @@
 
 > **NavigationOptions**: `object`
 
+Defined in: [components/Navigation.tsx:33](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/components/Navigation.tsx#L33)
+
 #### Type declaration
 
 ##### items
 
 > **items**: [`NavigationItem`](-internal-.md#navigationitem)[]
-
-#### Defined in
-
-[components/Navigation.tsx:33](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/components/Navigation.tsx#L33)
 
 ***
 
@@ -46,21 +40,21 @@
 
 > **Parameters**\<`T`\>: `T` *extends* (...`args`) => `any` ? `P` : `never`
 
+Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1633
+
 Obtain the parameters of a function type in a tuple
 
 #### Type Parameters
 
 • **T** *extends* (...`args`) => `any`
 
-#### Defined in
-
-node\_modules/typescript/lib/lib.es5.d.ts:1633
-
 ***
 
 ### Record\<K, T\>
 
 > **Record**\<`K`, `T`\>: `{ [P in K]: T }`
+
+Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1606
 
 Construct a type with a set of properties K of type T
 
@@ -70,28 +64,15 @@ Construct a type with a set of properties K of type T
 
 • **T**
 
-#### Defined in
-
-node\_modules/typescript/lib/lib.es5.d.ts:1606
-
 ***
 
 ### ThemeSettings
 
 > **ThemeSettings**: `object`
 
+Defined in: [theme.ts:24](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/theme.ts#L24)
+
 #### Type declaration
-
-##### colorScheme?
-
-> `optional` **colorScheme**: `string`
-
-Apply a default color scheme to all components.
-This supports all Chakra UI color schemes and is not provided by default.
-
-###### See
-
-https://v2.chakra-ui.com/docs/styled-system/theme#colors for available color schemes.
 
 ##### colors?
 
@@ -125,6 +106,17 @@ The most common use case is to define a `primary` color.
 
 https://v2.chakra-ui.com/docs/styled-system/theme#colors
 
+##### colorScheme?
+
+> `optional` **colorScheme**: `string`
+
+Apply a default color scheme to all components.
+This supports all Chakra UI color schemes and is not provided by default.
+
+###### See
+
+https://v2.chakra-ui.com/docs/styled-system/theme#colors for available color schemes.
+
 ##### extendTheme?
 
 > `optional` **extendTheme**: [`Parameters`](-internal-.md#parameterst)\<*typeof* [`extendTheme`](-internal-.md#extendtheme-1)\>\[`0`\]
@@ -135,15 +127,13 @@ Extend the Chakra UI theme.
 
 https://v2.chakra-ui.com/docs/styled-system/customize-theme#using-theme-extensions
 
-#### Defined in
-
-[theme.ts:24](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/theme.ts#L24)
-
 ***
 
 ### TransferCollectionConfiguration
 
 > **TransferCollectionConfiguration**: `object`
+
+Defined in: [pages/transfer.tsx:38](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/pages/transfer.tsx#L38)
 
 #### Type declaration
 
@@ -166,24 +156,20 @@ the Collection's `display_name` (and `path`) will be used.
 
 The path on the collection to list and transfer files from.
 
-#### Defined in
-
-[pages/transfer.tsx:45](https://github.com/globus/static-data-portal/blob/7049be242b3135e7c2d5b874f564022879c85966/pages/transfer.tsx#L45)
-
 ## Functions
 
 ### extendTheme()
 
 > **extendTheme**(...`extensions`): [`Record`](-internal-.md#recordk-t)\<`string`, `any`\>
 
+Defined in: node\_modules/@chakra-ui/theme-utils/dist/extend-theme.d.ts:19
+
 #### Parameters
 
-• ...**extensions**: ([`Record`](-internal-.md#recordk-t)\<`string`, `any`\> \| (`theme`) => [`Record`](-internal-.md#recordk-t)\<`string`, `any`\>)[]
+##### extensions
+
+...([`Record`](-internal-.md#recordk-t)\<`string`, `any`\> \| (`theme`) => [`Record`](-internal-.md#recordk-t)\<`string`, `any`\>)[]
 
 #### Returns
 
 [`Record`](-internal-.md#recordk-t)\<`string`, `any`\>
-
-#### Defined in
-
-node\_modules/@chakra-ui/theme-utils/dist/extend-theme.d.ts:19

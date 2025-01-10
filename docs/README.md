@@ -1,4 +1,4 @@
-**@globus/static-data-portal** • [**Docs**](globals.md)
+**@globus/static-data-portal**
 
 ***
 
@@ -28,6 +28,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - The `utils/static.ts` file is used to enforce a TypeScript type on this file.
 - All pages and components that source information from the user-provided `static.json` should use `utils/static.ts` and its available helpers.
 - Typedoc is configured to generate documentation from `utils/static.ts`.
+
+The included `static.json` in this repository is configured toward local development, using a non-production Globus environment (`sandbox`).
 
 ### MDX Support
 
