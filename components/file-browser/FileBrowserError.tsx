@@ -82,7 +82,8 @@ export default function FileBrowserError({
           </HStack>
           <AlertDescription>
             <Text my={2}>
-              You'll need to grant access to this resource in order to proceed.
+              You&apos;ll need to grant access to this resource in order to
+              proceed.
             </Text>
             <Button
               onClick={async () => {

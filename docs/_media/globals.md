@@ -10,7 +10,7 @@
 
 > **Base**: `object`
 
-Defined in: [utils/static.ts:9](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/utils/static.ts#L9)
+Defined in: [utils/static.ts:9](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/utils/static.ts#L9)
 
 The base type for a `static.json` file.
 
@@ -81,7 +81,7 @@ https://github.com/from-static/actions
 
 > **Data**: `object`
 
-Defined in: [utils/static.ts:39](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/utils/static.ts#L39)
+Defined in: [utils/static.ts:39](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/utils/static.ts#L39)
 
 The type used for `data` by the [@globus/static-data-portal generator](https://github.com/globus/static-data-portal).
 
@@ -212,7 +212,7 @@ the generator will render its `attributes`.
 
 > **Static**: [`Base`](globals.md#base) & `object`
 
-Defined in: [utils/static.ts:118](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/utils/static.ts#L118)
+Defined in: [utils/static.ts:118](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/utils/static.ts#L118)
 
 #### Type declaration
 
