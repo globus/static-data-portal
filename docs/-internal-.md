@@ -10,7 +10,7 @@
 
 > **ColorDefinition**: \{ `100`: `string`; `200`: `string`; `300`: `string`; `400`: `string`; `50`: `string`; `500`: `string`; `600`: `string`; `700`: `string`; `800`: `string`; `900`: `string`; \} \| `string`
 
-Defined in: [theme.ts:9](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/theme.ts#L9)
+Defined in: [theme.ts:9](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/theme.ts#L9)
 
 ***
 
@@ -18,7 +18,7 @@ Defined in: [theme.ts:9](https://github.com/globus/static-data-portal/blob/298bb
 
 > **NavigationItem**: \{ `authenticated`: `boolean`; `label`: `string`; `to`: `string`; \} \| \{ `authenticated`: `boolean`; `href`: `string`; `label`: `string`; \}
 
-Defined in: [components/Navigation.tsx:21](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/components/Navigation.tsx#L21)
+Defined in: [components/Navigation.tsx:21](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/components/Navigation.tsx#L21)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [components/Navigation.tsx:21](https://github.com/globus/static-data
 
 > **NavigationOptions**: `object`
 
-Defined in: [components/Navigation.tsx:33](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/components/Navigation.tsx#L33)
+Defined in: [components/Navigation.tsx:33](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/components/Navigation.tsx#L33)
 
 #### Type declaration
 
@@ -70,7 +70,7 @@ Construct a type with a set of properties K of type T
 
 > **ThemeSettings**: `object`
 
-Defined in: [theme.ts:24](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/theme.ts#L24)
+Defined in: [theme.ts:24](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/theme.ts#L24)
 
 #### Type declaration
 
@@ -133,7 +133,7 @@ https://v2.chakra-ui.com/docs/styled-system/customize-theme#using-theme-extensio
 
 > **TransferCollectionConfiguration**: `object`
 
-Defined in: [pages/transfer.tsx:38](https://github.com/globus/static-data-portal/blob/298bbe099cff9fed2e27176b5888893dbaec0b25/pages/transfer.tsx#L38)
+Defined in: [pages/transfer.tsx:38](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/pages/transfer.tsx#L38)
 
 #### Type declaration
 
@@ -162,7 +162,7 @@ The path on the collection to list and transfer files from.
 
 > **extendTheme**(...`extensions`): [`Record`](-internal-.md#recordk-t)\<`string`, `any`\>
 
-Defined in: node\_modules/@chakra-ui/theme-utils/dist/extend-theme.d.ts:19
+Defined in: node\_modules/@chakra-ui/react/dist/types/extend-theme/extend-theme.d.ts:19
 
 #### Parameters
 
