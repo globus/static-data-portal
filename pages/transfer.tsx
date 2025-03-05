@@ -34,6 +34,7 @@ import { useCollection } from "@/hooks/useTransfer";
 import SourceSelector from "@/components/SourceSelector";
 import { useGlobusTransferStore } from "@/components/store/globus-transfer";
 import { useShallow } from "zustand/react/shallow";
+import { CollectionBrowserModal } from "@/components/collection-browser/CollectionBrowser";
 
 export type TransferCollectionConfiguration = {
   /**
@@ -169,9 +170,17 @@ export default function Transfer() {
                     You are viewing data made available by{" "}
                     <Text as="em">{source?.display_name}</Text>.
                     <br /> To transfer data to another location,{" "}
-                    <Button onClick={onOpen} variant="link">
+                    {/* <Button onClick={onOpen} variant="link">
                       search for a destination
-                    </Button>
+                    </Button> */}
+                    <CollectionBrowserModal
+                      onSelect={(endpoint) => {
+                        transferStore.setDestination(endpoint);
+                        transferStore.setDestinationPath(
+                          endpoint.default_directory,
+                        );
+                      }}
+                    />
                     .
                   </Text>
                 </CardBody>
@@ -182,7 +191,7 @@ export default function Transfer() {
               placement="right"
               onClose={onClose}
               isOpen={isOpen}
-              size="lg"
+              size="xl"
             >
               <DrawerOverlay />
               <DrawerContent>
