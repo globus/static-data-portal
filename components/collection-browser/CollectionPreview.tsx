@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   Text,
@@ -20,7 +20,6 @@ import {
   PopoverContent,
   PopoverArrow,
   PopoverBody,
-  Code,
   Badge,
 } from "@chakra-ui/react";
 import {
@@ -34,7 +33,7 @@ import { transfer, auth, webapp } from "@globus/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useGlobusAuth } from "@globus/react-auth-context";
 
-async function fetchIdentity(authz, id) {
+async function fetchIdentity(authz: any, id: string) {
   const response = await auth.identities.get(
     id,
     {},
@@ -45,7 +44,7 @@ async function fetchIdentity(authz, id) {
   return await response.json();
 }
 
-export const CollectionPreview = ({ collection }) => {
+export const CollectionPreview = ({ collection }: { collection: any }) => {
   const authz = useGlobusAuth();
 
   const { data: ownerData, isFetching: isFetchingOwner } = useQuery({
@@ -138,7 +137,7 @@ export const CollectionPreview = ({ collection }) => {
             Your Assigned Roles
           </Text>
           <HStack>
-            {collection.my_effective_roles.map((role) => (
+            {collection.my_effective_roles.map((role: string) => (
               <Badge key={role} variant="subtle" size="xs" colorScheme="gray">
                 {role.split("_").join(" ")}
               </Badge>

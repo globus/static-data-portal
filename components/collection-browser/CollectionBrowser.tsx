@@ -1,20 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Input,
   InputGroup,
   Icon,
-  List,
-  ListItem,
   Card,
   CardHeader,
   CardBody,
   Text,
   Spinner,
   InputLeftAddon,
-  FormControl,
-  FormLabel,
-  Switch,
   Tooltip,
   Flex,
   Spacer,
@@ -36,7 +31,6 @@ import {
   MenuList,
   MenuOptionGroup,
   MenuItemOption,
-  Badge,
 } from "@chakra-ui/react";
 import {
   BuildingLibraryIcon,
@@ -44,26 +38,27 @@ import {
   FunnelIcon,
   LockClosedIcon,
   MagnifyingGlassIcon,
-  QuestionMarkCircleIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import throttle from "lodash/throttle";
+// import throttle from "lodash/throttle";
 import { useEndpointSearch } from "@/hooks/useTransfer";
 
 import { CollectionPreview } from "./CollectionPreview";
 
 type Endpoint = Record<string, any>;
 
-export function CollectionBrowserModal({ onSelect }) {
+export function CollectionBrowserModal({ onSelect }: { onSelect: Function }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [scope, setScope] = useState("all");
   const [keyword, setKeyword] = useState<string | null>(null);
   const [entityTypeFilter, setEntityTypeFilter] = useState("all");
-  const [hideNoPermissions, setHideNoPermissions] = useState(scope === "all");
+  const [hideNoPermissions /* setHideNoPermissions */] = useState(
+    scope === "all",
+  );
   const [selectedCollection, setSelectedCollection] =
     useState<Endpoint | null>();
 
-  const params = {
+  const params: Record<string, any> = {
     /**
      * In the context of the data portal, we only want to return
      * results that will support Globus Transfer behaviors.
@@ -234,7 +229,7 @@ export function CollectionBrowserModal({ onSelect }) {
                           title="Entity Type"
                           type="radio"
                           onChange={(value) => {
-                            setEntityTypeFilter(value);
+                            setEntityTypeFilter(value as string);
                           }}
                         >
                           <MenuItemOption value="all">All</MenuItemOption>
@@ -274,7 +269,7 @@ export function CollectionBrowserModal({ onSelect }) {
 
                 <Box overflow="auto" h={"calc(100% - 65px)"} pb={1} px={0}>
                   <Box pe={2}>
-                    {results.map((result) => {
+                    {results.map((result: any) => {
                       const parentEntityName = result.mapped_collection_id
                         ? result.mapped_collection_display_name
                         : result.non_functional_endpoint_display_name;

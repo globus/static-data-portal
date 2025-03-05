@@ -10,14 +10,7 @@ import {
   Text,
   Icon,
   InputRightElement,
-  Button,
   SimpleGrid,
-  useDisclosure,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerHeader,
-  DrawerOverlay,
   Card,
   CardBody,
   Link,
@@ -26,8 +19,6 @@ import {
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import FileBrowser from "@/components/file-browser/FileBrowser";
 import { useGlobusAuth } from "@globus/react-auth-context";
-
-import { CollectionSearch } from "@/components/CollectionSearch";
 
 import { STATIC } from "@/utils/static";
 import { useCollection } from "@/hooks/useTransfer";
@@ -61,7 +52,6 @@ export function getCollectionsConfiguration() {
 export default function Transfer() {
   const auth = useGlobusAuth();
   const transferStore = useGlobusTransferStore();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   /**
    * The static.json configured collection(s).
@@ -174,7 +164,7 @@ export default function Transfer() {
                       search for a destination
                     </Button> */}
                     <CollectionBrowserModal
-                      onSelect={(endpoint) => {
+                      onSelect={(endpoint: any) => {
                         transferStore.setDestination(endpoint);
                         transferStore.setDestinationPath(
                           endpoint.default_directory,
@@ -186,30 +176,6 @@ export default function Transfer() {
                 </CardBody>
               </Card>
             </Container>
-
-            <Drawer
-              placement="right"
-              onClose={onClose}
-              isOpen={isOpen}
-              size="xl"
-            >
-              <DrawerOverlay />
-              <DrawerContent>
-                <DrawerHeader borderBottomWidth="1px">
-                  Search for a destination
-                </DrawerHeader>
-                <DrawerBody>
-                  <CollectionSearch
-                    onSelect={(endpoint) => {
-                      transferStore.setDestination(endpoint);
-                      transferStore.setDestinationPath(
-                        endpoint.default_directory,
-                      );
-                    }}
-                  />
-                </DrawerBody>
-              </DrawerContent>
-            </Drawer>
           </Box>
         )}
       </SimpleGrid>
