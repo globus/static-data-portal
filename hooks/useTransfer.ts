@@ -27,6 +27,25 @@ export function useCollection(id: string) {
   });
 }
 
+export function useEndpointSearch(query = {}) {
+  const auth = useGlobusAuth();
+  return useQuery({
+    enabled: auth.isAuthenticated,
+    queryKey: ["endpoints", "search", JSON.stringify(query)],
+    queryFn: async () => {
+      const response = await transfer.endpointSearch(
+        {
+          query,
+        },
+        {
+          manager: auth.authorization,
+        },
+      );
+      return response.json();
+    },
+  });
+}
+
 async function ls(
   authorization: AuthorizationManager | undefined,
   id: string,
