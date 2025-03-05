@@ -49,7 +49,7 @@ type Endpoint = Record<string, any>;
 
 export function CollectionBrowserModal({ onSelect }: { onSelect: Function }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [scope, setScope] = useState("all");
+  const [scope, setScope] = useState("my-endpoints");
   const [keyword, setKeyword] = useState<string | null>(null);
   const [entityTypeFilter, setEntityTypeFilter] = useState("all");
   const [hideNoPermissions /* setHideNoPermissions */] = useState(
