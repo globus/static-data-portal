@@ -5,7 +5,6 @@ import {
   Flex,
   Spacer,
   Button,
-  VStack,
   Heading,
   HStack,
   Link,
@@ -21,6 +20,13 @@ import {
   PopoverArrow,
   PopoverBody,
   Badge,
+  AbsoluteCenter,
+  Spinner,
+  Alert,
+  Code,
+  AlertTitle,
+  AlertIcon,
+  PropsOf,
 } from "@chakra-ui/react";
 import {
   BuildingLibraryIcon,
@@ -32,6 +38,7 @@ import {
 import { transfer, auth, webapp } from "@globus/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useGlobusAuth } from "@globus/react-auth-context";
+import { Collection, useCollection } from "@/hooks/useTransfer";
 
 async function fetchIdentity(authz: any, id: string) {
   const response = await auth.identities.get(
@@ -44,117 +51,182 @@ async function fetchIdentity(authz: any, id: string) {
   return await response.json();
 }
 
-export const CollectionPreview = ({ collection }: { collection: any }) => {
+export const CollectionPreview = ({
+  collection,
+  ...rest
+}: PropsOf<typeof Flex> & {
+  /**
+   * The Collection or partial Collection object to preview.
+   */
+  collection: { id: string } | Collection;
+}) => {
   const authz = useGlobusAuth();
 
-  const { data: ownerData, isFetching: isFetchingOwner } = useQuery({
-    enabled: authz.isAuthenticated,
-    queryKey: ["identities", collection.owner_id],
+  const { data: ownerData } = useQuery({
+    enabled: authz.isAuthenticated && Boolean(collection.advertised_owner_id),
+    queryKey: ["identities", collection.advertised_owner_id],
     queryFn: () => fetchIdentity(authz, collection.advertised_owner_id),
   });
 
-  const orgainzationVerified = collection.organization_verified;
+  const {
+    data: collectionFetchData = {},
+    isFetching: isFetchingCollection,
+    isError,
+    error,
+  } = useCollection(
+    collection.id,
+    "DATA_TYPE" in collection
+      ? collection
+      : {
+          id: collection.id,
+        },
+  );
 
-  const parentType = collection.mapped_collection_id
+  const orgainzationVerified = collectionFetchData.organization_verified;
+
+  const parentType = collectionFetchData.mapped_collection_id
     ? "Mapped Collection"
     : "Enpdoint";
 
-  const parentEntityName = collection.mapped_collection_id
-    ? collection.mapped_collection_display_name
-    : collection.non_functional_endpoint_display_name;
+  const parentEntityName = collectionFetchData.mapped_collection_id
+    ? collectionFetchData.mapped_collection_display_name
+    : collectionFetchData.non_functional_endpoint_display_name;
 
-  return (
-    <VStack align="start">
-      <Box>
+  return isFetchingCollection ? (
+    <Box position="relative" height="100%">
+      <AbsoluteCenter>
         <HStack>
-          <Heading size="sm">
-            {collection.display_name || collection.name}
-          </Heading>
+          <Spinner size="xs" />
+          <Text fontSize="xs" color="gray.500">
+            Loading Collection Information
+          </Text>
+        </HStack>
+      </AbsoluteCenter>
+    </Box>
+  ) : isError ? (
+    <Box p={2}>
+      <Alert status="error">
+        <AlertIcon />
+        <AlertTitle>Error Fetching Collection Information</AlertTitle>
+      </Alert>
+      <Code
+        bgColor="red.50"
+        display="block"
+        whiteSpace="pre-wrap"
+        my={2}
+        p={2}
+        overflow="auto"
+      >
+        {JSON.stringify(error, null, 2)}
+      </Code>
+    </Box>
+  ) : (
+    <Flex direction="column" {...rest}>
+      <Box position="sticky" top={0} zIndex={1} py={2} bg="white">
+        <Box>
+          <HStack>
+            <Heading size="sm">
+              {collectionFetchData.display_name || collectionFetchData.name}
+            </Heading>
+            {orgainzationVerified && (
+              <Tooltip hasArrow label="Organization Verified" placement="auto">
+                <Icon as={CheckBadgeIcon} />
+              </Tooltip>
+            )}
+          </HStack>
+          <Flex>
+            {parentEntityName && (
+              <Text fontSize="xs">on {parentEntityName}</Text>
+            )}
+            <Spacer />
+            <Button
+              as="a"
+              href={webapp.urlFor("COLLECTION", [collection.id]).toString()}
+              position="relative"
+              rel="noopener noreferrer"
+              target="_blank"
+              size="xs"
+              variant="link"
+              colorScheme="gray"
+              rightIcon={<Icon as={ArrowTopRightOnSquareIcon} />}
+            >
+              View in Globus{" "}
+            </Button>
+          </Flex>
+        </Box>
 
+        <HStack>
           {orgainzationVerified && (
-            <Tooltip hasArrow label="Organization Verified" placement="auto">
-              <Icon as={CheckBadgeIcon} />
-            </Tooltip>
+            <Tag variant="outline" colorScheme="green" size="sm">
+              <TagLeftIcon as={CheckBadgeIcon} />
+              <TagLabel>Organization Verfied</TagLabel>
+            </Tag>
+          )}
+          {collectionFetchData.high_assurance && (
+            <Tag variant="outline" colorScheme="green" size="sm">
+              <TagLeftIcon as={LockClosedIcon} />
+              <TagLabel>High Assurance</TagLabel>
+            </Tag>
+          )}
+          {collectionFetchData.subscription_id && (
+            <Tag variant="outline" colorScheme="green" size="sm">
+              <TagLeftIcon as={BuildingLibraryIcon} />
+              <TagLabel>Subscribed</TagLabel>
+            </Tag>
           )}
         </HStack>
-        {parentEntityName && <Text fontSize="xs">on {parentEntityName}</Text>}
-      </Box>
 
-      <HStack>
-        {orgainzationVerified && (
-          <Tag variant="outline" colorScheme="green">
-            <TagLeftIcon as={CheckBadgeIcon} />
-            <TagLabel>Organization Verfied</TagLabel>
-          </Tag>
-        )}
-        {collection.high_assurance && (
-          <Tag variant="outline" colorScheme="green">
-            <TagLeftIcon as={LockClosedIcon} />
-            <TagLabel>High Assurance</TagLabel>
-          </Tag>
-        )}
-        {collection.subscription_id && (
-          <Tag variant="outline" colorScheme="green">
-            <TagLeftIcon as={BuildingLibraryIcon} />
-            <TagLabel>Subscribed</TagLabel>
-          </Tag>
-        )}
-        {collection.my_effective_roles.length && (
-          <Tag variant="outline" colorScheme="green">
-            <TagLeftIcon as={UserCircleIcon} />
-            <TagLabel>Assigned Roles</TagLabel>
-          </Tag>
-        )}
-      </HStack>
-      <Flex w="100%" align="center">
-        {collection.contact_email && (
-          <Text fontSize="xs">
+        {collectionFetchData.contact_email && (
+          <Text fontSize="xs" mt={2}>
             Contact:&nbsp;
-            <Link href={`mailto:${collection.contact_email}`}>
-              {collection.contact_email}
+            <Link href={`mailto:${collectionFetchData.contact_email}`}>
+              {collectionFetchData.contact_email}
             </Link>
           </Text>
         )}
-        <Spacer />
-        <Button
-          as="a"
-          href={webapp.urlFor("COLLECTION", [collection.id]).toString()}
-          position="relative"
-          rel="noopener noreferrer"
-          target="_blank"
-          size="xs"
-          variant="outline"
-          colorScheme="gray"
-          rightIcon={<Icon as={ArrowTopRightOnSquareIcon} />}
-        >
-          View in Globus{" "}
-        </Button>
-      </Flex>
 
-      {collection.my_effective_roles.length && (
-        <Box fontSize="sm">
-          <Text fontSize="xs" fontWeight="bold">
-            Your Assigned Roles
-          </Text>
-          <HStack>
-            {collection.my_effective_roles.map((role: string) => (
-              <Badge key={role} variant="subtle" size="xs" colorScheme="gray">
-                {role.split("_").join(" ")}
-              </Badge>
-            ))}
-          </HStack>
-        </Box>
-      )}
+        {collectionFetchData.my_effective_roles?.length > 0 && (
+          <Box my={2}>
+            <Divider my={2} />
+            <Box fontSize="sm">
+              <HStack mb={1}>
+                <Icon as={UserCircleIcon} />
+                <Text fontSize="xs" fontWeight="bold">
+                  Your Assigned Roles
+                </Text>
+              </HStack>
+              <HStack>
+                {collectionFetchData.my_effective_roles.map((role: string) => (
+                  <Badge key={role} size="xs" colorScheme="gray">
+                    {role.split("_").join(" ")}
+                  </Badge>
+                ))}
+              </HStack>
+            </Box>
+          </Box>
+        )}
+        <Divider my={2} />
+      </Box>
 
-      <Divider />
+      <Spacer />
 
-      <Box overflowX="auto">
-        <Box fontSize="sm">
-          <Text fontSize="xs" fontWeight="bold">
-            Entity Type
-          </Text>
-          <Text fontFamily="mono">{collection.entity_type}</Text>
-        </Box>
+      <Box>
+        {collectionFetchData.keywords && (
+          <Box pb={2}>
+            <Text fontSize="xs" fontWeight="bold" mb={1}>
+              Keywords
+            </Text>
+            <HStack>
+              {collectionFetchData.keywords
+                .split(",")
+                .map((keyword: string) => (
+                  <Tag key={keyword} size="sm" variant="outline">
+                    {keyword}
+                  </Tag>
+                ))}
+            </HStack>
+          </Box>
+        )}
 
         {parentEntityName && (
           <Box fontSize="sm">
@@ -170,21 +242,19 @@ export const CollectionPreview = ({ collection }: { collection: any }) => {
             Domain
           </Text>
           <Text fontFamily="mono">
-            {transfer.utils.getDomainFromEndpoint(collection) ?? "–"}
+            {transfer.utils.getDomainFromEndpoint(collectionFetchData) ?? "–"}
           </Text>
         </Box>
 
-        <Box fontSize="sm">
-          <Text fontSize="xs" fontWeight="bold">
-            Owner
-          </Text>
-          {isFetchingOwner ? (
-            <Text fontFamily="mono">{collection.ownerId}</Text>
-          ) : (
+        {ownerData && (
+          <Box fontSize="sm">
+            <Text fontSize="xs" fontWeight="bold">
+              Owner
+            </Text>
             <Popover trigger="hover">
               <PopoverTrigger>
                 <Text>
-                  {ownerData.identity?.name || ownerData.identity?.username}
+                  {ownerData?.identity.name || ownerData?.identity.username}
                 </Text>
               </PopoverTrigger>
               <PopoverContent fontSize="xs">
@@ -203,38 +273,30 @@ export const CollectionPreview = ({ collection }: { collection: any }) => {
                 </PopoverBody>
               </PopoverContent>
             </Popover>
-          )}
+          </Box>
+        )}
+
+        <Box fontSize="sm">
+          <Text fontSize="xs" fontWeight="bold">
+            Entity Type
+          </Text>
+          <Text fontFamily="mono">{collectionFetchData.entity_type}</Text>
         </Box>
-
-        {collection.keywords && (
-          <>
-            <Box>
-              <Text fontSize="xs" fontWeight="bold">
-                Keywords
-              </Text>
-              <HStack>
-                {collection.keywords.split(",").map((keyword: string) => (
-                  <Tag key={keyword} size="sm" variant="outline">
-                    {keyword}
-                  </Tag>
-                ))}
-              </HStack>
-            </Box>
-          </>
-        )}
-
-        {collection.description && (
-          <>
-            <Divider />
-            <Box>
-              <Text fontSize="xs" fontWeight="bold">
-                Description
-              </Text>
-              <Text mb={5}>{collection.description}</Text>
-            </Box>
-          </>
-        )}
       </Box>
-    </VStack>
+
+      {collectionFetchData.description && (
+        <Box flexGrow={1}>
+          <Divider my={2} />
+          <Box>
+            <Text fontSize="xs" fontWeight="bold">
+              Description
+            </Text>
+            <Text pb={2} whiteSpace="pre-wrap">
+              {collectionFetchData.description}
+            </Text>
+          </Box>
+        </Box>
+      )}
+    </Flex>
   );
 };
