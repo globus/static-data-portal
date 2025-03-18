@@ -3,6 +3,7 @@ import { transfer } from "@globus/sdk";
 import { useGlobusAuth } from "@globus/react-auth-context";
 
 import { type AuthorizationManager } from "@globus/sdk/core/authorization/AuthorizationManager";
+import { type FileListDocument } from "@globus/sdk/services/transfer/service/file-operations";
 
 /**
  * Used to wrap @globus/sdk methods to ensure HTTP encountered errors throw a rejected promise.
@@ -65,6 +66,17 @@ export function useEndpointSearch(query = {}) {
       );
     },
   });
+}
+
+export function isFileListDocument(
+  response: unknown,
+): response is FileListDocument {
+  return (
+    response !== null &&
+    typeof response === "object" &&
+    "DATA_TYPE" in response &&
+    response.DATA_TYPE === "file_list"
+  );
 }
 
 async function ls(
