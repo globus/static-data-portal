@@ -77,7 +77,12 @@ export default function Transfer() {
     const data = collection.isSuccess ? collection.data : null;
     transferStore.setSource(data);
     transferStore.setSourcePath(data ? data.default_directory : null);
-  }, [collection.isSuccess, collection.data]);
+  }, [
+    collection.isSuccess,
+    collection.data,
+    transferStore.setSource,
+    transferStore.setSourcePath,
+  ]);
 
   if (!auth.isAuthenticated) {
     return (
@@ -160,15 +165,12 @@ export default function Transfer() {
                     You are viewing data made available by{" "}
                     <Text as="em">{source?.display_name}</Text>.
                     <br /> To transfer data to another location,{" "}
-                    {/* <Button onClick={onOpen} variant="link">
-                      search for a destination
-                    </Button> */}
                     <CollectionBrowserModal
-                      onSelect={(endpoint: any) => {
-                        transferStore.setDestination(endpoint);
-                        transferStore.setDestinationPath(
-                          endpoint.default_directory,
-                        );
+                      onSelect={({ collection, path }) => {
+                        transferStore.setDestination(collection);
+                        if (path) {
+                          transferStore.setDestinationPath(path);
+                        }
                       }}
                     />
                     .
