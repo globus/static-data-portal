@@ -43,7 +43,11 @@ import type {
   FileDocument,
 } from "@globus/sdk/services/transfer/service/file-operations";
 
-import { useCollection, useListDirectory } from "@/hooks/useTransfer";
+import {
+  isFileListDocument,
+  useCollection,
+  useListDirectory,
+} from "@/hooks/useTransfer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StartTransferButton from "./StartTransferButton";
 import PathInput from "./PathInput";
@@ -92,8 +96,8 @@ export default function FileBrowser({
       },
     });
 
-  const absolutePath =
-    isSuccess && data && "absolute_path" in data ? data.absolute_path : null;
+  const hasFilesList = isFileListDocument(data);
+  const absolutePath = hasFilesList ? data.absolute_path : null;
 
   useEffect(() => {
     const path = browserPath || absolutePath;
@@ -286,7 +290,7 @@ export default function FileBrowser({
                           </Td>
                         </Tr>
                       )}
-                      {"DATA" in data &&
+                      {hasFilesList &&
                         data.DATA.sort((a, b) => {
                           return a.name.localeCompare(b.name);
                         }).map((item, i) => {
