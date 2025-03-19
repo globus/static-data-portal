@@ -14,11 +14,11 @@ import {
   Divider,
   Icon,
   Tooltip,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverBody,
+  // Popover,
+  // PopoverTrigger,
+  // PopoverContent,
+  // PopoverArrow,
+  // PopoverBody,
   Badge,
   AbsoluteCenter,
   Spinner,
@@ -35,28 +35,26 @@ import {
   CheckBadgeIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { transfer, auth, webapp } from "@globus/sdk";
-import { useQuery } from "@tanstack/react-query";
-import { useGlobusAuth } from "@globus/react-auth-context";
+import { transfer, /* auth, */ webapp } from "@globus/sdk";
+// import { useGlobusAuth } from "@globus/react-auth-context";
 import { Collection, useCollection } from "@/hooks/useTransfer";
-import { rest } from "lodash";
 
-async function fetchIdentity(authz: any, id: string) {
-  const response = await auth.identities.get(
-    id,
-    {},
-    {
-      manager: authz.authorization,
-    },
-  );
-  return await response.json();
-}
+// async function fetchIdentity(authz: any, id: string) {
+//   const response = await auth.identities.get(
+//     id,
+//     {},
+//     {
+//       manager: authz.authorization,
+//     },
+//   );
+//   return await response.json();
+// }
 
 function _CollectionPreview({
   collection,
   ...rest
 }: PropsOf<typeof Flex> & { collection: Collection }) {
-  const authz = useGlobusAuth();
+  // const authz = useGlobusAuth();
 
   const showOwnerString = !collection.owner_string.endsWith(
     "@clients.auth.globus.org",
