@@ -1,4 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import {
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { transfer } from "@globus/sdk";
 import { useGlobusAuth } from "@globus/react-auth-context";
 
@@ -35,16 +39,13 @@ export type Collection = Awaited<
   ReturnType<Awaited<ReturnType<typeof transfer.endpoint.get>>["json"]>
 >;
 
-export function useCollection(
-  id: string,
-  placeholderData?: Partial<Collection>,
-) {
+export function useCollection(id: string, placeholderData?: Collection) {
   const auth = useGlobusAuth();
   return useQuery({
     enabled: auth.isAuthenticated,
     queryKey: ["collections", id],
     queryFn: async () => await fetchCollection(auth.authorization, id),
-    // placeholderData,
+    placeholderData,
   });
 }
 

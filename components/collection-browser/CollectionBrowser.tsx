@@ -429,14 +429,14 @@ function BookmarkResult({
     collection,
     path,
   }: {
-    collection: Collection;
+    collection: Collection | { id: string };
     path: string;
   }) => void;
   onResultDoubleClick: ({
     collection,
     path,
   }: {
-    collection: Collection;
+    collection: Collection | { id: string };
     path: string;
   }) => void;
 }) {
