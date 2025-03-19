@@ -108,7 +108,11 @@ export default function Transfer() {
             <InputGroup>
               <InputLeftAddon>Source</InputLeftAddon>
               <Input
-                value={source ? source.display_name || source.name : "..."}
+                value={
+                  source
+                    ? source.display_name || source.name || undefined
+                    : "..."
+                }
                 variant="filled"
                 isReadOnly
               />
@@ -136,7 +140,9 @@ export default function Transfer() {
               <InputGroup>
                 <InputLeftAddon>Destination</InputLeftAddon>
                 <Input
-                  defaultValue={destination.display_name || destination.name}
+                  defaultValue={
+                    destination.display_name || destination.name || ""
+                  }
                   isReadOnly
                 />
                 <InputRightElement>

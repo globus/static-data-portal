@@ -39,6 +39,7 @@ import { transfer, auth, webapp } from "@globus/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useGlobusAuth } from "@globus/react-auth-context";
 import { Collection, useCollection } from "@/hooks/useTransfer";
+import { rest } from "lodash";
 
 async function fetchIdentity(authz: any, id: string) {
   const response = await auth.identities.get(
@@ -51,82 +52,42 @@ async function fetchIdentity(authz: any, id: string) {
   return await response.json();
 }
 
-export const CollectionPreview = ({
+function _CollectionPreview({
   collection,
   ...rest
-}: PropsOf<typeof Flex> & {
-  /**
-   * The Collection or partial Collection object to preview.
-   */
-  collection: { id: string } | Collection;
-}) => {
+}: PropsOf<typeof Flex> & { collection: Collection }) {
   const authz = useGlobusAuth();
 
-  const { data: ownerData } = useQuery({
-    enabled: authz.isAuthenticated && Boolean(collection.advertised_owner_id),
-    queryKey: ["identities", collection.advertised_owner_id],
-    queryFn: () => fetchIdentity(authz, collection.advertised_owner_id),
-  });
-
-  const {
-    data: collectionFetchData = {},
-    isFetching: isFetchingCollection,
-    isError,
-    error,
-  } = useCollection(
-    collection.id,
-    "DATA_TYPE" in collection
-      ? collection
-      : {
-          id: collection.id,
-        },
+  const showOwnerString = !collection.owner_string.endsWith(
+    "@clients.auth.globus.org",
   );
 
-  const orgainzationVerified = collectionFetchData.organization_verified;
+  // const { data: ownerData } = useQuery({
+  //   enabled:
+  //     authz.isAuthenticated &&
+  //     showOwnerString,
+  //   queryKey: ["identities", collection.owner_string],
+  //   queryFn: () => fetchIdentity(authz, collection.owner_string),
+  // });
 
-  const parentType = collectionFetchData.mapped_collection_id
+  // @ts-expect-error `organization_verified` is not in the Collection type (yet)
+  const orgainzationVerified = collection.organization_verified;
+
+  const parentType = collection.mapped_collection_id
     ? "Mapped Collection"
     : "Enpdoint";
 
-  const parentEntityName = collectionFetchData.mapped_collection_id
-    ? collectionFetchData.mapped_collection_display_name
-    : collectionFetchData.non_functional_endpoint_display_name;
+  const parentEntityName = collection.mapped_collection_id
+    ? collection.mapped_collection_display_name
+    : collection.non_functional_endpoint_display_name;
 
-  return isFetchingCollection ? (
-    <Box position="relative" height="100%">
-      <AbsoluteCenter>
-        <HStack>
-          <Spinner size="xs" />
-          <Text fontSize="xs" color="gray.500">
-            Loading Collection Information
-          </Text>
-        </HStack>
-      </AbsoluteCenter>
-    </Box>
-  ) : isError ? (
-    <Box p={2}>
-      <Alert status="error">
-        <AlertIcon />
-        <AlertTitle>Error Fetching Collection Information</AlertTitle>
-      </Alert>
-      <Code
-        bgColor="red.50"
-        display="block"
-        whiteSpace="pre-wrap"
-        my={2}
-        p={2}
-        overflow="auto"
-      >
-        {JSON.stringify(error, null, 2)}
-      </Code>
-    </Box>
-  ) : (
+  return (
     <Flex direction="column" {...rest}>
       <Box position="sticky" top={0} zIndex={1} py={2} bg="white">
         <Box>
           <HStack>
             <Heading size="sm">
-              {collectionFetchData.display_name || collectionFetchData.name}
+              {collection.display_name || collection.name}
             </Heading>
             {orgainzationVerified && (
               <Tooltip hasArrow label="Organization Verified" placement="auto">
@@ -162,13 +123,13 @@ export const CollectionPreview = ({
               <TagLabel>Organization Verfied</TagLabel>
             </Tag>
           )}
-          {collectionFetchData.high_assurance && (
+          {collection.high_assurance && (
             <Tag variant="outline" colorScheme="green" size="sm">
               <TagLeftIcon as={LockClosedIcon} />
               <TagLabel>High Assurance</TagLabel>
             </Tag>
           )}
-          {collectionFetchData.subscription_id && (
+          {collection.subscription_id && (
             <Tag variant="outline" colorScheme="green" size="sm">
               <TagLeftIcon as={BuildingLibraryIcon} />
               <TagLabel>Subscribed</TagLabel>
@@ -176,16 +137,16 @@ export const CollectionPreview = ({
           )}
         </HStack>
 
-        {collectionFetchData.contact_email && (
+        {collection.contact_email && (
           <Text fontSize="xs" mt={2}>
             Contact:&nbsp;
-            <Link href={`mailto:${collectionFetchData.contact_email}`}>
-              {collectionFetchData.contact_email}
+            <Link href={`mailto:${collection.contact_email}`}>
+              {collection.contact_email}
             </Link>
           </Text>
         )}
 
-        {collectionFetchData.my_effective_roles?.length > 0 && (
+        {collection.my_effective_roles?.length > 0 && (
           <Box my={2}>
             <Divider my={2} />
             <Box fontSize="sm">
@@ -196,7 +157,7 @@ export const CollectionPreview = ({
                 </Text>
               </HStack>
               <HStack>
-                {collectionFetchData.my_effective_roles.map((role: string) => (
+                {collection.my_effective_roles.map((role: string) => (
                   <Badge key={role} size="xs" colorScheme="gray">
                     {role.split("_").join(" ")}
                   </Badge>
@@ -211,19 +172,17 @@ export const CollectionPreview = ({
       <Spacer />
 
       <Box>
-        {collectionFetchData.keywords && (
+        {collection.keywords && (
           <Box pb={2}>
             <Text fontSize="xs" fontWeight="bold" mb={1}>
               Keywords
             </Text>
             <HStack>
-              {collectionFetchData.keywords
-                .split(",")
-                .map((keyword: string) => (
-                  <Tag key={keyword} size="sm" variant="outline">
-                    {keyword}
-                  </Tag>
-                ))}
+              {collection.keywords.split(",").map((keyword: string) => (
+                <Tag key={keyword} size="sm" variant="outline">
+                  {keyword}
+                </Tag>
+              ))}
             </HStack>
           </Box>
         )}
@@ -242,11 +201,20 @@ export const CollectionPreview = ({
             Domain
           </Text>
           <Text fontFamily="mono">
-            {transfer.utils.getDomainFromEndpoint(collectionFetchData) ?? "–"}
+            {transfer.utils.getDomainFromEndpoint(collection) ?? "–"}
           </Text>
         </Box>
 
-        {ownerData && (
+        {showOwnerString && (
+          <Box fontSize="sm">
+            <Text fontSize="xs" fontWeight="bold">
+              Owner
+            </Text>
+            <Text>{collection.owner_string}</Text>
+          </Box>
+        )}
+
+        {/* {ownerData && (
           <Box fontSize="sm">
             <Text fontSize="xs" fontWeight="bold">
               Owner
@@ -274,17 +242,17 @@ export const CollectionPreview = ({
               </PopoverContent>
             </Popover>
           </Box>
-        )}
+        )} */}
 
         <Box fontSize="sm">
           <Text fontSize="xs" fontWeight="bold">
             Entity Type
           </Text>
-          <Text fontFamily="mono">{collectionFetchData.entity_type}</Text>
+          <Text fontFamily="mono">{collection.entity_type}</Text>
         </Box>
       </Box>
 
-      {collectionFetchData.description && (
+      {collection.description && (
         <Box flexGrow={1}>
           <Divider my={2} />
           <Box>
@@ -292,11 +260,73 @@ export const CollectionPreview = ({
               Description
             </Text>
             <Text pb={2} whiteSpace="pre-wrap">
-              {collectionFetchData.description}
+              {collection.description}
             </Text>
           </Box>
         </Box>
       )}
     </Flex>
+  );
+}
+
+export const CollectionPreview = ({
+  collection,
+  ...rest
+}: PropsOf<typeof _CollectionPreview> & {
+  /**
+   * The Collection or partial Collection object to preview.
+   */
+  collection: { id: string } | Collection;
+}) => {
+  const {
+    data: collectionFetchData,
+    isFetching: isFetchingCollection,
+    isError,
+    error,
+  } = useCollection(
+    collection.id,
+    "DATA_TYPE" in collection ? collection : undefined,
+  );
+
+  return isFetchingCollection ? (
+    <Box position="relative" height="100%">
+      <AbsoluteCenter>
+        <HStack>
+          <Spinner size="xs" />
+          <Text fontSize="xs" color="gray.500">
+            Loading Collection Information
+          </Text>
+        </HStack>
+      </AbsoluteCenter>
+    </Box>
+  ) : isError ? (
+    <Box p={2}>
+      <Alert status="error">
+        <AlertIcon />
+        <AlertTitle>Error Fetching Collection Information</AlertTitle>
+      </Alert>
+      <Code
+        bgColor="red.50"
+        display="block"
+        whiteSpace="pre-wrap"
+        my={2}
+        p={2}
+        overflow="auto"
+      >
+        {JSON.stringify(error, null, 2)}
+      </Code>
+    </Box>
+  ) : collectionFetchData ? (
+    <_CollectionPreview collection={collectionFetchData} {...rest} />
+  ) : (
+    <Box position="relative" height="100%">
+      <AbsoluteCenter>
+        <HStack>
+          <Text fontSize="xs" color="gray.500">
+            Unable to preview selected collection.
+          </Text>
+        </HStack>
+      </AbsoluteCenter>
+    </Box>
   );
 };
