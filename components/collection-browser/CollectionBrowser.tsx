@@ -189,6 +189,7 @@ export function CollectionBrowserModal({
                     }}
                     onResultDoubleClick={({ collection, path }) => {
                       onSelect({
+                        // @ts-ignore @todo Need to determine if partial collections should be allowed.
                         collection,
                         path,
                       });
