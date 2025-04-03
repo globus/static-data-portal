@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.0.0](https://github.com/globus/static-data-portal/compare/2.1.0...3.0.0) (2025-04-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* Upgrades core dependencies (Next.js + React) ([#451](https://github.com/globus/static-data-portal/issues/451))
+
+### Features
+
+* Adds improved Collection Browser for selecting a destination. ([#458](https://github.com/globus/static-data-portal/issues/458)) ([3cc4ecb](https://github.com/globus/static-data-portal/commit/3cc4ecb1454a2a078555104568f9a9fb5169e2a7))
+* Upgrades core dependencies (Next.js + React) ([#451](https://github.com/globus/static-data-portal/issues/451)) ([6a5dd9b](https://github.com/globus/static-data-portal/commit/6a5dd9b3d6240ff7cd7054f6a6e9e13b16f179b0))
+
 ## [2.1.0](https://github.com/globus/static-data-portal/compare/2.0.0...2.1.0) (2024-11-15)
 
 
