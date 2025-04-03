@@ -71,7 +71,7 @@
     "typedoc": "^0.28.1",
     "typedoc-plugin-markdown": "^4.6.1",
     "typedoc-plugin-missing-exports": "^4.0.0",
-    "typescript": "^5"
+    "typescript": "^5.8.2"
   },
   "overrides": {
     "@types/react": "19.0.10",
