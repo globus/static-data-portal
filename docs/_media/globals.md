@@ -4,27 +4,33 @@
 
 # @globus/static-data-portal
 
+## Modules
+
+- [\<internal\>](-internal-.md)
+
 ## Type Aliases
 
 ### Base
 
-> **Base**: `object`
+> **Base** = `object`
 
-Defined in: [utils/static.ts:9](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/utils/static.ts#L9)
+Defined in: [utils/static.ts:9](https://github.com/globus/static-data-portal/blob/6b5f445e1cca02afbeb9b639919c2df04214a85d/utils/static.ts#L9)
 
 The base type for a `static.json` file.
 
-#### Type declaration
+#### Properties
 
 ##### \_static
 
 > **\_static**: `object`
 
-###### \_static.generator
+Defined in: [utils/static.ts:10](https://github.com/globus/static-data-portal/blob/6b5f445e1cca02afbeb9b639919c2df04214a85d/utils/static.ts#L10)
+
+###### generator
 
 > **generator**: `object`
 
-###### \_static.generator.name
+###### generator.name
 
 > **name**: `string`
 
@@ -37,7 +43,7 @@ This should be a reference to the package name of the generator.
 "@globus/static-data-portal"
 ```
 
-###### \_static.host?
+###### host?
 
 > `optional` **host**: `object`
 
@@ -47,19 +53,19 @@ GitHub Action-injected environment variables.
 
 https://github.com/from-static/actions
 
-###### \_static.host.base\_path
+###### host.base\_path
 
 > **base\_path**: `string`
 
-###### \_static.host.base\_url
+###### host.base\_url
 
 > **base\_url**: `string`
 
-###### \_static.host.host
+###### host.host
 
 > **host**: `string`
 
-###### \_static.host.origin
+###### host.origin
 
 > **origin**: `string`
 
@@ -67,11 +73,13 @@ https://github.com/from-static/actions
 
 > **data**: `object`
 
-###### data.attributes
+Defined in: [utils/static.ts:30](https://github.com/globus/static-data-portal/blob/6b5f445e1cca02afbeb9b639919c2df04214a85d/utils/static.ts#L30)
 
-> **attributes**: [`Record`](-internal-.md#recordk-t)\<`string`, `unknown`\>
+###### attributes
 
-###### data.version
+> **attributes**: [`Record`](-internal-.md#record)\<`string`, `unknown`\>
+
+###### version
 
 > **version**: `string`
 
@@ -79,48 +87,50 @@ https://github.com/from-static/actions
 
 ### Data
 
-> **Data**: `object`
+> **Data** = `object`
 
-Defined in: [utils/static.ts:39](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/utils/static.ts#L39)
+Defined in: [utils/static.ts:39](https://github.com/globus/static-data-portal/blob/6b5f445e1cca02afbeb9b639919c2df04214a85d/utils/static.ts#L39)
 
 The type used for `data` by the [@globus/static-data-portal generator](https://github.com/globus/static-data-portal).
 
-#### Type declaration
+#### Properties
 
 ##### attributes
 
 > **attributes**: `object`
 
-###### attributes.content
+Defined in: [utils/static.ts:46](https://github.com/globus/static-data-portal/blob/6b5f445e1cca02afbeb9b639919c2df04214a85d/utils/static.ts#L46)
+
+###### content
 
 > **content**: `object`
 
-###### attributes.content.image?
+###### content.image?
 
 > `optional` **image**: `string`
 
 The URL of the portal's header image.
 
-###### attributes.content.navigation?
+###### content.navigation?
 
 > `optional` **navigation**: [`NavigationOptions`](-internal-.md#navigationoptions)
 
 The navigation items for the portal.
 
-###### attributes.content.privacy\_policy?
+###### content.privacy\_policy?
 
 > `optional` **privacy\_policy**: `string`
 
 A privacy policy to be rendered at `/privacy-policy`.
 This is especially useful for associating the published URL with your registered Globus Auth application.
 
-###### attributes.content.subtitle?
+###### content.subtitle?
 
 > `optional` **subtitle**: `string`
 
 The subtitle of the research data portal.
 
-###### attributes.content.tagline?
+###### content.tagline?
 
 > `optional` **tagline**: `string`
 
@@ -128,32 +138,32 @@ The subtitle of the research data portal.
 
 `tagline` will be removed in a future release. For customization of the homepage, use a `index.mdx` file.
 
-###### attributes.content.terms\_of\_service?
+###### content.terms\_of\_service?
 
 > `optional` **terms\_of\_service**: `string`
 
 Terms and conditions to be rendered at `/terms-and-conditions`.
 This is especially useful for associating the published URL with your registered Globus Auth application.
 
-###### attributes.content.title
+###### content.title
 
 > **title**: `string`
 
 The title of the research data portal.
 
-###### attributes.features?
+###### features?
 
 > `optional` **features**: `object`
 
-###### attributes.features.useLocalStorage?
+###### features.useLocalStorage?
 
 > `optional` **useLocalStorage**: `boolean`
 
-###### attributes.globus
+###### globus
 
 > **globus**: `object`
 
-###### attributes.globus.application
+###### globus.application
 
 > **application**: `object`
 
@@ -163,13 +173,13 @@ Information about your registered Globus Auth Application (Client)
 
 https://docs.globus.org/api/auth/developer-guide/#developing-apps
 
-###### attributes.globus.application.client\_id
+###### globus.application.client\_id
 
 > **client\_id**: `string`
 
 The UUID of the client application.
 
-###### attributes.globus.application.redirect\_uri?
+###### globus.application.redirect\_uri?
 
 > `optional` **redirect\_uri**: `string`
 
@@ -183,19 +193,21 @@ To use the portal's built-in authorization handling, redirects should be sent to
 "https://example.com/data-portal/authenticate"
 ```
 
-###### attributes.globus.transfer
+###### globus.transfer
 
 > **transfer**: [`TransferCollectionConfiguration`](-internal-.md#transfercollectionconfiguration) \| \{ `collections`: [`TransferCollectionConfiguration`](-internal-.md#transfercollectionconfiguration)[]; \}
 
 Configuration for Transfer-related functionality in the portal.
 
-###### attributes.theme?
+###### theme?
 
 > `optional` **theme**: [`ThemeSettings`](-internal-.md#themesettings)
 
 ##### version
 
 > **version**: `string`
+
+Defined in: [utils/static.ts:45](https://github.com/globus/static-data-portal/blob/6b5f445e1cca02afbeb9b639919c2df04214a85d/utils/static.ts#L45)
 
 The version of the `data` object, which is used to determine how
 the generator will render its `attributes`.
@@ -210,16 +222,12 @@ the generator will render its `attributes`.
 
 ### Static
 
-> **Static**: [`Base`](globals.md#base) & `object`
+> **Static** = [`Base`](#base) & `object`
 
-Defined in: [utils/static.ts:118](https://github.com/globus/static-data-portal/blob/c9e9dd587c510ec3093cc518b4b192b1b24c8718/utils/static.ts#L118)
+Defined in: [utils/static.ts:118](https://github.com/globus/static-data-portal/blob/6b5f445e1cca02afbeb9b639919c2df04214a85d/utils/static.ts#L118)
 
 #### Type declaration
 
 ##### data
 
-> **data**: [`Data`](globals.md#data-1)
-
-## Modules
-
-- [\<internal\>](-internal-.md)
+> **data**: [`Data`](#data-1)
