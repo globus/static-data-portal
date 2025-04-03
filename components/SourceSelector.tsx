@@ -19,7 +19,7 @@ import {
   type TransferCollectionConfiguration,
 } from "@/pages/transfer";
 
-import { useCollection } from "@/hooks/useTransfer";
+import { useCollection } from "@globus/react-query/services/transfer";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 export default function SourceCollectionSelector({

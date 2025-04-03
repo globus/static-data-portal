@@ -43,7 +43,8 @@ import type {
   FileDocument,
 } from "@globus/sdk/services/transfer/service/file-operations";
 
-import { useCollection, useListDirectory } from "@/hooks/useTransfer";
+import { isFileListDocument, useListDirectory } from "@/hooks/useTransfer";
+import { useCollection } from "@globus/react-query/services/transfer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StartTransferButton from "./StartTransferButton";
 import PathInput from "./PathInput";
@@ -71,9 +72,6 @@ export default function FileBrowser({
 
   const [browserPath, setBrowserPath] = useState<string>();
   const [showAddDirectory, setShowAddDirectory] = useState(false);
-  const [error, setError] = useState<DirectoryListingError | unknown | null>(
-    null,
-  );
 
   useEffect(() => {
     setBrowserPath(initialPath);
@@ -84,35 +82,19 @@ export default function FileBrowser({
   let endpoint = null;
   const c = useCollection(id);
 
-  if (c.isError) {
-    const error = c.data && "code" in c.data ? c.data : null;
-    setError(error);
-  }
-
   if (c.isSuccess) {
     endpoint = c.data;
   }
 
-  const {
-    data,
-    isSuccess,
-    isLoading,
-    isError,
-    isFetching,
-    error: lsError,
-    refetch,
-  } = useListDirectory(id, browserPath, {
-    query: {
-      show_hidden: fileBrowser.view.show_hidden ? "true" : "false",
-    },
-  });
+  const { data, isSuccess, isLoading, isError, isFetching, error, refetch } =
+    useListDirectory(id, browserPath, {
+      query: {
+        show_hidden: fileBrowser.view.show_hidden ? "true" : "false",
+      },
+    });
 
-  useEffect(() => {
-    setError(lsError);
-  }, [lsError]);
-
-  const absolutePath =
-    isSuccess && data && "absolute_path" in data ? data.absolute_path : null;
+  const hasFilesList = isFileListDocument(data);
+  const absolutePath = hasFilesList ? data.absolute_path : null;
 
   useEffect(() => {
     const path = browserPath || absolutePath;
@@ -305,7 +287,7 @@ export default function FileBrowser({
                           </Td>
                         </Tr>
                       )}
-                      {"DATA" in data &&
+                      {hasFilesList &&
                         data.DATA.sort((a, b) => {
                           return a.name.localeCompare(b.name);
                         }).map((item, i) => {
