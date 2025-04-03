@@ -43,11 +43,8 @@ import type {
   FileDocument,
 } from "@globus/sdk/services/transfer/service/file-operations";
 
-import {
-  isFileListDocument,
-  useCollection,
-  useListDirectory,
-} from "@/hooks/useTransfer";
+import { isFileListDocument, useListDirectory } from "@/hooks/useTransfer";
+import { useCollection } from "@globus/react-query/services/transfer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StartTransferButton from "./StartTransferButton";
 import PathInput from "./PathInput";

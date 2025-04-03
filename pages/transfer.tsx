@@ -17,15 +17,15 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
-import FileBrowser from "@/components/file-browser/FileBrowser";
 import { useGlobusAuth } from "@globus/react-auth-context";
+import { useCollection } from "@globus/react-query/services/transfer";
+import { CollectionBrowser } from "@globus/react-components";
+import { useShallow } from "zustand/react/shallow";
 
 import { STATIC } from "@/utils/static";
-import { useCollection } from "@globus/react-query/services/transfer";
 import SourceSelector from "@/components/SourceSelector";
 import { useGlobusTransferStore } from "@/components/store/globus-transfer";
-import { useShallow } from "zustand/react/shallow";
-import { CollectionBrowser } from "@globus/react-components";
+import FileBrowser from "@/components/file-browser/FileBrowser";
 
 export type TransferCollectionConfiguration = {
   /**
@@ -173,6 +173,7 @@ export default function Transfer() {
                     <br /> To transfer data to another location,{" "}
                     <CollectionBrowser
                       onSelect={({ collection, path }) => {
+                        // @ts-expect-error `collection` might be a partial document.
                         transferStore.setDestination(collection);
                         if (path) {
                           transferStore.setDestinationPath(path);
