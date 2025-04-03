@@ -1,8 +1,4 @@
-import {
-  useQuery,
-  useQueryClient,
-  UseQueryOptions,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { transfer } from "@globus/sdk";
 import { useGlobusAuth } from "@globus/react-auth-context";
 

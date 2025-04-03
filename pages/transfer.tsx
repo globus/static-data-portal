@@ -21,11 +21,11 @@ import FileBrowser from "@/components/file-browser/FileBrowser";
 import { useGlobusAuth } from "@globus/react-auth-context";
 
 import { STATIC } from "@/utils/static";
-import { useCollection } from "@/hooks/useTransfer";
+import { useCollection } from "@globus/react-query/services/transfer";
 import SourceSelector from "@/components/SourceSelector";
 import { useGlobusTransferStore } from "@/components/store/globus-transfer";
 import { useShallow } from "zustand/react/shallow";
-import { CollectionBrowserModal } from "@/components/collection-browser/CollectionBrowser";
+import { CollectionBrowser } from "@globus/react-components";
 
 export type TransferCollectionConfiguration = {
   /**
@@ -171,7 +171,7 @@ export default function Transfer() {
                     You are viewing data made available by{" "}
                     <Text as="em">{source?.display_name}</Text>.
                     <br /> To transfer data to another location,{" "}
-                    <CollectionBrowserModal
+                    <CollectionBrowser
                       onSelect={({ collection, path }) => {
                         transferStore.setDestination(collection);
                         if (path) {

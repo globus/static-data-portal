@@ -1,5 +1,5 @@
-import { Collection } from "@/hooks/useTransfer";
-import { FileDocument } from "@globus/sdk/cjs/services/transfer/service/file-operations";
+import { type Collection } from "@/hooks/useTransfer";
+import { type FileDocument } from "@globus/sdk/services/transfer/service/file-operations";
 
 export const CLIENT_INFO = {
   product: "@globus/static-data-portal",
