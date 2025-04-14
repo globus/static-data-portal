@@ -1,0 +1,32 @@
+name: preview
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_call:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  preview:
+    name: "preview"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/hydrogen
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+        env:
+          NEXTJS_BASE_PATH: /static-data-portal/previews/${{ github.sha }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUMED_ROLE }}
+          aws-region: ${{ secrets.AWS_ASSUMED_ROLE_REGION }}
+      - run: |
+          aws s3 sync ./out s3://${{secrets.AWS_S3_BUCKET}}/static-data-portal/previews/${{ github.sha }}
