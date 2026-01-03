@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/globus/static-data-portal/compare/3.0.0...3.0.1) (2026-01-03)
+
+
+### Fixes
+
+* Update dependencies (`next` v15.5.7 >> v15.5.9) and update `package.lock` to fix security vulnerability. ([#486](https://github.com/globus/static-data-portal/issues/486)) ([c1f3f2b](https://github.com/globus/static-data-portal/commit/49ccbcf909bf2d9a3060b2747fe918c84efb3376))
+
 ## [3.0.0](https://github.com/globus/static-data-portal/compare/2.1.0...3.0.0) (2025-04-03)
 
 
