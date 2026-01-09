@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/globus/static-data-portal/compare/3.0.0...3.0.1) (2026-01-09)
+
+
+### Fixes
+
+* Upgrade to next@15.5.9 ([#500](https://github.com/globus/static-data-portal/issues/500)) ([a4a1a63](https://github.com/globus/static-data-portal/commit/a4a1a633d04f65ad0704f1f4f6e0318b5a206ae5)), closes [#499](https://github.com/globus/static-data-portal/issues/499)
+
 ## [3.0.0](https://github.com/globus/static-data-portal/compare/2.1.0...3.0.0) (2025-04-03)
 
 
