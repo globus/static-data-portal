@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.3](https://github.com/globus/static-data-portal/compare/3.0.2...3.0.3) (2026-01-09)
+
+
+### Fixes
+
+* Updates various dependencies to address downstream CVE reports. ([af76911](https://github.com/globus/static-data-portal/commit/af769114fe0cb47a6e2be308e1a1d643648f1b53))
+
 ## [3.0.2](https://github.com/globus/static-data-portal/compare/3.0.1...3.0.2) (2026-01-09)
 
 
