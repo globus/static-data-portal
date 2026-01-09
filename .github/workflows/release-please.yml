@@ -4,6 +4,7 @@ on:
       - main
 
 permissions:
+  id-token: write
   contents: write
   pull-requests: write
 
@@ -31,6 +32,4 @@ jobs:
       - run: npm ci
         if: ${{ steps.release.outputs.releases_created == 'true'  }}
       - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         if: ${{ steps.release.outputs.releases_created == 'true' }}
