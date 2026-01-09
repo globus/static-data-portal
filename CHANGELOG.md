@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/globus/static-data-portal/compare/3.0.1...3.0.2) (2026-01-09)
+
+
+### Fixes
+
+* Run Dependency Audits and Upgrade Dependencies ([#502](https://github.com/globus/static-data-portal/issues/502)) ([fe0506d](https://github.com/globus/static-data-portal/commit/fe0506d9831d4043f8497048d3a84369eb2efafe))
+
 ## [3.0.1](https://github.com/globus/static-data-portal/compare/3.0.0...3.0.1) (2026-01-09)
 
 
