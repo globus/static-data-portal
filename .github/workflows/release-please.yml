@@ -14,20 +14,20 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v5
         id: release
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
       # Publish to NPM
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         # Only run if a release was created
         if: ${{ steps.release.outputs.releases_created == 'true' }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: lts/iron
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@globus'
+          node-version: lts/krypton
+          registry-url: "https://registry.npmjs.org"
+          scope: "@globus"
         if: ${{ steps.release.outputs.releases_created == 'true' }}
       - run: npm ci
         if: ${{ steps.release.outputs.releases_created == 'true'  }}
